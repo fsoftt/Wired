@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wired.App.Views.PlaylistsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Wired.App.Controls"
+    xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
+    x:DataType="vm:PlaylistsViewModel"
+    Title="Listas">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <Ellipse
+            Fill="{StaticResource GlowBrush}"
+            WidthRequest="420"
+            HeightRequest="420"
+            Margin="-180,-220,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <CollectionView ItemsSource="{Binding Playlists}">
+            <CollectionView.Header>
+                <VerticalStackLayout Padding="20,28,20,8" Spacing="18">
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                        <Label Text="Tus listas" Style="{StaticResource DisplayTitle}" VerticalOptions="Center" />
+                        <Button
+                            Grid.Column="1"
+                            Text="CSV"
+                            ImageSource="ic_download_small.png"
+                            Style="{StaticResource SecondaryPill}"
+                            HeightRequest="40"
+                            Padding="14,0"
+                            VerticalOptions="Center"
+                            Command="{Binding ImportCommand}" />
+                        <Button
+                            Grid.Column="2"
+                            Text="Nueva"
+                            ImageSource="ic_add_small.png"
+                            Style="{StaticResource PrimaryPill}"
+                            HeightRequest="40"
+                            Padding="16,0"
+                            VerticalOptions="Center"
+                            Command="{Binding CreatePlaylistCommand}" />
+                    </Grid>
+
+                    <!-- "Me gusta" hero card -->
+                    <Border StrokeThickness="0" StrokeShape="RoundRectangle 22" Background="{StaticResource BrandGradient}" Padding="18">
+                        <Border.Shadow>
+                            <Shadow Brush="{StaticResource PrimaryBrush}" Opacity="0.45" Radius="30" Offset="0,10" />
+                        </Border.Shadow>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenLikedCommand}" />
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                            <Border WidthRequest="64" HeightRequest="64" StrokeThickness="0" StrokeShape="RoundRectangle 16" BackgroundColor="#33FFFFFF">
+                                <Image Source="ic_heart_white.png" WidthRequest="34" HeightRequest="34" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                <Label Text="Me gusta" FontFamily="OpenSansSemibold" FontSize="20" TextColor="White" />
+                                <Label Text="{Binding LikedSummary}" TextColor="#DDFFFFFF" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <ActivityIndicator IsVisible="{Binding IsPreparingImport}" IsRunning="{Binding IsPreparingImport}" HeightRequest="28" />
+
+                    <!-- Imports in progress -->
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Imports}" Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ImportSessionViewModel">
+                                <Border Style="{StaticResource Card}" Padding="16,14">
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="6">
+                                        <Label Text="{Binding Name, StringFormat='Importando «{0}»'}" FontFamily="OpenSansSemibold" MaxLines="1" LineBreakMode="TailTruncation" />
+                                        <ImageButton Grid.Column="1" Grid.RowSpan="2" Source="ic_close.png" Opacity="0.6" IsVisible="{Binding IsRunning}" Command="{Binding CancelCommand}" />
+                                        <ImageButton Grid.Column="1" Grid.RowSpan="2" Source="ic_check.png" IsVisible="{Binding IsFinished}" Command="{Binding DismissCommand}" />
+                                        <Label Grid.Row="1" Text="{Binding ProgressText}" Style="{StaticResource Caption}" />
+                                        <ProgressBar Grid.Row="2" Grid.ColumnSpan="2" Progress="{Binding Progress}" HeightRequest="4" />
+                                        <Label Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding PausedText}" IsVisible="{Binding IsPaused}" Style="{StaticResource Caption}" TextColor="{StaticResource Accent}" MaxLines="2" />
+                                        <Label Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding ProblemsText}" IsVisible="{Binding HasProblems}" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding ShowProblemsCommand}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <Label Text="Listas de reproducción" Style="{StaticResource SectionTitle}" IsVisible="{Binding HasPlaylists}" />
+                </VerticalStackLayout>
+            </CollectionView.Header>
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Spacing="8" Padding="40,24">
+                    <Label Text="Aún no tienes listas" FontFamily="OpenSansSemibold" FontSize="17" HorizontalTextAlignment="Center" />
+                    <Label Text="Crea una con «Nueva», desde el botón de lista de cualquier canción, o importa tu música de Spotify con «CSV» (archivo de exportify.net)." Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:PlaylistCardViewModel">
+                    <Grid Padding="20,8" ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Border Style="{StaticResource Artwork}" WidthRequest="56" HeightRequest="56">
+                            <Image Source="ic_playlist.png" WidthRequest="28" HeightRequest="28" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                            <Label Text="{Binding Name}" Style="{StaticResource TrackTitle}" />
+                            <Label Text="{Binding Summary}" Style="{StaticResource Caption}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <controls:MiniPlayerView x:Name="MiniPlayer" Grid.Row="1" />
+    </Grid>
+
+</ContentPage>

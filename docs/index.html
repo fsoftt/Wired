@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wired — Reproductor de música con plugins</title>
+<meta name="description" content="Wired es un reproductor de música multiplataforma (.NET MAUI) construido alrededor de plugins de fuentes: busca, escucha en streaming o descarga a tu biblioteca sin conexión. Código abierto, licencia MIT.">
+<meta name="theme-color" content="#0B0B14">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wired — Reproductor de música con plugins">
+<meta property="og:description" content="Reproductor multiplataforma en .NET MAUI con fuentes por plugins, biblioteca sin conexión, letras sincronizadas y Android Auto. Código abierto (MIT).">
+<meta property="og:url" content="https://fsoftt.github.io/Wired/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
+<link rel="canonical" href="https://fsoftt.github.io/Wired/">
+<link rel="alternate" hreflang="es" href="https://fsoftt.github.io/Wired/">
+<link rel="alternate" hreflang="en" href="https://fsoftt.github.io/Wired/en/">
+<link rel="alternate" hreflang="x-default" href="https://fsoftt.github.io/Wired/">
+<script>(function(){try{var s=localStorage.getItem("wired-lang");if(s==="en"||(!s&&!/^es/i.test(navigator.language||"es"))){location.replace("en/"+location.hash)}}catch(e){}})();</script>
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238B5CF6'/%3E%3Cstop offset='.55' stop-color='%23EC4899'/%3E%3Cstop offset='1' stop-color='%2322D3EE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%230B0B14'/%3E%3Cpath d='M5 10l4.5 12L16 12l6.5 10L27 10' fill='none' stroke='url(%23g)' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/><stop offset=".55" stop-color="#EC4899"/><stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <symbol id="gh" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Wired, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#151522"/><path d="M5 10l4.5 12L16 12l6.5 10L27 10" fill="none" stroke="url(#brand)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Wired
+    </a>
+    <nav aria-label="Principal">
+      <a href="#funciones">Funciones</a>
+      <a href="#plugins">Plugins</a>
+      <a href="#arquitectura">Arquitectura</a>
+      <a href="#empezar">Empezar</a>
+      <div class="lang" role="group" aria-label="Idioma"><a href="./" lang="es" hreflang="es" data-lang="es" aria-current="true">ES</a><a href="en/" lang="en" hreflang="en" data-lang="en" aria-label="English">EN</a></div>
+      <a class="nav-gh" href="https://github.com/fsoftt/Wired"><svg width="18" height="18" aria-hidden="true"><use href="#gh"/></svg>GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+<section class="hero" id="top">
+  <div class="glow" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Código abierto · .NET MAUI</p>
+      <h1>Tu música, <span class="grad-text">tus fuentes</span>.</h1>
+      <p class="pitch">Wired es un reproductor multiplataforma construido alrededor de plugins. Elige una fuente, busca, escucha en streaming o descarga a tu biblioteca sin conexión. Tu música sobrevive aunque desinstales la app.</p>
+      <div class="btns">
+        <a class="btn btn-primary" href="https://github.com/fsoftt/Wired"><svg aria-hidden="true"><use href="#gh"/></svg>Ver en GitHub</a>
+        <a class="btn btn-ghost" href="#plugins"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>Crear un plugin</a>
+      </div>
+      <ul class="chips" aria-label="Plataformas">
+        <li>Android</li><li>iOS</li><li>Windows</li><li>macOS</li><li>Licencia MIT</li>
+      </ul>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone" role="img" aria-label="Maqueta estilizada de la pantalla de Inicio de Wired con carruseles de tarjetas y una lista de canciones">
+        <div class="screen" aria-hidden="true">
+          <div class="ph-h">Inicio</div>
+          <div class="ph-sec">Tendencias</div>
+          <div class="car">
+            <div class="card"><div class="cover a"></div><div class="cname">Neón en la lluvia</div><div class="csub">Artista Uno</div></div>
+            <div class="card"><div class="cover c"></div><div class="cname">Cielo digital</div><div class="csub">Artista Dos</div></div>
+            <div class="card"><div class="cover b"></div><div class="cname">Autopista</div><div class="csub">Artista Tres</div></div>
+          </div>
+          <div class="ph-sec">Para ti</div>
+          <div class="car">
+            <div class="card"><div class="cover e"></div><div class="cname">Mix de la noche</div><div class="csub">Basado en tus Me gusta</div></div>
+            <div class="card"><div class="cover d"></div><div class="cname">Mix tranquilo</div><div class="csub">Para concentrarte</div></div>
+            <div class="card"><div class="cover a"></div><div class="cname">Mix retro</div><div class="csub">Sintetizadores</div></div>
+          </div>
+          <div class="mini"><div class="cover a"></div><div class="cname">Neón en la lluvia<div class="csub">Artista Uno</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="#f5f5fa"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg><div class="bar"></div></div>
+          <div class="tabs"><span class="on"></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="funciones" aria-labelledby="t-func">
+  <div class="wrap">
+    <p class="eyebrow">Funciones</p>
+    <h2 id="t-func">Todo lo que esperas de un reproductor, con tus reglas</h2>
+    <p class="lead">Wired guarda la música en tu dispositivo, en carpetas y formatos estándar. Nada queda atrapado en la app.</p>
+    <div class="grid">
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4M5 12V5a2 2 0 0 1 2-2h7l5 5v4M3 15h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3v3M11 15v6m0-6h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2"/></svg></div><h3>Fuentes por plugins</h3><p>Busca con la fuente que elijas. Cada plugin aparece como un chip en el buscador, sin tocar vistas ni ViewModels.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12a7 7 0 0 1 14 0M8.5 12a3.5 3.5 0 0 1 7 0M12 12v.01M12 16v5"/></svg></div><h3>Streaming o descarga</h3><p>Toca un resultado para escucharlo al instante, o descárgalo a tu biblioteca con una cola en segundo plano, progreso y reintentos.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><h3>Sobrevive a la desinstalación</h3><p>La música vive en la carpeta compartida <code>Music/Wired</code> y las listas como M3U. Tras reinstalar, <em>Recuperar música</em> reconstruye la biblioteca.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1z"/></svg></div><h3>Me gusta y listas</h3><p>Crea, renombra y ordena listas de reproducción. Todo se refleja en archivos M3U estándar que puedes llevarte a otra app.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16"/></svg></div><h3>Importar desde Spotify</h3><p>Carga el CSV de Exportify. Cada canción se empareja puntuando duración, título y artista, y descartando versiones en vivo, covers o karaoke. Es reanudable.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h13"/></svg></div><h3>Letras sincronizadas</h3><p>Letras de LRCLIB con la línea actual resaltada. Toca una línea para saltar a ese momento, ajusta ±0,5 s y consúltalas sin conexión.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div><h3>Cola con gestos</h3><p>Desliza una canción para agregarla (con Deshacer), mantén presionado para el menú y reordena “A continuación” arrastrando.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg></div><h3>Inicio con listas y mixes</h3><p>Rankings y recomendaciones cuando la fuente lo permite (<code>IDiscoverableMusicSource</code>). Se guardan en el dispositivo y se actualizan al deslizar.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14M3 12h2l2-6 4 12 3-9 2 5h5"/></svg></div><h3>Volumen parejo</h3><p>Normalización de volumen: Wired mide cada canción descargada y la ajusta al reproducir, sin saltos entre temas antiguos y modernos.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg></div><h3>Temporizador para dormir</h3><p>15, 30, 45 o 60 minutos, o al terminar la canción, con desvanecido final.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16V9l2-4h10l2 4v7M3 16h18v3H3zM7 13h.01M17 13h.01"/></svg></div><h3>Android Auto y segundo plano</h3><p>Navega Biblioteca, Me gusta y Listas desde el coche. Reproducción con notificación multimedia y controles en pantalla de bloqueo.</p></article>
+      <article class="glass feat"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.2 8 8 9 4.8-1 8-4.5 8-9V6z"/></svg></div><h3>Peticiones con límite</h3><p>El trabajo en segundo plano va a un ritmo moderado por fuente y, si esta pide frenar, se pausa con backoff exponencial y reintenta solo.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="plugins" aria-labelledby="t-plug">
+  <div class="wrap">
+    <p class="eyebrow">Cómo funcionan los plugins</p>
+    <h2 id="t-plug">Una interfaz, una fuente nueva</h2>
+    <p class="lead">Un plugin es una librería que referencia <code>Wired.Core</code>. Si además implementa capacidades opcionales, la app las aprovecha sola.</p>
+    <div class="two">
+      <div>
+        <ol class="steps">
+          <li><strong>Crea el proyecto.</strong> Una librería <code>Wired.Plugins.MiFuente</code> que referencie <code>Wired.Core</code>.</li>
+          <li><strong>Implementa <code>IMusicSourcePlugin</code>.</strong> Búsqueda y descarga; devuelve la ruta del archivo.</li>
+          <li><strong>Regístralo.</strong> Expón <code>AddMiFuenteMusicSource()</code> y añádelo a <code>AddMusicSources()</code>.</li>
+          <li><strong>Listo.</strong> Aparece como chip en el buscador. Para streaming suma <code>IStreamableMusicSource</code>; para el Inicio, <code>IDiscoverableMusicSource</code>.</li>
+        </ol>
+      </div>
+      <pre class="code" tabindex="0" aria-label="Ejemplo de plugin en C#"><code><span class="k">public sealed class</span> <span class="t">MiFuentePlugin</span> : <span class="t">IMusicSourcePlugin</span>
+{
+    <span class="k">public</span> <span class="t">PluginInfo</span> Info { <span class="k">get</span>; } =
+        <span class="k">new</span>(<span class="s">"mifuente"</span>, <span class="s">"Mi Fuente"</span>, <span class="s">"Descripción"</span>, <span class="s">"#22D3EE"</span>);
+
+    <span class="k">public</span> <span class="t">Task</span>&lt;<span class="t">IReadOnlyList</span>&lt;<span class="t">RemoteTrack</span>&gt;&gt; <span class="m">SearchAsync</span>(
+        <span class="k">string</span> query, <span class="k">int</span> maxResults, <span class="t">CancellationToken</span> ct)
+    { <span class="c">/* ... */</span> }
+
+    <span class="k">public</span> <span class="t">Task</span>&lt;<span class="k">string</span>&gt; <span class="m">DownloadAsync</span>(<span class="t">RemoteTrack</span> track,
+        <span class="k">string</span> destinationDirectory,
+        <span class="t">IProgress</span>&lt;<span class="k">double</span>&gt;? progress, <span class="t">CancellationToken</span> ct)
+    { <span class="c">/* devuelve la ruta del archivo */</span> }
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="arquitectura" aria-labelledby="t-arq">
+  <div class="wrap">
+    <p class="eyebrow">Arquitectura</p>
+    <h2 id="t-arq">Las dependencias apuntan hacia dentro</h2>
+    <p class="lead">Arquitectura limpia con MVVM. Los ViewModels no conocen MAUI: navegación, diálogos y el hilo de UI se inyectan como interfaces, así que se prueban con un <code>dotnet test</code> normal.</p>
+    <div class="glass arch">
+      <svg viewBox="0 0 860 330" role="img" aria-labelledby="arch-t arch-d">
+        <title id="arch-t">Diagrama de capas</title>
+        <desc id="arch-d">Wired.App depende de Wired.Presentation, que depende de Wired.Core. Wired.Infrastructure y los plugins también dependen de Wired.Core.</desc>
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10z" fill="#a8afbd"/></marker>
+          <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset=".55" stop-color="#EC4899"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
+        </defs>
+        <g font-family="Space Grotesk, Inter, sans-serif" text-anchor="middle">
+          <rect x="30" y="20" width="220" height="64" rx="14" fill="#151522" stroke="#2A2A3C"/>
+          <text x="140" y="50" fill="#F5F5FA" font-size="18" font-weight="700">Wired.App</text><text x="140" y="70" fill="#a8afbd" font-size="12.5">.NET MAUI · vistas · DI</text>
+          <rect x="30" y="130" width="220" height="64" rx="14" fill="#151522" stroke="#2A2A3C"/>
+          <text x="140" y="160" fill="#F5F5FA" font-size="18" font-weight="700">Wired.Presentation</text><text x="140" y="180" fill="#a8afbd" font-size="12.5">ViewModels · MVVM</text>
+          <rect x="340" y="130" width="200" height="64" rx="14" fill="#1E1E2E" stroke="url(#gb)" stroke-width="2.5"/>
+          <text x="440" y="160" fill="#F5F5FA" font-size="18" font-weight="700">Wired.Core</text><text x="440" y="180" fill="#a8afbd" font-size="12.5">Dominio · interfaces</text>
+          <rect x="610" y="60" width="220" height="64" rx="14" fill="#151522" stroke="#2A2A3C"/>
+          <text x="720" y="90" fill="#F5F5FA" font-size="18" font-weight="700">Wired.Infrastructure</text><text x="720" y="110" fill="#a8afbd" font-size="12.5">JSON · LRCLIB · etiquetas</text>
+          <rect x="610" y="200" width="220" height="64" rx="14" fill="#151522" stroke="#2A2A3C"/>
+          <text x="720" y="230" fill="#F5F5FA" font-size="18" font-weight="700">Plugins de fuentes</text><text x="720" y="250" fill="#a8afbd" font-size="12.5">IMusicSourcePlugin</text>
+        </g>
+        <g stroke="#a8afbd" stroke-width="2" fill="none" marker-end="url(#ar)">
+          <path d="M140 84v44"/>
+          <path d="M250 162h86"/>
+          <path d="M610 100 C 570 100, 570 150, 544 156"/>
+          <path d="M610 232 C 570 232, 570 180, 544 172"/>
+        </g>
+        <text x="430" y="310" text-anchor="middle" fill="#a8afbd" font-family="Inter, sans-serif" font-size="13">App → Presentation → Core ← Infrastructure / Plugins</text>
+      </svg>
+    </div>
+    <div class="layers">
+      <div class="glass"><strong>Core</strong>Modelos, casos de uso, cola de reproducción y descargas, límites de peticiones, importación y letras.</div>
+      <div class="glass"><strong>Infrastructure</strong>Persistencia JSON, cliente de LRCLIB, carátulas y etiquetas de audio.</div>
+      <div class="glass"><strong>Presentation</strong>ViewModels con CommunityToolkit.Mvvm, sin referencias a MAUI.</div>
+      <div class="glass"><strong>App</strong>Vistas XAML, servicios de plataforma y raíz de composición.</div>
+    </div>
+    <p class="note">Las pruebas con xUnit cubren dominio, infraestructura y ViewModels.</p>
+  </div>
+</section>
+
+<section id="empezar" aria-labelledby="t-start">
+  <div class="wrap">
+    <p class="eyebrow">Empezar</p>
+    <h2 id="t-start">Compila y ejecuta</h2>
+    <p class="lead">Requisitos: SDK de .NET 10 y el workload de MAUI (<code>dotnet workload install maui</code>).</p>
+    <div class="cmd">
+      <h3>Android</h3>
+      <pre class="code" tabindex="0"><code>dotnet build src/Wired.App -t:Run -f net10.0-android</code></pre>
+    </div>
+    <div class="cmd">
+      <h3>Windows</h3>
+      <pre class="code" tabindex="0"><code>dotnet build src/Wired.App -t:Run -f net10.0-windows10.0.19041.0</code></pre>
+    </div>
+    <div class="cmd">
+      <h3>Pruebas</h3>
+      <pre class="code" tabindex="0"><code>dotnet test tests/Wired.Tests</code></pre>
+    </div>
+    <p class="note">También puedes abrir <code>Wired.slnx</code> en Visual Studio 2026 o Rider y ejecutar <code>Wired.App</code>.</p>
+    <div class="btns">
+      <a class="btn btn-primary" href="https://github.com/fsoftt/Wired"><svg aria-hidden="true"><use href="#gh"/></svg>Ver en GitHub</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Wired · Código abierto bajo licencia <a href="https://github.com/fsoftt/Wired/blob/main/LICENSE">MIT</a></p>
+    <div class="links">
+      <a href="https://github.com/fsoftt/Wired">GitHub</a>
+      <a href="https://github.com/fsoftt/Wired/issues">Issues</a>
+      <a href="#top">Volver arriba</a>
+    </div>
+  </div>
+</footer>
+<script src="main.js"></script>
+</body>
+</html>

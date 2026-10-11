@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wired.App.Views.LibraryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Wired.App.Controls"
+    xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
+    x:DataType="vm:LibraryViewModel"
+    Title="Biblioteca">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+        <Ellipse
+            Grid.RowSpan="2"
+            Fill="{StaticResource GlowBrush}"
+            WidthRequest="420"
+            HeightRequest="420"
+            Margin="-180,-220,0,0"
+            HorizontalOptions="Start"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <!-- Header -->
+        <VerticalStackLayout Padding="20,28,20,12" Spacing="4">
+            <Label Text="Tu biblioteca" Style="{StaticResource DisplayTitle}" />
+            <Label Style="{StaticResource Caption}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Summary}" />
+                        <Span Text="  ·  guardada en " />
+                        <Span Text="{Binding MusicLocation}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label
+                Text="{Binding EnrichmentText}"
+                IsVisible="{Binding HasEnrichmentText}"
+                Style="{StaticResource Caption}"
+                TextColor="{StaticResource Highlight}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowEnrichmentProblemsCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <HorizontalStackLayout IsVisible="{Binding HasTracks}" Spacing="12" Margin="0,16,0,0">
+                <Button Text="Reproducir" ImageSource="ic_play_small.png" Style="{StaticResource PrimaryPill}" Command="{Binding PlayAllCommand}" />
+                <Button Text="Aleatorio" ImageSource="ic_shuffle_small.png" Style="{StaticResource SecondaryPill}" Command="{Binding ShuffleCommand}" />
+                <ImageButton Source="ic_retry.png" WidthRequest="40" HeightRequest="40" Padding="8" Opacity="0.7" VerticalOptions="Center" Command="{Binding RecoverCommand}" SemanticProperties.Description="Recuperar música de la carpeta" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Filter and order -->
+        <Grid Grid.Row="1" IsVisible="{Binding HasTracks}" Margin="20,4,20,8" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+            <Border Padding="14,0" Style="{StaticResource Card}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Image Source="ic_search.png" WidthRequest="20" HeightRequest="20" Opacity="0.6" />
+                    <Entry Grid.Column="1" Text="{Binding Filter}" Placeholder="Filtrar por título o artista" ClearButtonVisibility="WhileEditing" />
+                </Grid>
+            </Border>
+            <Button
+                Grid.Column="1"
+                Text="{Binding SortLabel}"
+                ImageSource="ic_sort_small.png"
+                Style="{StaticResource SecondaryPill}"
+                Padding="12,0"
+                FontSize="13"
+                VerticalOptions="Fill"
+                Command="{Binding ChangeSortCommand}"
+                SemanticProperties.Description="Ordenar" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" VerticalOptions="Center" />
+
+            <!-- Empty library -->
+            <VerticalStackLayout IsVisible="{Binding IsEmpty}" Spacing="12" VerticalOptions="Center" Padding="40">
+                <Border Style="{StaticResource Artwork}" StrokeShape="RoundRectangle 36" WidthRequest="96" HeightRequest="96">
+                    <Image Source="ic_library.png" WidthRequest="44" HeightRequest="44" />
+                </Border>
+                <Label Text="Aún no tienes canciones" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="Ve a la pestaña Buscar, encuentra algo que te guste y descárgalo." Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+                <Button Text="¿Reinstalaste Wired? Recupera tu música y listas" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Margin="0,12,0,0" Command="{Binding RecoverCommand}" />
+            </VerticalStackLayout>
+
+            <CollectionView x:Name="TracksList" IsVisible="{Binding HasTracks}" ItemsSource="{Binding Tracks}">
+                <CollectionView.Triggers>
+                    <!-- Room for the letter index, so it never covers the row buttons -->
+                    <DataTrigger TargetType="CollectionView" Binding="{Binding IsIndexVisible}" Value="True">
+                        <Setter Property="Margin" Value="0,0,22,0" />
+                    </DataTrigger>
+                </CollectionView.Triggers>
+                <CollectionView.EmptyView>
+                    <Label Text="Nada coincide con el filtro" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" Margin="0,40" />
+                </CollectionView.EmptyView>
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="12" Color="Transparent" />
+                </CollectionView.Footer>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:TrackItemViewModel">
+                        <SwipeView BackgroundColor="Transparent">
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" BackgroundColor="{StaticResource Background}">
+                                <Grid Padding="20,8,12,8" ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="10">
+
+                                    <controls:Artwork Source="{Binding ThumbnailUrl}" WidthRequest="56" HeightRequest="56" />
+
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                                        <Label Text="{Binding Title}" Style="{StaticResource TrackTitle}">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsCurrent}" Value="True">
+                                                    <Setter Property="TextColor" Value="{StaticResource Accent}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Style="{StaticResource Caption}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Artist}" />
+                                                    <Span Text="  ·  " />
+                                                    <Span Text="{Binding DurationText}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </VerticalStackLayout>
+
+                                    <controls:LikeButton Grid.Column="2" IsLiked="{Binding IsLiked}" Command="{Binding ToggleLikeCommand}" />
+                                    <ImageButton Grid.Column="3" Source="ic_playlist_add.png" Opacity="0.7" Command="{Binding AddToPlaylistCommand}" />
+                                    <ImageButton Grid.Column="4" Source="ic_delete.png" Opacity="0.5" Command="{Binding RemoveCommand}" />
+                                </Grid>
+                            </controls:Pressable>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Fast scroll by letter when the order is alphabetical -->
+            <controls:LetterIndex
+                Letters="{Binding IndexLetters}"
+                IsVisible="{Binding IsIndexVisible}"
+                LetterSelected="OnLetterSelected"
+                HorizontalOptions="End"
+                VerticalOptions="Fill"
+                WidthRequest="22"
+                Margin="0,4,0,12" />
+
+            <!-- Letter shown while jumping -->
+            <Border
+                x:Name="LetterBubble"
+                IsVisible="False"
+                InputTransparent="True"
+                WidthRequest="72"
+                HeightRequest="72"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 20"
+                Background="{StaticResource BrandGradient}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <Label x:Name="LetterBubbleText" FontSize="34" FontFamily="OpenSansSemibold" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+            </Border>
+        </Grid>
+
+        <controls:MiniPlayerView x:Name="MiniPlayer" Grid.Row="3" />
+    </Grid>
+
+</ContentPage>

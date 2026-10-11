@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wired.App.Views.SearchPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Wired.App.Controls"
+    xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
+    x:DataType="vm:SearchViewModel"
+    Title="Buscar">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+        <!-- Decorative neon glow behind the header -->
+        <Ellipse
+            Grid.RowSpan="3"
+            Fill="{StaticResource GlowBrush}"
+            WidthRequest="420"
+            HeightRequest="420"
+            Margin="0,-220,-160,0"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <!-- Header -->
+        <VerticalStackLayout Padding="20,28,20,16" Spacing="4">
+            <Label Text="Descubre" Style="{StaticResource DisplayTitle}" />
+            <Label Text="Busca música en tus fuentes y llévala contigo" Style="{StaticResource Caption}" />
+        </VerticalStackLayout>
+
+        <!-- Search box -->
+        <Border
+            Grid.Row="1"
+            Margin="20,0"
+            Padding="14,4"
+            Style="{StaticResource Card}"
+            Stroke="{StaticResource NeonGradient}"
+            StrokeThickness="1.5">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                <Image Source="ic_search.png" WidthRequest="22" HeightRequest="22" Opacity="0.7" />
+                <Entry
+                    Grid.Column="1"
+                    Text="{Binding Query}"
+                    Placeholder="{Binding SearchPlaceholder}"
+                    IsEnabled="{Binding HasSources}"
+                    ReturnType="Search"
+                    ReturnCommand="{Binding SearchCommand}"
+                    ClearButtonVisibility="WhileEditing" />
+                <ActivityIndicator
+                    Grid.Column="2"
+                    IsRunning="{Binding IsSearching}"
+                    IsVisible="{Binding IsSearching}"
+                    WidthRequest="22"
+                    HeightRequest="22" />
+            </Grid>
+        </Border>
+
+        <!-- Source (plugin) selector -->
+        <VerticalStackLayout Grid.Row="2" Padding="20,18,0,8" Spacing="10" IsVisible="{Binding HasSources}">
+            <Label Text="Fuente" Style="{StaticResource SectionTitle}" />
+            <CollectionView
+                ItemsSource="{Binding Plugins}"
+                HeightRequest="44"
+                HorizontalScrollBarVisibility="Never">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:PluginOptionViewModel">
+                        <Grid HeightRequest="40">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectCommand}" />
+                            </Grid.GestureRecognizers>
+                            <Border
+                                IsVisible="{Binding IsSelected, Converter={StaticResource InvertedBool}}"
+                                Background="{StaticResource SurfaceBrush}"
+                                Stroke="{StaticResource OutlineBrush}"
+                                StrokeShape="RoundRectangle 20" />
+                            <Border
+                                IsVisible="{Binding IsSelected}"
+                                Background="{StaticResource BrandGradient}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 20" />
+                            <HorizontalStackLayout Padding="16,0" Spacing="8">
+                                <Ellipse
+                                    WidthRequest="10"
+                                    HeightRequest="10"
+                                    VerticalOptions="Center"
+                                    Fill="{Binding AccentColor, Converter={StaticResource HexToBrush}}" />
+                                <Label Text="{Binding Name}" FontFamily="OpenSansSemibold" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+        <!-- Content: one state visible at a time -->
+        <Grid Grid.Row="3">
+
+            <!-- No music source installed -->
+            <VerticalStackLayout IsVisible="{Binding HasNoSources}" Spacing="12" VerticalOptions="Center" Padding="40">
+                <Border Style="{StaticResource Artwork}" StrokeShape="RoundRectangle 36" WidthRequest="96" HeightRequest="96">
+                    <Image Source="ic_music_note.png" WidthRequest="48" HeightRequest="48" />
+                </Border>
+                <Label Text="No hay fuentes de música instaladas" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="Instala un plugin de fuente para buscar música. Tu biblioteca local sigue disponible." Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- Idle -->
+            <VerticalStackLayout IsVisible="{Binding ShowIdle}" Spacing="12" VerticalOptions="Center" Padding="40">
+                <Border Style="{StaticResource Artwork}" StrokeShape="RoundRectangle 36" WidthRequest="96" HeightRequest="96">
+                    <Image Source="ic_music_note.png" WidthRequest="48" HeightRequest="48" />
+                </Border>
+                <Label Text="¿Qué quieres escuchar hoy?" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="Toca una canción para escucharla al instante o descárgala para tenerla sin conexión." Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- Searching -->
+            <VerticalStackLayout IsVisible="{Binding IsSearching}" Spacing="16" VerticalOptions="Center">
+                <ActivityIndicator IsRunning="{Binding IsSearching}" WidthRequest="48" HeightRequest="48" />
+                <Label Text="Buscando…" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- No results -->
+            <VerticalStackLayout IsVisible="{Binding HasNoResults}" Spacing="8" VerticalOptions="Center" Padding="40">
+                <Label Text="Sin resultados" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="Prueba con otras palabras o con otra fuente." Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- Error -->
+            <VerticalStackLayout IsVisible="{Binding HasError}" Spacing="12" VerticalOptions="Center" Padding="40">
+                <Image Source="ic_error.png" WidthRequest="48" HeightRequest="48" Opacity="0.8" />
+                <Label Text="{Binding ErrorMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
+                <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding SearchCommand}" />
+            </VerticalStackLayout>
+
+            <!-- Results -->
+            <CollectionView IsVisible="{Binding HasResults}" ItemsSource="{Binding Results}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="12" Color="Transparent" />
+                </CollectionView.Footer>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SearchResultViewModel">
+                        <SwipeView BackgroundColor="Transparent">
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" BackgroundColor="{StaticResource Background}">
+                                <Grid Padding="20,8" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+
+                                    <controls:Artwork Source="{Binding ThumbnailUrl}" WidthRequest="60" HeightRequest="60" />
+
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                                        <Label Text="{Binding Title}" Style="{StaticResource TrackTitle}">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsCurrent}" Value="True">
+                                                    <Setter Property="TextColor" Value="{StaticResource Accent}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Style="{StaticResource Caption}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Artist}" />
+                                                    <Span Text="  ·  " />
+                                                    <Span Text="{Binding DurationText}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <ProgressBar IsVisible="{Binding IsDownloading}" Progress="{Binding Progress}" HeightRequest="3" Margin="0,4,0,0" />
+                                        <Label IsVisible="{Binding IsQueued}" Text="En cola…" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" />
+                                    </VerticalStackLayout>
+
+                                    <!-- Action: download / cancel / downloaded -->
+                                    <Grid Grid.Column="2" VerticalOptions="Center">
+                                        <ImageButton
+                                            IsVisible="{Binding CanDownload}"
+                                            Source="ic_download.png"
+                                            Background="{StaticResource BrandGradient}"
+                                            Command="{Binding DownloadCommand}" />
+                                        <ImageButton
+                                            IsVisible="{Binding IsPending}"
+                                            Source="ic_close.png"
+                                            BorderColor="{StaticResource Accent}"
+                                            BorderWidth="1.5"
+                                            Command="{Binding CancelDownloadCommand}" />
+                                        <Border
+                                            IsVisible="{Binding IsDownloaded}"
+                                            WidthRequest="36"
+                                            HeightRequest="36"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 18"
+                                            BackgroundColor="#2234D399">
+                                            <Image Source="ic_check.png" WidthRequest="20" HeightRequest="20" />
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </controls:Pressable>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <controls:MiniPlayerView x:Name="MiniPlayer" Grid.Row="4" />
+    </Grid>
+
+</ContentPage>

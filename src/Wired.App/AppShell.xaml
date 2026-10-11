@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Wired.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:Wired.App.Views"
+    Title="Wired">
+
+    <TabBar>
+        <ShellContent
+            Title="Inicio"
+            Icon="ic_home.png"
+            ContentTemplate="{DataTemplate views:HomePage}"
+            Route="home" />
+
+        <ShellContent
+            Title="Buscar"
+            Icon="ic_search.png"
+            ContentTemplate="{DataTemplate views:SearchPage}"
+            Route="search" />
+
+        <ShellContent
+            Title="Biblioteca"
+            Icon="ic_library.png"
+            ContentTemplate="{DataTemplate views:LibraryPage}"
+            Route="library" />
+
+        <ShellContent
+            Title="Listas"
+            Icon="ic_playlist.png"
+            ContentTemplate="{DataTemplate views:PlaylistsPage}"
+            Route="playlists" />
+
+        <ShellContent
+            Title="Descargas"
+            Icon="ic_download.png"
+            ContentTemplate="{DataTemplate views:DownloadsPage}"
+            Route="downloads" />
+    </TabBar>
+
+</Shell>

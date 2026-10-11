@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wired.App.Views.ImportProblemsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Wired.App.Controls"
+    xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
+    x:DataType="vm:ImportProblemsViewModel"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*" Padding="0,12,0,0">
+
+        <!-- Top bar -->
+        <Grid Padding="12,0,20,8" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+            <ImageButton Source="ic_back.png" Clicked="OnBackClicked" />
+            <Label Grid.Column="1" Text="{Binding Title}" Style="{StaticResource SectionTitle}" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" />
+            <Button
+                Grid.Column="2"
+                Text="Copiar lista"
+                IsVisible="{Binding IsListing}"
+                Style="{StaticResource SecondaryPill}"
+                HeightRequest="36"
+                Padding="14,0"
+                FontSize="13"
+                Command="{Binding CopyListCommand}" />
+        </Grid>
+
+        <!-- Tracks to resolve -->
+        <Grid Grid.Row="1" IsVisible="{Binding IsListing}" RowDefinitions="Auto,*">
+            <Label Text="{Binding Summary}" Style="{StaticResource Caption}" Margin="20,4,20,8" />
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Problems}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ImportProblemViewModel">
+                        <controls:Pressable Command="{Binding SelectCommand}" BackgroundColor="{StaticResource Background}">
+                            <Grid Padding="20,10" ColumnDefinitions="*,Auto" ColumnSpacing="14">
+                                <VerticalStackLayout Spacing="3" VerticalOptions="Center">
+                                    <Label Text="{Binding Title}" Style="{StaticResource TrackTitle}" />
+                                    <Label Text="{Binding Artist}" Style="{StaticResource Caption}" />
+                                    <Label Text="{Binding Detail}" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" MaxLines="2" />
+                                </VerticalStackLayout>
+                                <Image Grid.Column="1" Source="ic_search.png" WidthRequest="22" HeightRequest="22" Opacity="0.7" />
+                            </Grid>
+                        </controls:Pressable>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <!-- Choosing the version of one track -->
+        <Grid Grid.Row="1" IsVisible="{Binding IsChoosing}" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="8">
+            <VerticalStackLayout Padding="20,0" Spacing="2">
+                <Label Text="ELIGE LA VERSIÓN DE" FontSize="11" CharacterSpacing="1.2" TextColor="{StaticResource Accent}" FontFamily="OpenSansSemibold" />
+                <Label Text="{Binding Selected.Title}" Style="{StaticResource TrackTitle}" />
+                <Label Text="{Binding Selected.Artist}" Style="{StaticResource Caption}" />
+            </VerticalStackLayout>
+
+            <Border Grid.Row="1" Margin="20,4" Padding="14,4" Style="{StaticResource Card}" Stroke="{StaticResource NeonGradient}" StrokeThickness="1.5">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                    <Image Source="ic_search.png" WidthRequest="22" HeightRequest="22" Opacity="0.7" />
+                    <Entry
+                        Grid.Column="1"
+                        Text="{Binding Query}"
+                        ReturnType="Search"
+                        ReturnCommand="{Binding SearchCommand}"
+                        ClearButtonVisibility="WhileEditing" />
+                    <ActivityIndicator Grid.Column="2" IsRunning="{Binding IsSearching}" IsVisible="{Binding IsSearching}" WidthRequest="22" HeightRequest="22" />
+                </Grid>
+            </Border>
+
+            <Label Grid.Row="2" Text="{Binding SearchMessage}" IsVisible="{Binding HasSearchMessage}" Style="{StaticResource Caption}" Margin="20,0" />
+
+            <CollectionView Grid.Row="3" ItemsSource="{Binding Results}">
+                <CollectionView.Header>
+                    <Label Text="Toca para escuchar · Usar esta para descargarla" Style="{StaticResource Caption}" Margin="20,0,20,6" Opacity="0.7" />
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:VersionOptionViewModel">
+                        <controls:Pressable Command="{Binding PreviewCommand}" BackgroundColor="{StaticResource Background}">
+                            <Grid Padding="20,8" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                                <controls:Artwork Source="{Binding ThumbnailUrl}" WidthRequest="56" HeightRequest="56" />
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                                    <Label Text="{Binding Title}" Style="{StaticResource TrackTitle}" />
+                                    <Label Style="{StaticResource Caption}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Artist}" />
+                                                <Span Text="  ·  " />
+                                                <Span Text="{Binding DurationText}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                                <Button
+                                    Grid.Column="2"
+                                    Text="Usar esta"
+                                    Style="{StaticResource SecondaryPill}"
+                                    HeightRequest="36"
+                                    Padding="12,0"
+                                    FontSize="13"
+                                    VerticalOptions="Center"
+                                    Command="{Binding ChooseCommand}" />
+                            </Grid>
+                        </controls:Pressable>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+
+</ContentPage>

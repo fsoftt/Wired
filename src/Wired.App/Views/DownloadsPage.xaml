@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wired.App.Views.DownloadsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Wired.App.Controls"
+    xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
+    x:DataType="vm:DownloadsViewModel"
+    Title="Descargas">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <Ellipse
+            Fill="{StaticResource GlowBrush}"
+            WidthRequest="420"
+            HeightRequest="420"
+            Margin="0,-220,-160,0"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <!-- Header -->
+        <Grid Padding="20,28,20,12" ColumnDefinitions="*,Auto">
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Descargas" Style="{StaticResource DisplayTitle}" />
+                <Label Text="{Binding Summary}" Style="{StaticResource Caption}" />
+            </VerticalStackLayout>
+            <Button
+                Grid.Column="1"
+                Text="Limpiar"
+                IsVisible="{Binding HasFinished}"
+                Style="{StaticResource SecondaryPill}"
+                HeightRequest="40"
+                Padding="18,0"
+                VerticalOptions="Center"
+                Command="{Binding ClearFinishedCommand}" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <!-- Empty -->
+            <VerticalStackLayout IsVisible="{Binding IsEmpty}" Spacing="12" VerticalOptions="Center" Padding="40">
+                <Border Style="{StaticResource Artwork}" StrokeShape="RoundRectangle 36" WidthRequest="96" HeightRequest="96">
+                    <Image Source="ic_download.png" WidthRequest="44" HeightRequest="44" />
+                </Border>
+                <Label Text="Sin descargas" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="Las canciones que descargues aparecerán aquí mientras se procesan." Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <CollectionView IsVisible="{Binding HasJobs}" ItemsSource="{Binding Jobs}">
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="12" Color="Transparent" />
+                </CollectionView.Footer>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:DownloadJobViewModel">
+                        <SwipeView BackgroundColor="Transparent">
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" BackgroundColor="{StaticResource Background}">
+                                <Grid Padding="20,8" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                                    <controls:Artwork Source="{Binding ThumbnailUrl}" WidthRequest="56" HeightRequest="56" />
+
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                                        <Label Text="{Binding Title}" Style="{StaticResource TrackTitle}" />
+                                        <Label Text="{Binding StatusText}" Style="{StaticResource Caption}" />
+                                        <ProgressBar IsVisible="{Binding IsDownloading}" Progress="{Binding Progress}" HeightRequest="3" Margin="0,4,0,0" />
+                                    </VerticalStackLayout>
+
+                                    <Grid Grid.Column="2" VerticalOptions="Center">
+                                        <ImageButton
+                                            IsVisible="{Binding IsActive}"
+                                            Source="ic_close.png"
+                                            BorderColor="{StaticResource Accent}"
+                                            BorderWidth="1.5"
+                                            Command="{Binding CancelCommand}" />
+                                        <ImageButton
+                                            IsVisible="{Binding CanRetry}"
+                                            Source="ic_retry.png"
+                                            Background="{StaticResource BrandGradient}"
+                                            Command="{Binding RetryCommand}" />
+                                        <Border
+                                            IsVisible="{Binding IsCompleted}"
+                                            WidthRequest="36"
+                                            HeightRequest="36"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 18"
+                                            BackgroundColor="#2234D399">
+                                            <Image Source="ic_check.png" WidthRequest="20" HeightRequest="20" />
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </controls:Pressable>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <controls:MiniPlayerView x:Name="MiniPlayer" Grid.Row="2" />
+    </Grid>
+
+</ContentPage>

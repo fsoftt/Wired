@@ -1,0 +1,91 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net10.0-android</TargetFrameworks>
+		<TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+
+		<OutputType>Exe</OutputType>
+		<RootNamespace>Wired.App</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<!-- CommunityToolkit.Maui 15.0.1 needs at least this version (NU1605 otherwise). -->
+		<MauiVersion>10.0.90</MauiVersion>
+		<SingleProject>true</SingleProject>
+
+		<!-- Generates C# from XAML at compile time (faster startup, compile-time binding checks). -->
+		<MauiXamlInflator>SourceGen</MauiXamlInflator>
+		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+		<!-- A binding that cannot be compiled is a typo: fail the build instead of falling back to reflection. -->
+		<WarningsAsErrors>$(WarningsAsErrors);MAUIG2045;XC0022;XC0025</WarningsAsErrors>
+
+		<!-- Keep real exception messages in trimmed Release builds (instead of keys like "Exception_WasThrown")
+		     so the errors users copy are actionable. -->
+		<UseSystemResourceKeys>false</UseSystemResourceKeys>
+
+		<!-- Display name -->
+		<ApplicationTitle>Wired</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.wired.player</ApplicationId>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
+		<WindowsPackageType>None</WindowsPackageType>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">17.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
+
+		<!-- Sign every Android build (local and CI) with the repo-committed debug keystore, the same one
+		     PiccoloReader uses, so an APK from one machine installs over one from another. Without it each
+		     CI runner generates a random key and Android rejects the update. Sideload-only, fine to commit. -->
+		<AndroidKeyStore Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">True</AndroidKeyStore>
+		<AndroidSigningKeyStore Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">debug.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">androiddebugkey</AndroidSigningKeyAlias>
+		<AndroidSigningKeyPass Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">android</AndroidSigningKeyPass>
+		<AndroidSigningStorePass Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">android</AndroidSigningStorePass>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#0B0B14" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#0B0B14" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
+		<PackageReference Include="Plugin.Maui.Audio" Version="4.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Wired.Core\Wired.Core.csproj" />
+		<ProjectReference Include="..\Wired.Infrastructure\Wired.Infrastructure.csproj" />
+		<ProjectReference Include="..\Wired.Presentation\Wired.Presentation.csproj" />
+	</ItemGroup>
+
+	<!-- External music sources: a props file (outside this repo) may add ProjectReferences and a Compile item that
+	     implements ServiceCollectionExtensions.AddExternalMusicSources. Override the path with -p:WiredPluginsProps=... -->
+	<PropertyGroup>
+		<WiredPluginsProps Condition="'$(WiredPluginsProps)' == ''">$(MSBuildThisFileDirectory)../../../Wired.Plugins.props</WiredPluginsProps>
+	</PropertyGroup>
+	<Import Project="$(WiredPluginsProps)" Condition="Exists('$(WiredPluginsProps)')" />
+
+</Project>

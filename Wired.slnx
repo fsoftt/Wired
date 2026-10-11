@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Wired.App/Wired.App.csproj" />
+    <Project Path="src/Wired.Core/Wired.Core.csproj" />
+    <Project Path="src/Wired.Infrastructure/Wired.Infrastructure.csproj" />
+    <Project Path="src/Wired.Presentation/Wired.Presentation.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Wired.Tests/Wired.Tests.csproj" />
+  </Folder>
+</Solution>

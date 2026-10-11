@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wired.App.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Wired.App.Controls"
+    xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
+    x:DataType="vm:HomeViewModel"
+    Title="Inicio">
+
+    <ContentPage.Resources>
+        <!-- Sizes derived from the page width; HomePage.xaml.cs updates them when the window changes -->
+        <x:Double x:Key="CardWidth">160</x:Double>
+        <x:Double x:Key="ColumnWidth">320</x:Double>
+
+        <LinearGradientBrush x:Key="CoverScrim" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#00000000" Offset="0.45" />
+            <GradientStop Color="#B3000000" Offset="1" />
+        </LinearGradientBrush>
+
+        <Style x:Key="HomeSectionTitle" TargetType="Label" BasedOn="{StaticResource SectionTitle}">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
+            <Setter Property="TextTransform" Value="None" />
+            <Setter Property="CharacterSpacing" Value="0" />
+        </Style>
+
+        <!-- Large trending card: square cover with the rank, then title and artist. Tap plays, long press opens the menu. -->
+        <DataTemplate x:Key="TrendingCard" x:DataType="vm:SearchResultViewModel">
+            <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" WidthRequest="{DynamicResource CardWidth}" BackgroundColor="Transparent">
+                <VerticalStackLayout Spacing="8">
+                    <Grid WidthRequest="{DynamicResource CardWidth}" HeightRequest="{DynamicResource CardWidth}">
+                        <!-- Some thumbnails carry black bars; zoom in and clip to crop them -->
+                        <Border StrokeThickness="0" StrokeShape="RoundRectangle 18" Background="{StaticResource SurfaceBrush}">
+                            <controls:Artwork Source="{Binding ThumbnailUrl}" CornerRadius="0" Scale="1.4" />
+                        </Border>
+                        <Border StrokeThickness="0" StrokeShape="RoundRectangle 18" Background="{StaticResource CoverScrim}" InputTransparent="True" />
+                        <Label
+                            Text="{Binding Rank}"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="46"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            Margin="12,0,0,2"
+                            HorizontalOptions="Start"
+                            VerticalOptions="End"
+                            InputTransparent="True">
+                            <Label.Shadow>
+                                <Shadow Brush="{StaticResource Primary}" Offset="0,0" Radius="14" Opacity="0.95" />
+                            </Label.Shadow>
+                        </Label>
+                        <Border
+                            IsVisible="{Binding IsDownloaded}"
+                            WidthRequest="26"
+                            HeightRequest="26"
+                            Margin="8"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 13"
+                            BackgroundColor="#CC0B0B14"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            InputTransparent="True">
+                            <Image Source="ic_check.png" WidthRequest="16" HeightRequest="16" />
+                        </Border>
+                        <ProgressBar IsVisible="{Binding IsDownloading}" Progress="{Binding Progress}" HeightRequest="3" VerticalOptions="End" Margin="10,0,10,6" />
+                    </Grid>
+                    <Label Text="{Binding Title}" Style="{StaticResource TrackTitle}" FontSize="14">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsCurrent}" Value="True">
+                                <Setter Property="TextColor" Value="{StaticResource Accent}" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Text="{Binding Artist}" Style="{StaticResource Caption}" Margin="0,-6,0,0" />
+                </VerticalStackLayout>
+            </controls:Pressable>
+        </DataTemplate>
+
+        <!-- Compact "quick pick" row, same download-state visuals as the search rows -->
+        <DataTemplate x:Key="QuickPickRow" x:DataType="vm:SearchResultViewModel">
+            <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" WidthRequest="{DynamicResource ColumnWidth}" BackgroundColor="Transparent">
+                <Grid HeightRequest="64" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="0,4">
+                    <Border WidthRequest="56" HeightRequest="56" StrokeThickness="0" StrokeShape="RoundRectangle 12" Background="{StaticResource SurfaceBrush}">
+                        <controls:Artwork Source="{Binding ThumbnailUrl}" CornerRadius="0" Scale="1.4" />
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="{Binding Title}" Style="{StaticResource TrackTitle}" MaxLines="1" FontSize="14">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsCurrent}" Value="True">
+                                    <Setter Property="TextColor" Value="{StaticResource Accent}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label Text="{Binding Artist}" Style="{StaticResource Caption}" />
+                        <ProgressBar IsVisible="{Binding IsDownloading}" Progress="{Binding Progress}" HeightRequest="3" />
+                        <Label IsVisible="{Binding IsQueued}" Text="En cola…" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" />
+                    </VerticalStackLayout>
+
+                    <Grid Grid.Column="2" VerticalOptions="Center">
+                        <ImageButton
+                            IsVisible="{Binding CanDownload}"
+                            Source="ic_download.png"
+                            WidthRequest="36"
+                            HeightRequest="36"
+                            Background="{StaticResource BrandGradient}"
+                            Command="{Binding DownloadCommand}" />
+                        <ImageButton
+                            IsVisible="{Binding IsPending}"
+                            Source="ic_close.png"
+                            WidthRequest="36"
+                            HeightRequest="36"
+                            BorderColor="{StaticResource Accent}"
+                            BorderWidth="1.5"
+                            Command="{Binding CancelDownloadCommand}" />
+                        <Border
+                            IsVisible="{Binding IsDownloaded}"
+                            WidthRequest="36"
+                            HeightRequest="36"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 18"
+                            BackgroundColor="#2234D399">
+                            <Image Source="ic_check.png" WidthRequest="20" HeightRequest="20" />
+                        </Border>
+                    </Grid>
+                </Grid>
+            </controls:Pressable>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- Decorative neon glow behind the header -->
+        <Ellipse
+            Fill="{StaticResource GlowBrush}"
+            WidthRequest="420"
+            HeightRequest="420"
+            Margin="0,-220,-160,0"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <ScrollView>
+                <VerticalStackLayout Spacing="8">
+
+                    <!-- Header -->
+                    <VerticalStackLayout Padding="20,28,20,8" Spacing="4">
+                        <Label Text="Inicio" Style="{StaticResource DisplayTitle}" />
+                        <Label Text="Lo que suena ahora y música para ti" Style="{StaticResource Caption}" />
+                        <Label IsVisible="{Binding HasNotice}" Text="{Binding Notice}" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" Margin="0,6,0,0" />
+                    </VerticalStackLayout>
+
+                    <!-- Tendencias -->
+                    <VerticalStackLayout Padding="20,16,20,4" Spacing="2">
+                        <Label Text="Tendencias" Style="{StaticResource HomeSectionTitle}" />
+                        <Label Text="{Binding TrendingSubtitle}" Style="{StaticResource Caption}" />
+                    </VerticalStackLayout>
+
+                    <!-- Skeleton while nothing is cached -->
+                    <HorizontalStackLayout x:Name="TrendingSkeleton" IsVisible="{Binding IsTrendingLoading}" Spacing="14" Padding="20,4,0,0" HeightRequest="230">
+                        <VerticalStackLayout Spacing="8" WidthRequest="{DynamicResource CardWidth}">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" StrokeShape="RoundRectangle 18" WidthRequest="{DynamicResource CardWidth}" HeightRequest="{DynamicResource CardWidth}" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="12" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="10" WidthRequest="80" HorizontalOptions="Start" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="8" WidthRequest="{DynamicResource CardWidth}">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" StrokeShape="RoundRectangle 18" WidthRequest="{DynamicResource CardWidth}" HeightRequest="{DynamicResource CardWidth}" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="12" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="10" WidthRequest="80" HorizontalOptions="Start" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="8" WidthRequest="{DynamicResource CardWidth}">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" StrokeShape="RoundRectangle 18" WidthRequest="{DynamicResource CardWidth}" HeightRequest="{DynamicResource CardWidth}" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="12" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="10" WidthRequest="80" HorizontalOptions="Start" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout IsVisible="{Binding HasNoTrending}" Padding="40,24">
+                        <Label Text="{Binding TrendingEmptyText}" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout IsVisible="{Binding HasTrendingError}" Spacing="12" Padding="40,24">
+                        <Image Source="ic_error.png" WidthRequest="40" HeightRequest="40" Opacity="0.8" />
+                        <Label Text="{Binding TrendingErrorMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
+                        <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryTrendingCommand}" />
+                    </VerticalStackLayout>
+
+                    <CollectionView
+                        x:Name="TrendingList"
+                        IsVisible="{Binding HasTrending}"
+                        ItemsSource="{Binding Trending}"
+                        ItemTemplate="{StaticResource TrendingCard}"
+                        SelectionMode="None"
+                        HeightRequest="230"
+                        HorizontalScrollBarVisibility="Never">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="14" SnapPointsType="Mandatory" SnapPointsAlignment="Start" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Header>
+                            <BoxView WidthRequest="6" Color="Transparent" />
+                        </CollectionView.Header>
+                        <CollectionView.Footer>
+                            <BoxView WidthRequest="6" Color="Transparent" />
+                        </CollectionView.Footer>
+                    </CollectionView>
+
+                    <!-- Top Colombia -->
+                    <VerticalStackLayout Padding="20,16,20,4" Spacing="2">
+                        <Label Text="Top Colombia" Style="{StaticResource HomeSectionTitle}" />
+                        <Label Text="{Binding TrendingColombiaSubtitle}" Style="{StaticResource Caption}" />
+                    </VerticalStackLayout>
+
+                    <!-- Skeleton while nothing is cached -->
+                    <HorizontalStackLayout x:Name="TrendingColombiaSkeleton" IsVisible="{Binding IsTrendingColombiaLoading}" Spacing="14" Padding="20,4,0,0" HeightRequest="230">
+                        <VerticalStackLayout Spacing="8" WidthRequest="{DynamicResource CardWidth}">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" StrokeShape="RoundRectangle 18" WidthRequest="{DynamicResource CardWidth}" HeightRequest="{DynamicResource CardWidth}" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="12" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="10" WidthRequest="80" HorizontalOptions="Start" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="8" WidthRequest="{DynamicResource CardWidth}">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" StrokeShape="RoundRectangle 18" WidthRequest="{DynamicResource CardWidth}" HeightRequest="{DynamicResource CardWidth}" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="12" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="10" WidthRequest="80" HorizontalOptions="Start" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="8" WidthRequest="{DynamicResource CardWidth}">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" StrokeShape="RoundRectangle 18" WidthRequest="{DynamicResource CardWidth}" HeightRequest="{DynamicResource CardWidth}" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="12" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" HeightRequest="10" WidthRequest="80" HorizontalOptions="Start" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout IsVisible="{Binding HasNoTrendingColombia}" Padding="40,24">
+                        <Label Text="{Binding TrendingColombiaEmptyText}" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout IsVisible="{Binding HasTrendingColombiaError}" Spacing="12" Padding="40,24">
+                        <Image Source="ic_error.png" WidthRequest="40" HeightRequest="40" Opacity="0.8" />
+                        <Label Text="{Binding TrendingColombiaErrorMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
+                        <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryTrendingColombiaCommand}" />
+                    </VerticalStackLayout>
+
+                    <CollectionView
+                        x:Name="TrendingColombiaList"
+                        IsVisible="{Binding HasTrendingColombia}"
+                        ItemsSource="{Binding TrendingColombia}"
+                        ItemTemplate="{StaticResource TrendingCard}"
+                        SelectionMode="None"
+                        HeightRequest="230"
+                        HorizontalScrollBarVisibility="Never">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="14" SnapPointsType="Mandatory" SnapPointsAlignment="Start" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Header>
+                            <BoxView WidthRequest="6" Color="Transparent" />
+                        </CollectionView.Header>
+                        <CollectionView.Footer>
+                            <BoxView WidthRequest="6" Color="Transparent" />
+                        </CollectionView.Footer>
+                    </CollectionView>
+
+                    <!-- Para ti -->
+                    <VerticalStackLayout Padding="20,20,20,4" Spacing="2">
+                        <Label Text="Para ti" Style="{StaticResource HomeSectionTitle}" />
+                        <Label Text="Según lo que te gusta" Style="{StaticResource Caption}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout x:Name="ForYouSkeleton" IsVisible="{Binding IsForYouLoading}" Spacing="0" Padding="20,4,0,0" HorizontalOptions="Start" WidthRequest="{DynamicResource ColumnWidth}">
+                        <HorizontalStackLayout Spacing="12" HeightRequest="64">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" WidthRequest="56" HeightRequest="56" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" WidthRequest="160" HeightRequest="12" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="12" HeightRequest="64">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" WidthRequest="56" HeightRequest="56" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" WidthRequest="130" HeightRequest="12" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="12" HeightRequest="64">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" WidthRequest="56" HeightRequest="56" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" WidthRequest="170" HeightRequest="12" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="12" HeightRequest="64">
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" WidthRequest="56" HeightRequest="56" />
+                            <Border Style="{StaticResource Artwork}" Background="{StaticResource SurfaceBrush}" WidthRequest="110" HeightRequest="12" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout IsVisible="{Binding HasNoForYou}" Spacing="8" Padding="40,24">
+                        <Label Text="Aún no hay recomendaciones" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding ForYouEmptyText}" Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout IsVisible="{Binding HasForYouError}" Spacing="12" Padding="40,24">
+                        <Image Source="ic_error.png" WidthRequest="40" HeightRequest="40" Opacity="0.8" />
+                        <Label Text="{Binding ForYouErrorMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
+                        <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryForYouCommand}" />
+                    </VerticalStackLayout>
+
+                    <CollectionView
+                        x:Name="ForYouList"
+                        IsVisible="{Binding HasForYou}"
+                        ItemsSource="{Binding ForYou}"
+                        ItemTemplate="{StaticResource QuickPickRow}"
+                        SelectionMode="None"
+                        HeightRequest="264"
+                        HorizontalScrollBarVisibility="Never">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Horizontal" Span="4" HorizontalItemSpacing="16" VerticalItemSpacing="0" SnapPointsType="Mandatory" SnapPointsAlignment="Start" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Header>
+                            <BoxView WidthRequest="6" Color="Transparent" />
+                        </CollectionView.Header>
+                        <CollectionView.Footer>
+                            <BoxView WidthRequest="6" Color="Transparent" />
+                        </CollectionView.Footer>
+                    </CollectionView>
+
+                    <BoxView HeightRequest="12" Color="Transparent" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+
+        <controls:MiniPlayerView x:Name="MiniPlayer" Grid.Row="1" />
+    </Grid>
+
+</ContentPage>

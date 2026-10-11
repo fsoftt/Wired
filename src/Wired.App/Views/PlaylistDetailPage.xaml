@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wired.App.Views.PlaylistDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Wired.App.Controls"
+    xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
+    x:DataType="vm:PlaylistDetailViewModel"
+    Shell.TabBarIsVisible="False">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <Ellipse
+            Fill="{StaticResource GlowBrush}"
+            WidthRequest="460"
+            HeightRequest="460"
+            Margin="0,-200,-140,0"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            InputTransparent="True" />
+
+        <CollectionView ItemsSource="{Binding Tracks}">
+            <CollectionView.Header>
+                <VerticalStackLayout Padding="12,12,20,8" Spacing="16">
+                    <!-- Top bar -->
+                    <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                        <ImageButton Source="ic_back.png" Clicked="OnBackClicked" />
+                        <ImageButton Grid.Column="2" Source="ic_edit.png" IsVisible="{Binding IsPlaylist}" Command="{Binding RenameCommand}" />
+                        <ImageButton Grid.Column="3" Source="ic_delete.png" IsVisible="{Binding IsPlaylist}" Command="{Binding DeleteCommand}" />
+                    </Grid>
+
+                    <!-- Cover + title -->
+                    <Grid Padding="8,0,0,0" ColumnDefinitions="Auto,*" ColumnSpacing="18">
+                        <Border WidthRequest="112" HeightRequest="112" StrokeThickness="0" StrokeShape="RoundRectangle 24" Background="{StaticResource BrandGradient}">
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource PrimaryBrush}" Opacity="0.5" Radius="40" Offset="0,12" />
+                            </Border.Shadow>
+                            <Grid>
+                                <Image Source="ic_heart_white.png" WidthRequest="52" HeightRequest="52" IsVisible="{Binding IsLikedCollection}" />
+                                <Image Source="ic_playlist.png" WidthRequest="52" HeightRequest="52" IsVisible="{Binding IsPlaylist}" />
+                            </Grid>
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
+                            <Label Text="{Binding Title}" Style="{StaticResource DisplayTitle}" FontSize="26" MaxLines="2" LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding Summary}" Style="{StaticResource Caption}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <HorizontalStackLayout IsVisible="{Binding HasTracks}" Padding="8,0,0,0" Spacing="12">
+                        <Button Text="Reproducir" ImageSource="ic_play_small.png" Style="{StaticResource PrimaryPill}" Command="{Binding PlayAllCommand}" />
+                        <Button Text="Aleatorio" ImageSource="ic_shuffle_small.png" Style="{StaticResource SecondaryPill}" Command="{Binding ShuffleCommand}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </CollectionView.Header>
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Spacing="8" Padding="40,32">
+                    <Label Text="Nada por aquí todavía" FontFamily="OpenSansSemibold" FontSize="17" HorizontalTextAlignment="Center" />
+                    <Label Text="{Binding EmptyMessage}" Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.Footer>
+                <BoxView HeightRequest="12" Color="Transparent" />
+            </CollectionView.Footer>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:TrackItemViewModel">
+                    <SwipeView BackgroundColor="Transparent">
+                        <SwipeView.LeftItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" BackgroundColor="{StaticResource Background}">
+                            <Grid Padding="20,8,12,8" ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+
+                                <controls:Artwork Source="{Binding ThumbnailUrl}" WidthRequest="56" HeightRequest="56" />
+
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                                    <Label Text="{Binding Title}" Style="{StaticResource TrackTitle}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsCurrent}" Value="True">
+                                                <Setter Property="TextColor" Value="{StaticResource Accent}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Style="{StaticResource Caption}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Artist}" />
+                                                <Span Text="  ·  " />
+                                                <Span Text="{Binding DurationText}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+
+                                <controls:LikeButton Grid.Column="2" IsLiked="{Binding IsLiked}" Command="{Binding ToggleLikeCommand}" />
+                                <!-- In "Me gusta" the heart already removes; in playlists this removes from the list only. -->
+                                <ImageButton Grid.Column="3" Source="ic_close.png" Opacity="0.5" Command="{Binding RemoveCommand}" />
+                            </Grid>
+                        </controls:Pressable>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <controls:MiniPlayerView x:Name="MiniPlayer" Grid.Row="1" />
+    </Grid>
+
+</ContentPage>

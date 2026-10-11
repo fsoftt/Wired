@@ -1,0 +1,56 @@
+name: Android APK
+
+on:
+  push:
+    branches: [release]
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: microsoft
+          java-version: 21
+
+      - name: Install MAUI Android workload
+        run: dotnet workload install maui-android
+
+      - name: Install Android dependencies
+        run: >
+          dotnet build src/Wired.App/Wired.App.csproj -t:InstallAndroidDependencies -f net10.0-android
+          -p:AndroidSdkDirectory="$ANDROID_HOME" -p:AcceptAndroidSDKLicenses=True
+
+      - name: Publish APK
+        run: >
+          dotnet publish src/Wired.App/Wired.App.csproj -f net10.0-android -c Release
+          -p:AndroidSdkDirectory="$ANDROID_HOME" -p:AndroidPackageFormat=apk
+          -o artifacts/android
+
+      # Fails fast when the APK is not signed with the committed keystore: it could not be
+      # installed over earlier builds.
+      - name: Verify APK is signed with the committed debug keystore
+        run: |
+          KEYSTORE_FINGERPRINT=$(keytool -list -v -keystore src/Wired.App/debug.keystore -storepass android -alias androiddebugkey \
+            | grep 'SHA256:' | head -1 | sed 's/.*SHA256: //')
+          APK_FINGERPRINT=$(keytool -printcert -jarfile artifacts/android/*-Signed.apk \
+            | grep 'SHA256:' | head -1 | sed 's/.*SHA256: //')
+          echo "debug.keystore fingerprint: $KEYSTORE_FINGERPRINT"
+          echo "Built APK fingerprint:      $APK_FINGERPRINT"
+          if [ "$KEYSTORE_FINGERPRINT" != "$APK_FINGERPRINT" ]; then
+            echo "::error::APK was not signed with src/Wired.App/debug.keystore."
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wired-android-apk
+          path: artifacts/android/*-Signed.apk
+          if-no-files-found: error

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Surfaces -->
+    <Color x:Key="Background">#0B0B14</Color>
+    <Color x:Key="Surface">#151522</Color>
+    <Color x:Key="SurfaceRaised">#1E1E2E</Color>
+    <Color x:Key="Outline">#2A2A3C</Color>
+
+    <!-- Brand -->
+    <Color x:Key="Primary">#8B5CF6</Color>
+    <Color x:Key="Accent">#EC4899</Color>
+    <Color x:Key="Highlight">#22D3EE</Color>
+    <Color x:Key="Danger">#F43F5E</Color>
+    <Color x:Key="Success">#34D399</Color>
+
+    <!-- Text -->
+    <Color x:Key="TextPrimary">#F5F5FA</Color>
+    <Color x:Key="TextSecondary">#9CA3AF</Color>
+    <Color x:Key="TextMuted">#6B7280</Color>
+
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource Background}" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource Surface}" />
+    <SolidColorBrush x:Key="SurfaceRaisedBrush" Color="{StaticResource SurfaceRaised}" />
+    <SolidColorBrush x:Key="OutlineBrush" Color="{StaticResource Outline}" />
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
+
+    <LinearGradientBrush x:Key="BrandGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource Primary}" Offset="0" />
+        <GradientStop Color="{StaticResource Accent}" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="NeonGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Primary}" Offset="0" />
+        <GradientStop Color="{StaticResource Accent}" Offset="0.6" />
+        <GradientStop Color="{StaticResource Highlight}" Offset="1" />
+    </LinearGradientBrush>
+
+    <!-- Fades artwork into the page background on the "Now playing" screen. -->
+    <LinearGradientBrush x:Key="ArtworkFade" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#660B0B14" Offset="0" />
+        <GradientStop Color="#E60B0B14" Offset="0.55" />
+        <GradientStop Color="{StaticResource Background}" Offset="1" />
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="GlowBrush" Center="0.5,0.5" Radius="0.5">
+        <GradientStop Color="#668B5CF6" Offset="0" />
+        <GradientStop Color="#00EC4899" Offset="1" />
+    </RadialGradientBrush>
+
+</ResourceDictionary>

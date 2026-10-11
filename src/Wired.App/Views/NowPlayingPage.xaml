@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Wired.App.Views.NowPlayingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Wired.App.Controls"
+    xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
+    x:DataType="vm:PlayerViewModel"
+    Shell.PresentationMode="ModalAnimated"
+    Shell.TabBarIsVisible="False">
+
+    <Grid>
+        <!-- Ambient background: the cover art, faded into the page color -->
+        <Image Source="{Binding ThumbnailUrl}" Aspect="AspectFill" Opacity="0.55" />
+        <BoxView Background="{StaticResource ArtworkFade}" />
+
+        <Grid Padding="24,16,24,32" RowDefinitions="Auto,*,Auto,Auto,Auto" RowSpacing="20">
+
+            <!-- Top bar -->
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                <ImageButton Source="ic_chevron_down.png" Command="{Binding CloseNowPlayingCommand}" />
+                <Label
+                    Grid.Column="1"
+                    Text="REPRODUCIENDO AHORA"
+                    Style="{StaticResource SectionTitle}"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center" />
+                <Grid Grid.Column="2">
+                    <ImageButton Source="ic_lyrics.png" IsVisible="{Binding Lyrics.IsOpen, Converter={StaticResource InvertedBool}}" Command="{Binding Lyrics.ToggleCommand}" />
+                    <ImageButton Source="ic_lyrics_on.png" IsVisible="{Binding Lyrics.IsOpen}" Command="{Binding Lyrics.ToggleCommand}" />
+                </Grid>
+                <ImageButton Grid.Column="3" Source="ic_queue.png" Command="{Binding OpenQueueCommand}" SemanticProperties.Description="A continuación" />
+                <Grid Grid.Column="4">
+                    <ImageButton Source="ic_timer.png" IsVisible="{Binding IsSleepTimerActive, Converter={StaticResource InvertedBool}}" Command="{Binding SetSleepTimerCommand}" SemanticProperties.Description="Temporizador para dormir" />
+                    <ImageButton Source="ic_timer_on.png" IsVisible="{Binding IsSleepTimerActive}" Command="{Binding SetSleepTimerCommand}" SemanticProperties.Description="Temporizador para dormir" />
+                </Grid>
+            </Grid>
+
+            <!-- Time left of the sleep timer -->
+            <Label
+                Grid.Row="1"
+                Text="{Binding SleepTimerText}"
+                IsVisible="{Binding IsSleepTimerActive}"
+                TextColor="{StaticResource Accent}"
+                FontSize="13"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"
+                ZIndex="1" />
+
+            <!-- Cover art, or the lyrics when the panel is open -->
+            <Grid Grid.Row="1">
+                <controls:Artwork
+                    Source="{Binding ThumbnailUrl}"
+                    IsVisible="{Binding Lyrics.IsOpen, Converter={StaticResource InvertedBool}}"
+                    CornerRadius="28"
+                    MaximumWidthRequest="340"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    SizeChanged="OnArtworkSizeChanged">
+                    <controls:Artwork.Shadow>
+                        <Shadow Brush="{StaticResource PrimaryBrush}" Opacity="0.6" Radius="60" Offset="0,20" />
+                    </controls:Artwork.Shadow>
+                </controls:Artwork>
+
+                <!-- The wrapper switches the binding context; the inner grid declares the new data type.
+                     Bindings must live on the inner grid: the wrapper's own bindings already see the new context. -->
+                <ContentView BindingContext="{Binding Lyrics}">
+                    <Grid x:DataType="vm:LyricsViewModel" IsVisible="{Binding IsOpen}" RowDefinitions="*,Auto">
+
+                        <CollectionView x:Name="LyricsList" IsVisible="{Binding IsSynced}" ItemsSource="{Binding Lines}" VerticalScrollBarVisibility="Never">
+                            <CollectionView.Header>
+                                <BoxView HeightRequest="140" Color="Transparent" />
+                            </CollectionView.Header>
+                            <CollectionView.Footer>
+                                <BoxView HeightRequest="200" Color="Transparent" />
+                            </CollectionView.Footer>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="vm:LyricLineViewModel">
+                                    <Label Text="{Binding Text}" Style="{StaticResource LyricLine}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SeekCommand}" />
+                                        </Label.GestureRecognizers>
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsActive}" Value="True">
+                                                <Setter Property="TextColor" Value="White" />
+                                                <Setter Property="FontSize" Value="26" />
+                                                <Setter Property="Opacity" Value="1" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <ScrollView IsVisible="{Binding IsPlain}">
+                            <Label Text="{Binding PlainText}" FontSize="18" LineHeight="1.4" TextColor="{StaticResource TextSecondary}" Margin="0,8" />
+                        </ScrollView>
+
+                        <VerticalStackLayout IsVisible="{Binding IsLoading}" Spacing="12" VerticalOptions="Center">
+                            <ActivityIndicator IsRunning="{Binding IsLoading}" WidthRequest="40" HeightRequest="40" />
+                            <Label Text="Buscando la letra…" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+
+                        <Label IsVisible="{Binding IsInstrumental}" Text="♪  Instrumental  ♪" FontSize="22" TextColor="{StaticResource TextSecondary}" HorizontalTextAlignment="Center" VerticalOptions="Center" />
+
+                        <VerticalStackLayout IsVisible="{Binding IsNotFound}" Spacing="8" VerticalOptions="Center">
+                            <Label Text="No encontramos la letra" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                            <Label Text="Puede que aún no esté en LRCLIB." Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout IsVisible="{Binding HasError}" Spacing="12" VerticalOptions="Center">
+                            <Label Text="No se pudo cargar la letra" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                            <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryCommand}" />
+                        </VerticalStackLayout>
+
+                        <!-- Sync correction: Video sources often have intros the lyrics don't expect -->
+                        <HorizontalStackLayout Grid.Row="1" IsVisible="{Binding IsSynced}" HorizontalOptions="Center" Spacing="6">
+                            <Button Text="−0,5 s" Style="{StaticResource SecondaryPill}" HeightRequest="34" Padding="12,0" FontSize="13" Command="{Binding DelayCommand}" />
+                            <Label Text="{Binding OffsetText}" Style="{StaticResource Caption}" VerticalOptions="Center" MinimumWidthRequest="96" HorizontalTextAlignment="Center" />
+                            <Button Text="+0,5 s" Style="{StaticResource SecondaryPill}" HeightRequest="34" Padding="12,0" FontSize="13" Command="{Binding AdvanceCommand}" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                </ContentView>
+            </Grid>
+
+            <!-- Title + collection actions -->
+            <Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4">
+                <VerticalStackLayout Spacing="6" VerticalOptions="Center">
+                    <Label Text="{Binding Title}" FontFamily="OpenSansSemibold" FontSize="22" MaxLines="2" LineBreakMode="TailTruncation" />
+                        <Label Text="{Binding Artist}" Style="{StaticResource Caption}" FontSize="15" />
+                    <Border IsVisible="{Binding IsStream}" HorizontalOptions="Start" Padding="10,3" Margin="0,4,0,0" StrokeThickness="1" Stroke="{StaticResource Highlight}" StrokeShape="RoundRectangle 10">
+                        <Label Text="STREAMING" FontSize="10" CharacterSpacing="1.5" TextColor="{StaticResource Highlight}" FontFamily="OpenSansSemibold" />
+                    </Border>
+                </VerticalStackLayout>
+                <!-- Downloaded track: playlist + like. Streamed track: download. -->
+                <ImageButton Grid.Column="1" Source="ic_playlist_add.png" VerticalOptions="Center" IsVisible="{Binding IsLocal}" Command="{Binding AddToPlaylistCommand}" />
+                <controls:LikeButton Grid.Column="2" VerticalOptions="Center" IsVisible="{Binding IsLocal}" IsLiked="{Binding IsLiked}" Command="{Binding ToggleLikeCommand}" />
+                <ImageButton Grid.Column="2" Source="ic_download.png" VerticalOptions="Center" IsVisible="{Binding IsStream}" Background="{StaticResource BrandGradient}" Command="{Binding DownloadCommand}" />
+            </Grid>
+
+            <!-- Timeline -->
+            <Grid Grid.Row="3" RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
+                <Slider
+                    Grid.ColumnSpan="2"
+                    Minimum="0"
+                    Maximum="{Binding SeekMaximum}"
+                    Value="{Binding PositionSeconds}"
+                    DragStartedCommand="{Binding BeginSeekCommand}"
+                    DragCompletedCommand="{Binding EndSeekCommand}" />
+                <Label Grid.Row="1" Text="{Binding PositionText}" Style="{StaticResource Caption}" />
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding DurationText}" Style="{StaticResource Caption}" HorizontalTextAlignment="End" />
+            </Grid>
+
+            <!-- Transport controls -->
+            <Grid Grid.Row="4" ColumnDefinitions="Auto,*,Auto">
+                <!-- Shuffle -->
+                <Grid VerticalOptions="Center">
+                    <ImageButton Source="ic_shuffle.png" Opacity="0.6" IsVisible="{Binding IsShuffleEnabled, Converter={StaticResource InvertedBool}}" Command="{Binding ToggleShuffleCommand}" />
+                    <ImageButton Source="ic_shuffle_on.png" IsVisible="{Binding IsShuffleEnabled}" Command="{Binding ToggleShuffleCommand}" />
+                </Grid>
+
+            <HorizontalStackLayout Grid.Column="1" Spacing="20" HorizontalOptions="Center">
+                <ImageButton Source="ic_previous.png" WidthRequest="56" HeightRequest="56" CornerRadius="28" Padding="12" VerticalOptions="Center" Command="{Binding PreviousCommand}" />
+
+                <Grid WidthRequest="80" HeightRequest="80">
+                    <Grid.Shadow>
+                        <Shadow Brush="{StaticResource PrimaryBrush}" Opacity="0.7" Radius="30" Offset="0,8" />
+                    </Grid.Shadow>
+                    <ImageButton
+                        Source="ic_play.png"
+                        IsVisible="{Binding ShowPlay}"
+                        Style="{StaticResource HeroButton}"
+                        Command="{Binding TogglePlayPauseCommand}" />
+                    <ImageButton
+                        Source="ic_pause.png"
+                        IsVisible="{Binding ShowPause}"
+                        Style="{StaticResource HeroButton}"
+                        Command="{Binding TogglePlayPauseCommand}" />
+                    <Border IsVisible="{Binding IsLoading}" StrokeThickness="0" StrokeShape="RoundRectangle 40" Background="{StaticResource BrandGradient}">
+                        <ActivityIndicator IsRunning="{Binding IsLoading}" Color="White" WidthRequest="36" HeightRequest="36" />
+                    </Border>
+                </Grid>
+
+                <ImageButton Source="ic_next.png" WidthRequest="56" HeightRequest="56" CornerRadius="28" Padding="12" VerticalOptions="Center" Command="{Binding NextCommand}" />
+            </HorizontalStackLayout>
+
+                <!-- Repeat: off → all → one -->
+                <Grid Grid.Column="2" VerticalOptions="Center">
+                    <ImageButton Source="ic_repeat.png" Opacity="0.6" IsVisible="{Binding IsRepeatOff}" Command="{Binding CycleRepeatCommand}" />
+                    <ImageButton Source="ic_repeat_on.png" IsVisible="{Binding IsRepeatAll}" Command="{Binding CycleRepeatCommand}" />
+                    <ImageButton Source="ic_repeat_one_on.png" IsVisible="{Binding IsRepeatOne}" Command="{Binding CycleRepeatCommand}" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</ContentPage>
