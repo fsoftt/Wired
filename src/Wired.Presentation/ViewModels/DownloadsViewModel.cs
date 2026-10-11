@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Downloads;
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 using Wired.Presentation.Services;
 
@@ -11,7 +12,7 @@ namespace Wired.Presentation.ViewModels;
 /// The download queue screen. Also notifies the user when a download fails,
 /// so it is created at startup.
 /// </summary>
-public sealed partial class DownloadsViewModel : ObservableObject
+public sealed partial class DownloadsViewModel : LocalizedObservableObject
 {
     private readonly IDownloadQueue _downloads;
     private readonly IDialogService _dialogs;
@@ -51,10 +52,9 @@ public sealed partial class DownloadsViewModel : ObservableObject
 
     public string Summary => ActiveCount switch
     {
-        0 when Jobs.Count == 0 => "Nada por aquí todavía",
-        0 => "Todo descargado",
-        1 => "1 descarga en curso",
-        var count => $"{count} descargas en curso",
+        0 when Jobs.Count == 0 => L.T("Common_NothingYet"),
+        0 => L.T("Downloads_AllDone"),
+        var count => L.N("DownloadsActive", count),
     };
 
     [RelayCommand]
@@ -89,7 +89,7 @@ public sealed partial class DownloadsViewModel : ObservableObject
                 break;
             case DownloadJobChange.Updated when item is not null:
                 if (item.Refresh() && e.Job.Status == DownloadStatus.Failed)
-                    _ = _dialogs.ShowToastAsync($"No se pudo descargar \"{item.Title}\". Revisa la pestaña Descargas.");
+                    _ = _dialogs.ShowToastAsync(L.T("Download_FailedToast", item.Title));
                 break;
         }
 

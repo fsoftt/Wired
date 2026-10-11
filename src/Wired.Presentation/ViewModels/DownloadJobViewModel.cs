@@ -1,6 +1,8 @@
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Downloads;
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 using Wired.Presentation.Formatting;
 using Wired.Presentation.Services;
@@ -12,7 +14,7 @@ public sealed partial class DownloadJobViewModel(
     IDownloadQueue downloads,
     IDialogService dialogs,
     TrackCollectionActions actions,
-    Func<DownloadJobViewModel, Task> play) : ObservableObject
+    Func<DownloadJobViewModel, Task> play) : LocalizedObservableObject
 {
     private DownloadStatus _lastSeenStatus = job.Status;
 
@@ -38,11 +40,11 @@ public sealed partial class DownloadJobViewModel(
 
     public string StatusText => Job.Status switch
     {
-        DownloadStatus.Queued => "En cola",
-        DownloadStatus.Downloading => $"Descargando · {Job.Progress:P0}",
-        DownloadStatus.Completed => "Completada",
-        DownloadStatus.Failed => $"Error: {Job.Error} · Mantén presionado para ver detalles",
-        DownloadStatus.Canceled => "Cancelada",
+        DownloadStatus.Queued => L.T("Download_Queued"),
+        DownloadStatus.Downloading => L.T("Download_Progress", Job.Progress.ToString("P0", CultureInfo.CurrentCulture)),
+        DownloadStatus.Completed => L.T("Download_Completed"),
+        DownloadStatus.Failed => L.T("Download_Failed", Job.Error),
+        DownloadStatus.Canceled => L.T("Download_Canceled"),
         _ => string.Empty,
     };
 
@@ -73,15 +75,15 @@ public sealed partial class DownloadJobViewModel(
         var item = ToPlaybackItem();
         List<MenuOption> options =
         [
-            new("Reproducir a continuación", () => actions.Queue.PlayNextAsync(item)),
-            new("Agregar a la cola", () => actions.Queue.AddToQueueAsync(item)),
+            new(L.T("Menu_PlayNext"), () => actions.Queue.PlayNextAsync(item)),
+            new(L.T("Menu_AddToQueue"), () => actions.Queue.AddToQueueAsync(item)),
         ];
         if (IsActive)
-            options.Add(new("Cancelar descarga", () => { Cancel(); return Task.CompletedTask; }));
+            options.Add(new(L.T("Menu_CancelDownload"), () => { Cancel(); return Task.CompletedTask; }));
         if (CanRetry)
-            options.Add(new("Reintentar", () => { Retry(); return Task.CompletedTask; }));
+            options.Add(new(L.T("Common_Retry"), () => { Retry(); return Task.CompletedTask; }));
         if (Job.Failure is not null)
-            options.Add(new("Ver error", ShowErrorAsync));
+            options.Add(new(L.T("Menu_ViewError"), ShowErrorAsync));
 
         return actions.ShowMenuAsync(Title, options);
     }
@@ -92,7 +94,7 @@ public sealed partial class DownloadJobViewModel(
         Job.Failure is null
             ? Task.CompletedTask
             : dialogs.ShowErrorAsync(
-                "No se pudo descargar",
+                L.T("Download_FailedTitle"),
                 $"{Title}\n\n{ErrorFormatter.Describe(Job.Failure)}",
                 $"{Title}\n\n{ErrorFormatter.DescribeForReport(Job.Failure)}");
 

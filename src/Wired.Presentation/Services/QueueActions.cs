@@ -1,3 +1,4 @@
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 
 namespace Wired.Presentation.Services;
@@ -13,7 +14,7 @@ public sealed class QueueActions(IPlaybackService playback, IDialogService dialo
             return;
 
         var index = playback.CurrentIndex + 1;
-        await dialogs.ShowSnackbarAsync($"\"{item.Title}\" sonará a continuación", "Deshacer", () => UndoAsync(item, index));
+        await dialogs.ShowSnackbarAsync(L.T("Queue_PlayNextAdded", item.Title), L.T("Common_Undo"), () => UndoAsync(item, index));
     }
 
     public async Task AddToQueueAsync(PlaybackItem item)
@@ -24,7 +25,7 @@ public sealed class QueueActions(IPlaybackService playback, IDialogService dialo
             return;
 
         var index = playback.Queue.Count - 1;
-        await dialogs.ShowSnackbarAsync($"\"{item.Title}\" agregada a la cola", "Deshacer", () => UndoAsync(item, index));
+        await dialogs.ShowSnackbarAsync(L.T("Queue_Added", item.Title), L.T("Common_Undo"), () => UndoAsync(item, index));
     }
 
     /// <summary>Removes the entry only if it is still where we put it (the queue may have moved on).</summary>

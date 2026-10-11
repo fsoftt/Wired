@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Wired.Core.Abstractions;
 using Wired.Core.Downloads;
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 using Wired.Core.Plugins;
 using Wired.Core.UseCases;
@@ -12,7 +13,7 @@ using Wired.Presentation.Services;
 
 namespace Wired.Presentation.ViewModels;
 
-public sealed partial class SearchViewModel : ObservableObject, IRecipient<TrackRemovedMessage>
+public sealed partial class SearchViewModel : LocalizedObservableObject, IRecipient<TrackRemovedMessage>
 {
     private readonly SearchTracksUseCase _searchTracks;
     private readonly IDownloadQueue _downloads;
@@ -76,8 +77,8 @@ public sealed partial class SearchViewModel : ObservableObject, IRecipient<Track
     public bool ShowIdle => IsIdle && HasSources;
 
     public string SearchPlaceholder => SelectedPlugin is null
-        ? "No hay fuentes de música instaladas"
-        : $"Buscar en {SelectedPlugin.Name}…";
+        ? L.T("Search_NoSources")
+        : L.T("Search_Placeholder", SelectedPlugin.Name);
 
     public bool IsIdle => State == SearchState.Idle;
 
@@ -121,7 +122,7 @@ public sealed partial class SearchViewModel : ObservableObject, IRecipient<Track
         }
         catch (Exception)
         {
-            ErrorMessage = $"No pudimos conectar con {SelectedPlugin.Name}. Revisa tu conexión e inténtalo de nuevo.";
+            ErrorMessage = L.T("Search_ErrorConnect", SelectedPlugin.Name);
             State = SearchState.Error;
         }
     }

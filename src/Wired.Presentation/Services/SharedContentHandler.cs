@@ -1,3 +1,4 @@
+using Wired.Core.Localization;
 using Wired.Core.UseCases;
 
 namespace Wired.Presentation.Services;
@@ -15,16 +16,16 @@ public sealed class SharedContentHandler(
             var track = await downloadSharedLink.ExecuteAsync(sharedText);
             if (track is null)
             {
-                await dialogs.ShowToastAsync("Wired no reconoce ese enlace con las fuentes instaladas.");
+                await dialogs.ShowToastAsync(L.T("Share_Unrecognized"));
                 return;
             }
 
-            await dialogs.ShowToastAsync($"Descargando \"{track.Title}\"");
+            await dialogs.ShowToastAsync(L.T("Download_Starting", track.Title));
             await navigation.OpenDownloadsAsync();
         }
         catch (Exception error)
         {
-            await dialogs.ShowErrorAsync("No se pudo agregar la descarga", error.Message, error.ToString());
+            await dialogs.ShowErrorAsync(L.T("Share_AddFailed"), error.Message, error.ToString());
         }
     }
 }

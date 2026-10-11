@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Tab_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Tab_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Tab_Library" xml:space="preserve"><value>Library</value></data>
+  <data name="Tab_Playlists" xml:space="preserve"><value>Playlists</value></data>
+  <data name="Tab_Downloads" xml:space="preserve"><value>Downloads</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Common_Retry" xml:space="preserve"><value>Retry</value></data>
+  <data name="Common_NotNow" xml:space="preserve"><value>Not now</value></data>
+  <data name="Common_Undo" xml:space="preserve"><value>Undo</value></data>
+  <data name="Common_Create" xml:space="preserve"><value>Create</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Common_Import" xml:space="preserve"><value>Import</value></data>
+  <data name="Common_Allow" xml:space="preserve"><value>Allow</value></data>
+  <data name="Common_Recover" xml:space="preserve"><value>Recover</value></data>
+  <data name="Common_Play" xml:space="preserve"><value>Play</value></data>
+  <data name="Common_Shuffle" xml:space="preserve"><value>Shuffle</value></data>
+  <data name="Common_Error" xml:space="preserve"><value>Error: {0}</value></data>
+  <data name="Common_NothingYet" xml:space="preserve"><value>Nothing here yet</value></data>
+  <data name="Common_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="Common_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Songs_One" xml:space="preserve"><value>1 song</value></data>
+  <data name="Songs_Other" xml:space="preserve"><value>{0} songs</value></data>
+  <data name="Playlists_One" xml:space="preserve"><value>1 playlist</value></data>
+  <data name="Playlists_Other" xml:space="preserve"><value>{0} playlists</value></data>
+  <data name="LikesCount_One" xml:space="preserve"><value>1 like</value></data>
+  <data name="LikesCount_Other" xml:space="preserve"><value>{0} likes</value></data>
+  <data name="Likes_Title" xml:space="preserve"><value>Liked songs</value></data>
+  <data name="Menu_Like" xml:space="preserve"><value>Like</value></data>
+  <data name="Menu_Unlike" xml:space="preserve"><value>Remove from Liked songs</value></data>
+  <data name="Menu_PlayNext" xml:space="preserve"><value>Play next</value></data>
+  <data name="Menu_AddToQueue" xml:space="preserve"><value>Add to queue</value></data>
+  <data name="Menu_AddToPlaylist" xml:space="preserve"><value>Add to a playlist</value></data>
+  <data name="Menu_Download" xml:space="preserve"><value>Download</value></data>
+  <data name="Menu_CancelDownload" xml:space="preserve"><value>Cancel download</value></data>
+  <data name="Menu_ViewError" xml:space="preserve"><value>View error</value></data>
+  <data name="Swipe_AddToQueue" xml:space="preserve"><value>To queue</value></data>
+  <data name="Queue_PlayNextAdded" xml:space="preserve"><value>"{0}" will play next</value></data>
+  <data name="Queue_Added" xml:space="preserve"><value>"{0}" added to the queue</value></data>
+  <data name="Share_Unrecognized" xml:space="preserve"><value>Wired doesn't recognize that link with the installed sources.</value></data>
+  <data name="Share_AddFailed" xml:space="preserve"><value>Couldn't add the download</value></data>
+  <data name="Download_Starting" xml:space="preserve"><value>Downloading "{0}"</value></data>
+  <data name="Playlist_NewOption" xml:space="preserve"><value>＋ New playlist…</value></data>
+  <data name="Playlist_AlreadyIn" xml:space="preserve"><value>Already in "{0}"</value></data>
+  <data name="Playlist_AddedTo" xml:space="preserve"><value>Added to "{0}"</value></data>
+  <data name="Playlist_NewTitle" xml:space="preserve"><value>New playlist</value></data>
+  <data name="Playlist_NewMessage" xml:space="preserve"><value>Give your playlist a name</value></data>
+  <data name="Playlist_RenameTitle" xml:space="preserve"><value>Rename playlist</value></data>
+  <data name="Playlist_RenameMessage" xml:space="preserve"><value>New name</value></data>
+  <data name="Playlist_NameEmpty" xml:space="preserve"><value>The playlist name can't be empty.</value></data>
+  <data name="Playlist_NameTooLong" xml:space="preserve"><value>The name can't be longer than {0} characters.</value></data>
+  <data name="Detail_EmptyLiked" xml:space="preserve"><value>Tap the heart on a song to save it here.</value></data>
+  <data name="Detail_EmptyPlaylist" xml:space="preserve"><value>Add songs from your library or the player.</value></data>
+  <data name="Detail_RemoveFromPlaylist" xml:space="preserve"><value>Remove from this playlist</value></data>
+  <data name="Detail_DeleteTitle" xml:space="preserve"><value>Delete playlist</value></data>
+  <data name="Detail_DeleteMessage" xml:space="preserve"><value>Delete the playlist "{0}"? The songs will stay in your library.</value></data>
+  <data name="Download_Queued" xml:space="preserve"><value>Queued</value></data>
+  <data name="Download_Progress" xml:space="preserve"><value>Downloading · {0}</value></data>
+  <data name="Download_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Download_Failed" xml:space="preserve"><value>Error: {0} · Press and hold for details</value></data>
+  <data name="Download_Canceled" xml:space="preserve"><value>Canceled</value></data>
+  <data name="Download_FailedTitle" xml:space="preserve"><value>Couldn't download</value></data>
+  <data name="Download_FailedToast" xml:space="preserve"><value>Couldn't download "{0}". Check the Downloads tab.</value></data>
+  <data name="Downloads_AllDone" xml:space="preserve"><value>All downloaded</value></data>
+  <data name="DownloadsActive_One" xml:space="preserve"><value>1 download in progress</value></data>
+  <data name="DownloadsActive_Other" xml:space="preserve"><value>{0} downloads in progress</value></data>
+  <data name="Downloads_EmptyTitle" xml:space="preserve"><value>No downloads</value></data>
+  <data name="Downloads_EmptyMessage" xml:space="preserve"><value>Songs you download will appear here while they are processed.</value></data>
+  <data name="Home_Subtitle" xml:space="preserve"><value>What's playing now and music for you</value></data>
+  <data name="Home_Trending" xml:space="preserve"><value>Trending</value></data>
+  <data name="Home_TopColombia" xml:space="preserve"><value>Top Colombia</value></data>
+  <data name="Home_ForYou" xml:space="preserve"><value>For you</value></data>
+  <data name="Home_ForYouSubtitle" xml:space="preserve"><value>Based on what you like</value></data>
+  <data name="Home_ForYouEmptyTitle" xml:space="preserve"><value>No recommendations yet</value></data>
+  <data name="Home_TrendingSubtitle" xml:space="preserve"><value>Global top</value></data>
+  <data name="Home_ColombiaSubtitle" xml:space="preserve"><value>Most listened to in Colombia</value></data>
+  <data name="Home_TrendingEmpty" xml:space="preserve"><value>No trends right now.</value></data>
+  <data name="Home_NoTrendingSources" xml:space="preserve"><value>No installed source offers trends.</value></data>
+  <data name="Home_ColombiaEmpty" xml:space="preserve"><value>No Top Colombia songs right now.</value></data>
+  <data name="Home_ForYouEmpty" xml:space="preserve"><value>Download songs or like them and you'll see similar music here.</value></data>
+  <data name="Home_ForYouNoSources" xml:space="preserve"><value>Install a music source that suggests songs to see recommendations.</value></data>
+  <data name="Home_NoticeRateLimited" xml:space="preserve"><value>The source asked to wait; it will update later.</value></data>
+  <data name="Home_NoticeFailed" xml:space="preserve"><value>We couldn't refresh; showing what we last saved.</value></data>
+  <data name="Home_ErrorRateLimited" xml:space="preserve"><value>The source asked to wait. Try again in a few minutes.</value></data>
+  <data name="Home_ErrorConnect" xml:space="preserve"><value>We couldn't reach the source. Check your connection and try again.</value></data>
+  <data name="ImportProblems_Title" xml:space="preserve"><value>Not imported</value></data>
+  <data name="ImportProblems_TitleNamed" xml:space="preserve"><value>Not imported · {0}</value></data>
+  <data name="ImportProblems_CopyTitle" xml:space="preserve"><value>Not imported ({0})</value></data>
+  <data name="ImportProblems_CopyMore" xml:space="preserve"><value>… and {0} more</value></data>
+  <data name="ImportProblems_NoResults" xml:space="preserve"><value>No results. Try other words.</value></data>
+  <data name="ImportProblems_Done" xml:space="preserve"><value>Nothing left to resolve</value></data>
+  <data name="ImportProblems_SummaryOne" xml:space="preserve"><value>1 song. Tap to choose the right version.</value></data>
+  <data name="ImportProblems_SummaryOther" xml:space="preserve"><value>{0} songs. Tap one to choose the right version.</value></data>
+  <data name="ImportProblems_NotFound" xml:space="preserve"><value>Not found</value></data>
+  <data name="ImportProblems_Copy" xml:space="preserve"><value>Copy list</value></data>
+  <data name="ImportProblems_ChooseHeader" xml:space="preserve"><value>CHOOSE THE VERSION OF</value></data>
+  <data name="ImportProblems_Hint" xml:space="preserve"><value>Tap to listen · Use this one to download it</value></data>
+  <data name="ImportProblems_UseThis" xml:space="preserve"><value>Use this</value></data>
+  <data name="Import_ProgressRunning" xml:space="preserve"><value>{0} of {1} ready</value></data>
+  <data name="Import_ProgressFinished" xml:space="preserve"><value>Finished: {0} of {1} songs</value></data>
+  <data name="Import_AlreadyThere" xml:space="preserve"><value>{0} · {1} already there</value></data>
+  <data name="Import_ProblemsNotFound" xml:space="preserve"><value>{0} not found · Choose version</value></data>
+  <data name="Import_ProblemsFailed" xml:space="preserve"><value>{0} with errors · Choose version</value></data>
+  <data name="Import_ProblemsBoth" xml:space="preserve"><value>{0} not found, {1} with errors · Choose version</value></data>
+  <data name="Import_NoSources" xml:space="preserve"><value>No music source available to import</value></data>
+  <data name="Import_DefaultName" xml:space="preserve"><value>Imported</value></data>
+  <data name="Import_FailedTitle" xml:space="preserve"><value>Couldn't import</value></data>
+  <data name="Import_EmptyFile" xml:space="preserve"><value>The file has no songs</value></data>
+  <data name="Import_ChooseTitle" xml:space="preserve"><value>Import {0} songs (~{1})</value></data>
+  <data name="Import_DestNew" xml:space="preserve"><value>Create a new playlist</value></data>
+  <data name="Import_DestLikes" xml:space="preserve"><value>Add to Liked songs</value></data>
+  <data name="Import_DestBoth" xml:space="preserve"><value>New playlist and Liked songs</value></data>
+  <data name="Import_NameTitle" xml:space="preserve"><value>Playlist name</value></data>
+  <data name="Import_NameMessage" xml:space="preserve"><value>Songs will be added in the same order as the file.</value></data>
+  <data name="Import_Started" xml:space="preserve"><value>Import started: you'll see the progress here and in Downloads</value></data>
+  <data name="Import_BackgroundTitle" xml:space="preserve"><value>Download with the screen off</value></data>
+  <data name="Import_BackgroundMessage" xml:space="preserve"><value>So the import keeps going while the phone is locked, let Wired run without battery restrictions.</value></data>
+  <data name="Import_ChooseSource" xml:space="preserve"><value>Where should we look for the songs?</value></data>
+  <data name="Import_Paused" xml:space="preserve"><value>Paused: {0} asked to slow down · resumes at {1}</value></data>
+  <data name="Import_PickerTitle" xml:space="preserve"><value>Choose the CSV exported with Exportify</value></data>
+  <data name="Import_Canceled" xml:space="preserve"><value>Download canceled</value></data>
+  <data name="Csv_Empty" xml:space="preserve"><value>The file is empty.</value></data>
+  <data name="Csv_MissingTitle" xml:space="preserve"><value>This doesn't look like an Exportify CSV: the "Track Name" column is missing.</value></data>
+  <data name="Csv_MissingArtist" xml:space="preserve"><value>This doesn't look like an Exportify CSV: the "Artist Name(s)" column is missing.</value></data>
+  <data name="Sort_By" xml:space="preserve"><value>Sort by</value></data>
+  <data name="Sort_Recent" xml:space="preserve"><value>Recent</value></data>
+  <data name="Sort_TitleAZ" xml:space="preserve"><value>Title (A-Z)</value></data>
+  <data name="Sort_ArtistAZ" xml:space="preserve"><value>Artist (A-Z)</value></data>
+  <data name="Sort_Description" xml:space="preserve"><value>Sort</value></data>
+  <data name="Enrichment_Checking" xml:space="preserve"><value>Checking the library…</value></data>
+  <data name="Enrichment_Covers" xml:space="preserve"><value>Completing covers: {0} of {1}</value></data>
+  <data name="Enrichment_Loudness" xml:space="preserve"><value>Measuring volume: {0} of {1}</value></data>
+  <data name="Enrichment_Problems_One" xml:space="preserve"><value>1 problem · View</value></data>
+  <data name="Enrichment_Problems_Other" xml:space="preserve"><value>{0} problems · View</value></data>
+  <data name="Enrichment_ProblemsTitle" xml:space="preserve"><value>Problems completing the library ({0})</value></data>
+  <data name="Enrichment_NoCoverUrl" xml:space="preserve"><value>{0}: source "{1}" doesn't say where to get the cover</value></data>
+  <data name="Enrichment_CoverFailed" xml:space="preserve"><value>{0}: couldn't download the cover ({1})</value></data>
+  <data name="Recovery_Title" xml:space="preserve"><value>Recover your music?</value></data>
+  <data name="Recovery_Message" xml:space="preserve"><value>We found music saved in {0} from a previous install. Wired can add it back along with your playlists and liked songs.</value></data>
+  <data name="Recovery_NoPermission" xml:space="preserve"><value>Without permission we can't read the saved music</value></data>
+  <data name="Recovery_Found" xml:space="preserve"><value>Recovered {0}</value></data>
+  <data name="Recovery_NothingFound" xml:space="preserve"><value>We found no music in {0}</value></data>
+  <data name="Recovery_Complete" xml:space="preserve"><value>Your library was already complete</value></data>
+  <data name="Folder_Shared" xml:space="preserve"><value>Music/Wired</value></data>
+  <data name="Folder_AppStorage" xml:space="preserve"><value>the app's storage</value></data>
+  <data name="Library_RemoveFromDevice" xml:space="preserve"><value>Delete from device</value></data>
+  <data name="Library_DeleteTitle" xml:space="preserve"><value>Delete song</value></data>
+  <data name="Library_DeleteMessage" xml:space="preserve"><value>Delete "{0}" from your library and your playlists? The file will be deleted from {1}.</value></data>
+  <data name="Library_Heading" xml:space="preserve"><value>Your library</value></data>
+  <data name="Library_SavedIn" xml:space="preserve"><value>  ·  saved in </value></data>
+  <data name="Library_RecoverDescription" xml:space="preserve"><value>Recover music from the folder</value></data>
+  <data name="Library_FilterPlaceholder" xml:space="preserve"><value>Filter by title or artist</value></data>
+  <data name="Library_EmptyTitle" xml:space="preserve"><value>You don't have any songs yet</value></data>
+  <data name="Library_EmptyMessage" xml:space="preserve"><value>Go to the Search tab, find something you like and download it.</value></data>
+  <data name="Library_RecoverButton" xml:space="preserve"><value>Reinstalled Wired? Recover your music and playlists</value></data>
+  <data name="Library_NoMatch" xml:space="preserve"><value>Nothing matches the filter</value></data>
+  <data name="Sleep_Minutes" xml:space="preserve"><value>{0} minutes</value></data>
+  <data name="Sleep_OneHour" xml:space="preserve"><value>1 hour</value></data>
+  <data name="Sleep_EndOfTrack" xml:space="preserve"><value>At the end of the song</value></data>
+  <data name="Sleep_TurnOff" xml:space="preserve"><value>Turn off</value></data>
+  <data name="Sleep_Title" xml:space="preserve"><value>Pause the music in…</value></data>
+  <data name="Sleep_PausesAtEnd" xml:space="preserve"><value>Pauses at the end of the song</value></data>
+  <data name="Sleep_PausesIn" xml:space="preserve"><value>Pauses in {0}</value></data>
+  <data name="Sleep_Description" xml:space="preserve"><value>Sleep timer</value></data>
+  <data name="Playback_Failed" xml:space="preserve"><value>Couldn't play</value></data>
+  <data name="Playback_NoStreaming" xml:space="preserve"><value>This source doesn't allow listening without downloading.</value></data>
+  <data name="NowPlaying_Header" xml:space="preserve"><value>NOW PLAYING</value></data>
+  <data name="NowPlaying_Streaming" xml:space="preserve"><value>STREAMING</value></data>
+  <data name="Lyrics_InSync" xml:space="preserve"><value>In sync</value></data>
+  <data name="Lyrics_Searching" xml:space="preserve"><value>Looking for the lyrics…</value></data>
+  <data name="Lyrics_Instrumental" xml:space="preserve"><value>♪  Instrumental  ♪</value></data>
+  <data name="Lyrics_NotFound" xml:space="preserve"><value>We couldn't find the lyrics</value></data>
+  <data name="Lyrics_NotFoundHint" xml:space="preserve"><value>It may not be on LRCLIB yet.</value></data>
+  <data name="Lyrics_Error" xml:space="preserve"><value>Couldn't load the lyrics</value></data>
+  <data name="Lyrics_Earlier" xml:space="preserve"><value>−0.5 s</value></data>
+  <data name="Lyrics_Later" xml:space="preserve"><value>+0.5 s</value></data>
+  <data name="Queue_Title" xml:space="preserve"><value>UP NEXT</value></data>
+  <data name="Queue_Description" xml:space="preserve"><value>Up next</value></data>
+  <data name="Queue_NowPlayingHeader" xml:space="preserve"><value>PLAYING NOW</value></data>
+  <data name="Queue_Empty" xml:space="preserve"><value>Nothing else in the queue</value></data>
+  <data name="QueueUpcoming_One" xml:space="preserve"><value>1 song up next</value></data>
+  <data name="QueueUpcoming_Other" xml:space="preserve"><value>{0} songs up next</value></data>
+  <data name="Playlists_Heading" xml:space="preserve"><value>Your playlists</value></data>
+  <data name="Playlists_New" xml:space="preserve"><value>New</value></data>
+  <data name="Playlists_Importing" xml:space="preserve"><value>Importing «{0}»</value></data>
+  <data name="Playlists_Section" xml:space="preserve"><value>Playlists</value></data>
+  <data name="Playlists_EmptyTitle" xml:space="preserve"><value>You don't have any playlists yet</value></data>
+  <data name="Playlists_EmptyMessage" xml:space="preserve"><value>Create one with «New», from the playlist button of any song, or import your Spotify music with «CSV» (file from exportify.net).</value></data>
+  <data name="Search_Heading" xml:space="preserve"><value>Discover</value></data>
+  <data name="Search_Subtitle" xml:space="preserve"><value>Search music in your sources and take it with you</value></data>
+  <data name="Search_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Search_NoSources" xml:space="preserve"><value>No music sources installed</value></data>
+  <data name="Search_NoSourcesMessage" xml:space="preserve"><value>Install a source plugin to search for music. Your local library is still available.</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Search in {0}…</value></data>
+  <data name="Search_IdleTitle" xml:space="preserve"><value>What do you want to listen to today?</value></data>
+  <data name="Search_IdleMessage" xml:space="preserve"><value>Tap a song to listen instantly or download it to have it offline.</value></data>
+  <data name="Search_Searching" xml:space="preserve"><value>Searching…</value></data>
+  <data name="Search_NoResultsTitle" xml:space="preserve"><value>No results</value></data>
+  <data name="Search_NoResultsMessage" xml:space="preserve"><value>Try other words or another source.</value></data>
+  <data name="Search_ErrorConnect" xml:space="preserve"><value>We couldn't reach {0}. Check your connection and try again.</value></data>
+  <data name="Search_Queued" xml:space="preserve"><value>Queued…</value></data>
+  <data name="Language_Title" xml:space="preserve"><value>Language</value></data>
+  <data name="Language_Auto" xml:space="preserve"><value>Automatic</value></data>
+  <data name="Language_Spanish" xml:space="preserve"><value>Español</value></data>
+  <data name="Language_English" xml:space="preserve"><value>English</value></data>
+  <data name="Language_Portuguese" xml:space="preserve"><value>Português</value></data>
+  <data name="Error_Copied" xml:space="preserve"><value>Error copied to the clipboard</value></data>
+  <data name="Notif_Downloading_One" xml:space="preserve"><value>Downloading 1 song</value></data>
+  <data name="Notif_Downloading_Other" xml:space="preserve"><value>Downloading {0} songs</value></data>
+  <data name="Notif_DownloadsChannelDescription" xml:space="preserve"><value>Progress of background downloads</value></data>
+  <data name="Notif_Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Notif_Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Notif_Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Notif_PlaybackChannel" xml:space="preserve"><value>Playback</value></data>
+  <data name="Notif_PlaybackChannelDescription" xml:space="preserve"><value>Controls for the music that's playing</value></data>
+  <data name="Audio_OpenFailed" xml:space="preserve"><value>Couldn't open the audio ({0}, {1}).</value></data>
+  <data name="Queue_Clear" xml:space="preserve"><value>Clear</value></data>
+</root>

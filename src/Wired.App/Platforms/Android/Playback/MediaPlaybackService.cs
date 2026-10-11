@@ -9,6 +9,7 @@ using Android.Media.Session;
 using Android.OS;
 using Android.Service.Media;
 using Wired.Core.Browsing;
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 
 namespace Wired.App.Playback;
@@ -67,7 +68,7 @@ public sealed class MediaPlaybackService : MediaBrowserService
 
         _session = new MediaSession(this, "Wired");
         _session.SetCallback(new SessionCallback(_playback, _browseTree));
-        _session.SetQueueTitle("A continuación");
+        _session.SetQueueTitle(L.T("Queue_Description"));
         _session.Active = true;
         SessionToken = _session.SessionToken;
 
@@ -183,9 +184,9 @@ public sealed class MediaPlaybackService : MediaBrowserService
             .SetVisibility(NotificationVisibility.Public)
             .SetOngoing(_playback.IsPlaying)
             .SetShowWhen(false)
-            .AddAction(CreateAction(Resource.Drawable.ic_previous, "Anterior", ActionPrevious))
-            .AddAction(CreateAction(playPauseIcon, _playback.IsPlaying ? "Pausa" : "Reproducir", ActionPlayPause))
-            .AddAction(CreateAction(Resource.Drawable.ic_next, "Siguiente", ActionNext))
+            .AddAction(CreateAction(Resource.Drawable.ic_previous, L.T("Notif_Previous"), ActionPrevious))
+            .AddAction(CreateAction(playPauseIcon, L.T(_playback.IsPlaying ? "Notif_Pause" : "Common_Play"), ActionPlayPause))
+            .AddAction(CreateAction(Resource.Drawable.ic_next, L.T("Notif_Next"), ActionNext))
             .SetStyle(new Notification.MediaStyle()
                 .SetMediaSession(_session.SessionToken)!
                 .SetShowActionsInCompactView(0, 1, 2));
@@ -278,9 +279,9 @@ public sealed class MediaPlaybackService : MediaBrowserService
         if (!OperatingSystem.IsAndroidVersionAtLeast(26))
             return;
 
-        var channel = new NotificationChannel(ChannelId, "Reproducción", NotificationImportance.Low)
+        var channel = new NotificationChannel(ChannelId, L.T("Notif_PlaybackChannel"), NotificationImportance.Low)
         {
-            Description = "Controles de la música en reproducción",
+            Description = L.T("Notif_PlaybackChannelDescription"),
         };
         channel.SetShowBadge(false);
         _notifications.CreateNotificationChannel(channel);

@@ -1,3 +1,4 @@
+using Wired.Core.Localization;
 using Wired.Presentation.Services;
 
 namespace Wired.App.Services;
@@ -17,7 +18,7 @@ public sealed class MauiCsvFilePicker : ICsvFilePicker
     {
         var result = await FilePicker.Default.PickAsync(new PickOptions
         {
-            PickerTitle = "Elige el CSV exportado con Exportify",
+            PickerTitle = L.T("Import_PickerTitle"),
             FileTypes = CsvFiles,
         });
 

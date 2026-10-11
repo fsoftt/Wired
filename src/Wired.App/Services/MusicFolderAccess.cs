@@ -1,3 +1,4 @@
+using Wired.Core.Localization;
 using Wired.Presentation.Services;
 
 namespace Wired.App.Services;
@@ -13,11 +14,11 @@ public sealed class MusicFolderAccess(Wired.Core.Abstractions.IAppPaths paths) :
 
     public string DisplayLocation =>
 #if ANDROID
-        MauiAppPaths.IsMusicDirectoryShared ? "Música/Wired" : "el almacenamiento de la app";
+        MauiAppPaths.IsMusicDirectoryShared ? L.T("Folder_Shared") : L.T("Folder_AppStorage");
 #elif WINDOWS
-        "Música\\Wired";
+        L.T("Folder_Shared").Replace('/', '\\');
 #else
-        "el almacenamiento de la app";
+        L.T("Folder_AppStorage");
 #endif
 
     public async Task<bool> HasReadAccessAsync()

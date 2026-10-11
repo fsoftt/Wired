@@ -1,6 +1,7 @@
 using Wired.Core.Abstractions;
 using Wired.Core.Collections;
 using Wired.Core.Downloads;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 using Wired.Core.Throttling;
 using Wired.Core.UseCases;
@@ -238,7 +239,7 @@ public sealed class PlaylistImportService
                 _ = CompleteAsync(job.Track, local);
                 break;
             case DownloadStatus.Failed or DownloadStatus.Canceled:
-                _ = FailAsync(job.Track, job.Status == DownloadStatus.Failed ? job.Error : "Descarga cancelada");
+                _ = FailAsync(job.Track, job.Status == DownloadStatus.Failed ? job.Error : L.T("Import_Canceled"));
                 break;
         }
     }

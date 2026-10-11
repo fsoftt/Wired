@@ -116,6 +116,7 @@ public static partial class ServiceCollectionExtensions
 
     public static IServiceCollection AddPresentation(this IServiceCollection services) =>
         services
+            .AddSingleton<LanguageSettings>()
             .AddSingleton<QueueActions>()
             .AddSingleton<SharedContentHandler>()
             .AddSingleton<TrackCollectionActions>()

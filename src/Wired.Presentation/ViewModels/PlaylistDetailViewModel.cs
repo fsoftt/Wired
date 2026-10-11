@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Collections;
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 using Wired.Presentation.Collections;
 using Wired.Presentation.Services;
@@ -50,15 +51,15 @@ public sealed partial class PlaylistDetailViewModel : TrackListViewModel
 
     public bool IsPlaylist => !IsLikedCollection;
 
-    public string Summary => TrackCount == 1 ? "1 canción" : $"{TrackCount} canciones";
+    public string Summary => L.N("Songs", TrackCount);
 
     public bool IsEmpty => TrackCount == 0;
 
     public bool HasTracks => TrackCount > 0;
 
     public string EmptyMessage => IsLikedCollection
-        ? "Toca el corazón de una canción para guardarla aquí."
-        : "Agrega canciones desde tu biblioteca o desde el reproductor.";
+        ? L.T("Detail_EmptyLiked")
+        : L.T("Detail_EmptyPlaylist");
 
     /// <param name="playlistId">The playlist to show, or null for liked tracks.</param>
     public Task OpenAsync(Guid? playlistId)
@@ -83,7 +84,7 @@ public sealed partial class PlaylistDetailViewModel : TrackListViewModel
         _playlists.PlaylistsChanged -= OnPlaylistsChanged;
     }
 
-    public override string RemoveLabel => IsLikedCollection ? "Quitar de Me gusta" : "Quitar de esta lista";
+    public override string RemoveLabel => L.T(IsLikedCollection ? "Menu_Unlike" : "Detail_RemoveFromPlaylist");
 
     public override Task RemoveAsync(TrackItemViewModel item) =>
         _playlist is null
@@ -104,10 +105,10 @@ public sealed partial class PlaylistDetailViewModel : TrackListViewModel
             return;
 
         var confirmed = await _dialogs.ConfirmAsync(
-            "Eliminar lista",
-            $"¿Eliminar la lista \"{_playlist.Name}\"? Las canciones seguirán en tu biblioteca.",
-            "Eliminar",
-            "Cancelar");
+            L.T("Detail_DeleteTitle"),
+            L.T("Detail_DeleteMessage", _playlist.Name),
+            L.T("Common_Delete"),
+            L.T("Common_Cancel"));
 
         if (!confirmed)
             return;
@@ -131,7 +132,7 @@ public sealed partial class PlaylistDetailViewModel : TrackListViewModel
 
         if (IsLikedCollection)
         {
-            Title = "Me gusta";
+            Title = L.T("Likes_Title");
             Fill(await Likes.GetLikedTracksAsync());
             return;
         }

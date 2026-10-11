@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Tab_Home" xml:space="preserve"><value>Início</value></data>
+  <data name="Tab_Search" xml:space="preserve"><value>Buscar</value></data>
+  <data name="Tab_Library" xml:space="preserve"><value>Biblioteca</value></data>
+  <data name="Tab_Playlists" xml:space="preserve"><value>Playlists</value></data>
+  <data name="Tab_Downloads" xml:space="preserve"><value>Downloads</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Fechar</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>Copiar</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>Excluir</value></data>
+  <data name="Common_Retry" xml:space="preserve"><value>Tentar novamente</value></data>
+  <data name="Common_NotNow" xml:space="preserve"><value>Agora não</value></data>
+  <data name="Common_Undo" xml:space="preserve"><value>Desfazer</value></data>
+  <data name="Common_Create" xml:space="preserve"><value>Criar</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>Salvar</value></data>
+  <data name="Common_Import" xml:space="preserve"><value>Importar</value></data>
+  <data name="Common_Allow" xml:space="preserve"><value>Permitir</value></data>
+  <data name="Common_Recover" xml:space="preserve"><value>Recuperar</value></data>
+  <data name="Common_Play" xml:space="preserve"><value>Reproduzir</value></data>
+  <data name="Common_Shuffle" xml:space="preserve"><value>Aleatório</value></data>
+  <data name="Common_Error" xml:space="preserve"><value>Erro: {0}</value></data>
+  <data name="Common_NothingYet" xml:space="preserve"><value>Nada por aqui ainda</value></data>
+  <data name="Common_Clear" xml:space="preserve"><value>Limpar</value></data>
+  <data name="Common_Remove" xml:space="preserve"><value>Remover</value></data>
+  <data name="Songs_One" xml:space="preserve"><value>1 música</value></data>
+  <data name="Songs_Other" xml:space="preserve"><value>{0} músicas</value></data>
+  <data name="Playlists_One" xml:space="preserve"><value>1 playlist</value></data>
+  <data name="Playlists_Other" xml:space="preserve"><value>{0} playlists</value></data>
+  <data name="LikesCount_One" xml:space="preserve"><value>1 curtida</value></data>
+  <data name="LikesCount_Other" xml:space="preserve"><value>{0} curtidas</value></data>
+  <data name="Likes_Title" xml:space="preserve"><value>Curtidas</value></data>
+  <data name="Menu_Like" xml:space="preserve"><value>Curtir</value></data>
+  <data name="Menu_Unlike" xml:space="preserve"><value>Remover das Curtidas</value></data>
+  <data name="Menu_PlayNext" xml:space="preserve"><value>Reproduzir em seguida</value></data>
+  <data name="Menu_AddToQueue" xml:space="preserve"><value>Adicionar à fila</value></data>
+  <data name="Menu_AddToPlaylist" xml:space="preserve"><value>Adicionar a uma playlist</value></data>
+  <data name="Menu_Download" xml:space="preserve"><value>Baixar</value></data>
+  <data name="Menu_CancelDownload" xml:space="preserve"><value>Cancelar download</value></data>
+  <data name="Menu_ViewError" xml:space="preserve"><value>Ver erro</value></data>
+  <data name="Swipe_AddToQueue" xml:space="preserve"><value>Para a fila</value></data>
+  <data name="Queue_PlayNextAdded" xml:space="preserve"><value>"{0}" tocará em seguida</value></data>
+  <data name="Queue_Added" xml:space="preserve"><value>"{0}" adicionada à fila</value></data>
+  <data name="Share_Unrecognized" xml:space="preserve"><value>O Wired não reconhece esse link com as fontes instaladas.</value></data>
+  <data name="Share_AddFailed" xml:space="preserve"><value>Não foi possível adicionar o download</value></data>
+  <data name="Download_Starting" xml:space="preserve"><value>Baixando "{0}"</value></data>
+  <data name="Playlist_NewOption" xml:space="preserve"><value>＋ Nova playlist…</value></data>
+  <data name="Playlist_AlreadyIn" xml:space="preserve"><value>Já está em "{0}"</value></data>
+  <data name="Playlist_AddedTo" xml:space="preserve"><value>Adicionada a "{0}"</value></data>
+  <data name="Playlist_NewTitle" xml:space="preserve"><value>Nova playlist</value></data>
+  <data name="Playlist_NewMessage" xml:space="preserve"><value>Dê um nome à sua playlist</value></data>
+  <data name="Playlist_RenameTitle" xml:space="preserve"><value>Renomear playlist</value></data>
+  <data name="Playlist_RenameMessage" xml:space="preserve"><value>Novo nome</value></data>
+  <data name="Playlist_NameEmpty" xml:space="preserve"><value>O nome da playlist não pode estar vazio.</value></data>
+  <data name="Playlist_NameTooLong" xml:space="preserve"><value>O nome não pode ter mais de {0} caracteres.</value></data>
+  <data name="Detail_EmptyLiked" xml:space="preserve"><value>Toque no coração de uma música para salvá-la aqui.</value></data>
+  <data name="Detail_EmptyPlaylist" xml:space="preserve"><value>Adicione músicas da sua biblioteca ou do player.</value></data>
+  <data name="Detail_RemoveFromPlaylist" xml:space="preserve"><value>Remover desta playlist</value></data>
+  <data name="Detail_DeleteTitle" xml:space="preserve"><value>Excluir playlist</value></data>
+  <data name="Detail_DeleteMessage" xml:space="preserve"><value>Excluir a playlist "{0}"? As músicas continuarão na sua biblioteca.</value></data>
+  <data name="Download_Queued" xml:space="preserve"><value>Na fila</value></data>
+  <data name="Download_Progress" xml:space="preserve"><value>Baixando · {0}</value></data>
+  <data name="Download_Completed" xml:space="preserve"><value>Concluído</value></data>
+  <data name="Download_Failed" xml:space="preserve"><value>Erro: {0} · Mantenha pressionado para ver detalhes</value></data>
+  <data name="Download_Canceled" xml:space="preserve"><value>Cancelado</value></data>
+  <data name="Download_FailedTitle" xml:space="preserve"><value>Não foi possível baixar</value></data>
+  <data name="Download_FailedToast" xml:space="preserve"><value>Não foi possível baixar "{0}". Veja a aba Downloads.</value></data>
+  <data name="Downloads_AllDone" xml:space="preserve"><value>Tudo baixado</value></data>
+  <data name="DownloadsActive_One" xml:space="preserve"><value>1 download em andamento</value></data>
+  <data name="DownloadsActive_Other" xml:space="preserve"><value>{0} downloads em andamento</value></data>
+  <data name="Downloads_EmptyTitle" xml:space="preserve"><value>Sem downloads</value></data>
+  <data name="Downloads_EmptyMessage" xml:space="preserve"><value>As músicas que você baixar aparecerão aqui enquanto são processadas.</value></data>
+  <data name="Home_Subtitle" xml:space="preserve"><value>O que toca agora e músicas para você</value></data>
+  <data name="Home_Trending" xml:space="preserve"><value>Em alta</value></data>
+  <data name="Home_TopColombia" xml:space="preserve"><value>Top Colômbia</value></data>
+  <data name="Home_ForYou" xml:space="preserve"><value>Para você</value></data>
+  <data name="Home_ForYouSubtitle" xml:space="preserve"><value>Com base no que você curte</value></data>
+  <data name="Home_ForYouEmptyTitle" xml:space="preserve"><value>Ainda não há recomendações</value></data>
+  <data name="Home_TrendingSubtitle" xml:space="preserve"><value>Top global</value></data>
+  <data name="Home_ColombiaSubtitle" xml:space="preserve"><value>Mais ouvidas na Colômbia</value></data>
+  <data name="Home_TrendingEmpty" xml:space="preserve"><value>Não há tendências no momento.</value></data>
+  <data name="Home_NoTrendingSources" xml:space="preserve"><value>Nenhuma fonte instalada oferece tendências.</value></data>
+  <data name="Home_ColombiaEmpty" xml:space="preserve"><value>Não há músicas do Top Colômbia no momento.</value></data>
+  <data name="Home_ForYouEmpty" xml:space="preserve"><value>Baixe músicas ou curta-as e aqui você verá músicas parecidas.</value></data>
+  <data name="Home_ForYouNoSources" xml:space="preserve"><value>Instale uma fonte de música que sugira músicas para ver recomendações.</value></data>
+  <data name="Home_NoticeRateLimited" xml:space="preserve"><value>A fonte pediu para esperar; será atualizado mais tarde.</value></data>
+  <data name="Home_NoticeFailed" xml:space="preserve"><value>Não foi possível atualizar; mostramos o último conteúdo salvo.</value></data>
+  <data name="Home_ErrorRateLimited" xml:space="preserve"><value>A fonte pediu para esperar. Tente novamente em alguns minutos.</value></data>
+  <data name="Home_ErrorConnect" xml:space="preserve"><value>Não foi possível conectar à fonte. Verifique sua conexão e tente novamente.</value></data>
+  <data name="ImportProblems_Title" xml:space="preserve"><value>Não importadas</value></data>
+  <data name="ImportProblems_TitleNamed" xml:space="preserve"><value>Não importadas · {0}</value></data>
+  <data name="ImportProblems_CopyTitle" xml:space="preserve"><value>Não importadas ({0})</value></data>
+  <data name="ImportProblems_CopyMore" xml:space="preserve"><value>… e mais {0}</value></data>
+  <data name="ImportProblems_NoResults" xml:space="preserve"><value>Sem resultados. Tente outras palavras.</value></data>
+  <data name="ImportProblems_Done" xml:space="preserve"><value>Não há mais nada a resolver</value></data>
+  <data name="ImportProblems_SummaryOne" xml:space="preserve"><value>1 música. Toque para escolher a versão correta.</value></data>
+  <data name="ImportProblems_SummaryOther" xml:space="preserve"><value>{0} músicas. Toque em uma para escolher a versão correta.</value></data>
+  <data name="ImportProblems_NotFound" xml:space="preserve"><value>Não encontrada</value></data>
+  <data name="ImportProblems_Copy" xml:space="preserve"><value>Copiar lista</value></data>
+  <data name="ImportProblems_ChooseHeader" xml:space="preserve"><value>ESCOLHA A VERSÃO DE</value></data>
+  <data name="ImportProblems_Hint" xml:space="preserve"><value>Toque para ouvir · Usar esta para baixar</value></data>
+  <data name="ImportProblems_UseThis" xml:space="preserve"><value>Usar esta</value></data>
+  <data name="Import_ProgressRunning" xml:space="preserve"><value>{0} de {1} prontas</value></data>
+  <data name="Import_ProgressFinished" xml:space="preserve"><value>Concluída: {0} de {1} músicas</value></data>
+  <data name="Import_AlreadyThere" xml:space="preserve"><value>{0} · {1} já estavam</value></data>
+  <data name="Import_ProblemsNotFound" xml:space="preserve"><value>{0} não encontradas · Escolher versão</value></data>
+  <data name="Import_ProblemsFailed" xml:space="preserve"><value>{0} com erro · Escolher versão</value></data>
+  <data name="Import_ProblemsBoth" xml:space="preserve"><value>{0} não encontradas, {1} com erro · Escolher versão</value></data>
+  <data name="Import_NoSources" xml:space="preserve"><value>Nenhuma fonte de música disponível para importar</value></data>
+  <data name="Import_DefaultName" xml:space="preserve"><value>Importada</value></data>
+  <data name="Import_FailedTitle" xml:space="preserve"><value>Não foi possível importar</value></data>
+  <data name="Import_EmptyFile" xml:space="preserve"><value>O arquivo não tem músicas</value></data>
+  <data name="Import_ChooseTitle" xml:space="preserve"><value>Importar {0} músicas (~{1})</value></data>
+  <data name="Import_DestNew" xml:space="preserve"><value>Criar uma nova playlist</value></data>
+  <data name="Import_DestLikes" xml:space="preserve"><value>Adicionar às Curtidas</value></data>
+  <data name="Import_DestBoth" xml:space="preserve"><value>Nova playlist e Curtidas</value></data>
+  <data name="Import_NameTitle" xml:space="preserve"><value>Nome da playlist</value></data>
+  <data name="Import_NameMessage" xml:space="preserve"><value>As músicas serão adicionadas na mesma ordem do arquivo.</value></data>
+  <data name="Import_Started" xml:space="preserve"><value>Importação iniciada: você verá o progresso aqui e em Downloads</value></data>
+  <data name="Import_BackgroundTitle" xml:space="preserve"><value>Baixar com a tela apagada</value></data>
+  <data name="Import_BackgroundMessage" xml:space="preserve"><value>Para que a importação continue com o telefone bloqueado, permita que o Wired funcione sem restrições de bateria.</value></data>
+  <data name="Import_ChooseSource" xml:space="preserve"><value>Onde buscar as músicas?</value></data>
+  <data name="Import_Paused" xml:space="preserve"><value>Em pausa: {0} pediu para ir mais devagar · continua às {1}</value></data>
+  <data name="Import_PickerTitle" xml:space="preserve"><value>Escolha o CSV exportado com o Exportify</value></data>
+  <data name="Import_Canceled" xml:space="preserve"><value>Download cancelado</value></data>
+  <data name="Csv_Empty" xml:space="preserve"><value>O arquivo está vazio.</value></data>
+  <data name="Csv_MissingTitle" xml:space="preserve"><value>Isto não parece um CSV do Exportify: falta a coluna "Track Name".</value></data>
+  <data name="Csv_MissingArtist" xml:space="preserve"><value>Isto não parece um CSV do Exportify: falta a coluna "Artist Name(s)".</value></data>
+  <data name="Sort_By" xml:space="preserve"><value>Ordenar por</value></data>
+  <data name="Sort_Recent" xml:space="preserve"><value>Recentes</value></data>
+  <data name="Sort_TitleAZ" xml:space="preserve"><value>Título (A-Z)</value></data>
+  <data name="Sort_ArtistAZ" xml:space="preserve"><value>Artista (A-Z)</value></data>
+  <data name="Sort_Description" xml:space="preserve"><value>Ordenar</value></data>
+  <data name="Enrichment_Checking" xml:space="preserve"><value>Verificando a biblioteca…</value></data>
+  <data name="Enrichment_Covers" xml:space="preserve"><value>Completando capas: {0} de {1}</value></data>
+  <data name="Enrichment_Loudness" xml:space="preserve"><value>Medindo volume: {0} de {1}</value></data>
+  <data name="Enrichment_Problems_One" xml:space="preserve"><value>1 problema · Ver</value></data>
+  <data name="Enrichment_Problems_Other" xml:space="preserve"><value>{0} problemas · Ver</value></data>
+  <data name="Enrichment_ProblemsTitle" xml:space="preserve"><value>Problemas ao completar a biblioteca ({0})</value></data>
+  <data name="Enrichment_NoCoverUrl" xml:space="preserve"><value>{0}: a fonte "{1}" não indica de onde baixar a capa</value></data>
+  <data name="Enrichment_CoverFailed" xml:space="preserve"><value>{0}: não foi possível baixar a capa ({1})</value></data>
+  <data name="Recovery_Title" xml:space="preserve"><value>Recuperar sua música?</value></data>
+  <data name="Recovery_Message" xml:space="preserve"><value>Encontramos músicas salvas em {0} de uma instalação anterior. O Wired pode adicioná-las de volta junto com suas playlists e curtidas.</value></data>
+  <data name="Recovery_NoPermission" xml:space="preserve"><value>Sem permissão não podemos ler a música salva</value></data>
+  <data name="Recovery_Found" xml:space="preserve"><value>Recuperamos {0}</value></data>
+  <data name="Recovery_NothingFound" xml:space="preserve"><value>Não encontramos músicas em {0}</value></data>
+  <data name="Recovery_Complete" xml:space="preserve"><value>Sua biblioteca já estava completa</value></data>
+  <data name="Folder_Shared" xml:space="preserve"><value>Música/Wired</value></data>
+  <data name="Folder_AppStorage" xml:space="preserve"><value>armazenamento do app</value></data>
+  <data name="Library_RemoveFromDevice" xml:space="preserve"><value>Excluir do dispositivo</value></data>
+  <data name="Library_DeleteTitle" xml:space="preserve"><value>Excluir música</value></data>
+  <data name="Library_DeleteMessage" xml:space="preserve"><value>Excluir "{0}" da sua biblioteca e das suas playlists? O arquivo será apagado de {1}.</value></data>
+  <data name="Library_Heading" xml:space="preserve"><value>Sua biblioteca</value></data>
+  <data name="Library_SavedIn" xml:space="preserve"><value>  ·  salvas em </value></data>
+  <data name="Library_RecoverDescription" xml:space="preserve"><value>Recuperar músicas da pasta</value></data>
+  <data name="Library_FilterPlaceholder" xml:space="preserve"><value>Filtrar por título ou artista</value></data>
+  <data name="Library_EmptyTitle" xml:space="preserve"><value>Você ainda não tem músicas</value></data>
+  <data name="Library_EmptyMessage" xml:space="preserve"><value>Vá para a aba Buscar, encontre algo de que goste e baixe.</value></data>
+  <data name="Library_RecoverButton" xml:space="preserve"><value>Reinstalou o Wired? Recupere suas músicas e playlists</value></data>
+  <data name="Library_NoMatch" xml:space="preserve"><value>Nada corresponde ao filtro</value></data>
+  <data name="Sleep_Minutes" xml:space="preserve"><value>{0} minutos</value></data>
+  <data name="Sleep_OneHour" xml:space="preserve"><value>1 hora</value></data>
+  <data name="Sleep_EndOfTrack" xml:space="preserve"><value>Ao fim da música</value></data>
+  <data name="Sleep_TurnOff" xml:space="preserve"><value>Desativar</value></data>
+  <data name="Sleep_Title" xml:space="preserve"><value>Pausar a música em…</value></data>
+  <data name="Sleep_PausesAtEnd" xml:space="preserve"><value>Pausa ao fim da música</value></data>
+  <data name="Sleep_PausesIn" xml:space="preserve"><value>Pausa em {0}</value></data>
+  <data name="Sleep_Description" xml:space="preserve"><value>Temporizador para dormir</value></data>
+  <data name="Playback_Failed" xml:space="preserve"><value>Não foi possível reproduzir</value></data>
+  <data name="Playback_NoStreaming" xml:space="preserve"><value>Esta fonte não permite ouvir sem baixar.</value></data>
+  <data name="NowPlaying_Header" xml:space="preserve"><value>TOCANDO AGORA</value></data>
+  <data name="NowPlaying_Streaming" xml:space="preserve"><value>STREAMING</value></data>
+  <data name="Lyrics_InSync" xml:space="preserve"><value>Sincronizada</value></data>
+  <data name="Lyrics_Searching" xml:space="preserve"><value>Procurando a letra…</value></data>
+  <data name="Lyrics_Instrumental" xml:space="preserve"><value>♪  Instrumental  ♪</value></data>
+  <data name="Lyrics_NotFound" xml:space="preserve"><value>Não encontramos a letra</value></data>
+  <data name="Lyrics_NotFoundHint" xml:space="preserve"><value>Pode ser que ainda não esteja no LRCLIB.</value></data>
+  <data name="Lyrics_Error" xml:space="preserve"><value>Não foi possível carregar a letra</value></data>
+  <data name="Lyrics_Earlier" xml:space="preserve"><value>−0,5 s</value></data>
+  <data name="Lyrics_Later" xml:space="preserve"><value>+0,5 s</value></data>
+  <data name="Queue_Title" xml:space="preserve"><value>EM SEGUIDA</value></data>
+  <data name="Queue_Description" xml:space="preserve"><value>Em seguida</value></data>
+  <data name="Queue_NowPlayingHeader" xml:space="preserve"><value>TOCANDO AGORA</value></data>
+  <data name="Queue_Empty" xml:space="preserve"><value>Não há mais nada na fila</value></data>
+  <data name="QueueUpcoming_One" xml:space="preserve"><value>1 música em seguida</value></data>
+  <data name="QueueUpcoming_Other" xml:space="preserve"><value>{0} músicas em seguida</value></data>
+  <data name="Playlists_Heading" xml:space="preserve"><value>Suas playlists</value></data>
+  <data name="Playlists_New" xml:space="preserve"><value>Nova</value></data>
+  <data name="Playlists_Importing" xml:space="preserve"><value>Importando «{0}»</value></data>
+  <data name="Playlists_Section" xml:space="preserve"><value>Playlists</value></data>
+  <data name="Playlists_EmptyTitle" xml:space="preserve"><value>Você ainda não tem playlists</value></data>
+  <data name="Playlists_EmptyMessage" xml:space="preserve"><value>Crie uma com «Nova», pelo botão de playlist de qualquer música, ou importe suas músicas do Spotify com «CSV» (arquivo do exportify.net).</value></data>
+  <data name="Search_Heading" xml:space="preserve"><value>Descubra</value></data>
+  <data name="Search_Subtitle" xml:space="preserve"><value>Busque músicas nas suas fontes e leve com você</value></data>
+  <data name="Search_Source" xml:space="preserve"><value>Fonte</value></data>
+  <data name="Search_NoSources" xml:space="preserve"><value>Nenhuma fonte de música instalada</value></data>
+  <data name="Search_NoSourcesMessage" xml:space="preserve"><value>Instale um plugin de fonte para buscar músicas. Sua biblioteca local continua disponível.</value></data>
+  <data name="Search_Placeholder" xml:space="preserve"><value>Buscar em {0}…</value></data>
+  <data name="Search_IdleTitle" xml:space="preserve"><value>O que você quer ouvir hoje?</value></data>
+  <data name="Search_IdleMessage" xml:space="preserve"><value>Toque em uma música para ouvi-la na hora ou baixe-a para ter offline.</value></data>
+  <data name="Search_Searching" xml:space="preserve"><value>Buscando…</value></data>
+  <data name="Search_NoResultsTitle" xml:space="preserve"><value>Sem resultados</value></data>
+  <data name="Search_NoResultsMessage" xml:space="preserve"><value>Tente outras palavras ou outra fonte.</value></data>
+  <data name="Search_ErrorConnect" xml:space="preserve"><value>Não foi possível conectar a {0}. Verifique sua conexão e tente novamente.</value></data>
+  <data name="Search_Queued" xml:space="preserve"><value>Na fila…</value></data>
+  <data name="Language_Title" xml:space="preserve"><value>Idioma</value></data>
+  <data name="Language_Auto" xml:space="preserve"><value>Automático</value></data>
+  <data name="Language_Spanish" xml:space="preserve"><value>Español</value></data>
+  <data name="Language_English" xml:space="preserve"><value>English</value></data>
+  <data name="Language_Portuguese" xml:space="preserve"><value>Português</value></data>
+  <data name="Error_Copied" xml:space="preserve"><value>Erro copiado para a área de transferência</value></data>
+  <data name="Notif_Downloading_One" xml:space="preserve"><value>Baixando 1 música</value></data>
+  <data name="Notif_Downloading_Other" xml:space="preserve"><value>Baixando {0} músicas</value></data>
+  <data name="Notif_DownloadsChannelDescription" xml:space="preserve"><value>Progresso dos downloads em segundo plano</value></data>
+  <data name="Notif_Previous" xml:space="preserve"><value>Anterior</value></data>
+  <data name="Notif_Pause" xml:space="preserve"><value>Pausar</value></data>
+  <data name="Notif_Next" xml:space="preserve"><value>Próxima</value></data>
+  <data name="Notif_PlaybackChannel" xml:space="preserve"><value>Reprodução</value></data>
+  <data name="Notif_PlaybackChannelDescription" xml:space="preserve"><value>Controles da música em reprodução</value></data>
+  <data name="Audio_OpenFailed" xml:space="preserve"><value>Não foi possível abrir o áudio ({0}, {1}).</value></data>
+  <data name="Queue_Clear" xml:space="preserve"><value>Limpar</value></data>
+</root>

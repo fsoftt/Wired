@@ -1,10 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Collections;
+using Wired.Core.Localization;
 
 namespace Wired.Presentation.ViewModels;
 
-public sealed partial class PlaylistCardViewModel(Playlist playlist, Func<Playlist, Task> open) : ObservableObject
+public sealed partial class PlaylistCardViewModel(Playlist playlist, Func<Playlist, Task> open) : LocalizedObservableObject
 {
     public Playlist Playlist { get; private set; } = playlist;
 
@@ -18,7 +19,7 @@ public sealed partial class PlaylistCardViewModel(Playlist playlist, Func<Playli
 
     public string Name => Playlist.Name;
 
-    public string Summary => Playlist.TrackIds.Count == 1 ? "1 canción" : $"{Playlist.TrackIds.Count} canciones";
+    public string Summary => L.N("Songs", Playlist.TrackIds.Count);
 
     [RelayCommand]
     private Task OpenAsync() => open(Playlist);

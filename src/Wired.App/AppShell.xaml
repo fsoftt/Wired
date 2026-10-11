@@ -3,36 +3,37 @@
     x:Class="Wired.App.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:views="clr-namespace:Wired.App.Views"
     Title="Wired">
 
     <TabBar>
         <ShellContent
-            Title="Inicio"
+            Title="{l:Translate Tab_Home}"
             Icon="ic_home.png"
             ContentTemplate="{DataTemplate views:HomePage}"
             Route="home" />
 
         <ShellContent
-            Title="Buscar"
+            Title="{l:Translate Tab_Search}"
             Icon="ic_search.png"
             ContentTemplate="{DataTemplate views:SearchPage}"
             Route="search" />
 
         <ShellContent
-            Title="Biblioteca"
+            Title="{l:Translate Tab_Library}"
             Icon="ic_library.png"
             ContentTemplate="{DataTemplate views:LibraryPage}"
             Route="library" />
 
         <ShellContent
-            Title="Listas"
+            Title="{l:Translate Tab_Playlists}"
             Icon="ic_playlist.png"
             ContentTemplate="{DataTemplate views:PlaylistsPage}"
             Route="playlists" />
 
         <ShellContent
-            Title="Descargas"
+            Title="{l:Translate Tab_Downloads}"
             Icon="ic_download.png"
             ContentTemplate="{DataTemplate views:DownloadsPage}"
             Route="downloads" />

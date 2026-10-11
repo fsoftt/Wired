@@ -3,6 +3,7 @@
     x:Class="Wired.App.Views.NowPlayingPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:PlayerViewModel"
@@ -21,7 +22,7 @@
                 <ImageButton Source="ic_chevron_down.png" Command="{Binding CloseNowPlayingCommand}" />
                 <Label
                     Grid.Column="1"
-                    Text="REPRODUCIENDO AHORA"
+                    Text="{l:Translate NowPlaying_Header}"
                     Style="{StaticResource SectionTitle}"
                     HorizontalTextAlignment="Center"
                     VerticalTextAlignment="Center" />
@@ -29,10 +30,10 @@
                     <ImageButton Source="ic_lyrics.png" IsVisible="{Binding Lyrics.IsOpen, Converter={StaticResource InvertedBool}}" Command="{Binding Lyrics.ToggleCommand}" />
                     <ImageButton Source="ic_lyrics_on.png" IsVisible="{Binding Lyrics.IsOpen}" Command="{Binding Lyrics.ToggleCommand}" />
                 </Grid>
-                <ImageButton Grid.Column="3" Source="ic_queue.png" Command="{Binding OpenQueueCommand}" SemanticProperties.Description="A continuación" />
+                <ImageButton Grid.Column="3" Source="ic_queue.png" Command="{Binding OpenQueueCommand}" SemanticProperties.Description="{l:Translate Queue_Description}" />
                 <Grid Grid.Column="4">
-                    <ImageButton Source="ic_timer.png" IsVisible="{Binding IsSleepTimerActive, Converter={StaticResource InvertedBool}}" Command="{Binding SetSleepTimerCommand}" SemanticProperties.Description="Temporizador para dormir" />
-                    <ImageButton Source="ic_timer_on.png" IsVisible="{Binding IsSleepTimerActive}" Command="{Binding SetSleepTimerCommand}" SemanticProperties.Description="Temporizador para dormir" />
+                    <ImageButton Source="ic_timer.png" IsVisible="{Binding IsSleepTimerActive, Converter={StaticResource InvertedBool}}" Command="{Binding SetSleepTimerCommand}" SemanticProperties.Description="{l:Translate Sleep_Description}" />
+                    <ImageButton Source="ic_timer_on.png" IsVisible="{Binding IsSleepTimerActive}" Command="{Binding SetSleepTimerCommand}" SemanticProperties.Description="{l:Translate Sleep_Description}" />
                 </Grid>
             </Grid>
 
@@ -98,26 +99,26 @@
 
                         <VerticalStackLayout IsVisible="{Binding IsLoading}" Spacing="12" VerticalOptions="Center">
                             <ActivityIndicator IsRunning="{Binding IsLoading}" WidthRequest="40" HeightRequest="40" />
-                            <Label Text="Buscando la letra…" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                            <Label Text="{l:Translate Lyrics_Searching}" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
 
-                        <Label IsVisible="{Binding IsInstrumental}" Text="♪  Instrumental  ♪" FontSize="22" TextColor="{StaticResource TextSecondary}" HorizontalTextAlignment="Center" VerticalOptions="Center" />
+                        <Label IsVisible="{Binding IsInstrumental}" Text="{l:Translate Lyrics_Instrumental}" FontSize="22" TextColor="{StaticResource TextSecondary}" HorizontalTextAlignment="Center" VerticalOptions="Center" />
 
                         <VerticalStackLayout IsVisible="{Binding IsNotFound}" Spacing="8" VerticalOptions="Center">
-                            <Label Text="No encontramos la letra" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
-                            <Label Text="Puede que aún no esté en LRCLIB." Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                            <Label Text="{l:Translate Lyrics_NotFound}" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                            <Label Text="{l:Translate Lyrics_NotFoundHint}" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
 
                         <VerticalStackLayout IsVisible="{Binding HasError}" Spacing="12" VerticalOptions="Center">
-                            <Label Text="No se pudo cargar la letra" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
-                            <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryCommand}" />
+                            <Label Text="{l:Translate Lyrics_Error}" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                            <Button Text="{l:Translate Common_Retry}" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryCommand}" />
                         </VerticalStackLayout>
 
                         <!-- Sync correction: Video sources often have intros the lyrics don't expect -->
                         <HorizontalStackLayout Grid.Row="1" IsVisible="{Binding IsSynced}" HorizontalOptions="Center" Spacing="6">
-                            <Button Text="−0,5 s" Style="{StaticResource SecondaryPill}" HeightRequest="34" Padding="12,0" FontSize="13" Command="{Binding DelayCommand}" />
+                            <Button Text="{l:Translate Lyrics_Earlier}" Style="{StaticResource SecondaryPill}" HeightRequest="34" Padding="12,0" FontSize="13" Command="{Binding DelayCommand}" />
                             <Label Text="{Binding OffsetText}" Style="{StaticResource Caption}" VerticalOptions="Center" MinimumWidthRequest="96" HorizontalTextAlignment="Center" />
-                            <Button Text="+0,5 s" Style="{StaticResource SecondaryPill}" HeightRequest="34" Padding="12,0" FontSize="13" Command="{Binding AdvanceCommand}" />
+                            <Button Text="{l:Translate Lyrics_Later}" Style="{StaticResource SecondaryPill}" HeightRequest="34" Padding="12,0" FontSize="13" Command="{Binding AdvanceCommand}" />
                         </HorizontalStackLayout>
                     </Grid>
                 </ContentView>
@@ -129,7 +130,7 @@
                     <Label Text="{Binding Title}" FontFamily="OpenSansSemibold" FontSize="22" MaxLines="2" LineBreakMode="TailTruncation" />
                         <Label Text="{Binding Artist}" Style="{StaticResource Caption}" FontSize="15" />
                     <Border IsVisible="{Binding IsStream}" HorizontalOptions="Start" Padding="10,3" Margin="0,4,0,0" StrokeThickness="1" Stroke="{StaticResource Highlight}" StrokeShape="RoundRectangle 10">
-                        <Label Text="STREAMING" FontSize="10" CharacterSpacing="1.5" TextColor="{StaticResource Highlight}" FontFamily="OpenSansSemibold" />
+                        <Label Text="{l:Translate NowPlaying_Streaming}" FontSize="10" CharacterSpacing="1.5" TextColor="{StaticResource Highlight}" FontFamily="OpenSansSemibold" />
                     </Border>
                 </VerticalStackLayout>
                 <!-- Downloaded track: playlist + like. Streamed track: download. -->

@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Wired.Core.Localization;
 using Wired.Core.Lyrics;
 using Wired.Core.Playback;
 using Wired.Presentation.Services;
@@ -11,7 +12,7 @@ namespace Wired.Presentation.ViewModels;
 /// Lyrics panel of the "Now playing" screen: loads the lyrics of the current item and
 /// follows playback to highlight the line being sung.
 /// </summary>
-public sealed partial class LyricsViewModel : ObservableObject
+public sealed partial class LyricsViewModel : LocalizedObservableObject
 {
     private static readonly TimeSpan SyncInterval = TimeSpan.FromMilliseconds(200);
     private const double OffsetStep = 0.5;
@@ -70,7 +71,7 @@ public sealed partial class LyricsViewModel : ObservableObject
 
     public bool HasError => State == LyricsState.Error;
 
-    public string OffsetText => OffsetSeconds == 0 ? "Sincronizada" : $"{OffsetSeconds:+0.0;-0.0} s";
+    public string OffsetText => OffsetSeconds == 0 ? L.T("Lyrics_InSync") : $"{OffsetSeconds:+0.0;-0.0} s";
 
     [RelayCommand]
     private void Toggle()

@@ -1,4 +1,5 @@
 using Wired.Core.Collections;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 using Wired.Core.Playback;
 
@@ -23,17 +24,17 @@ public sealed class TrackCollectionActions(
         return ShowMenuAsync(
             track.Title,
             [
-                new MenuOption("Reproducir a continuación", () => queue.PlayNextAsync(item)),
-                new MenuOption("Agregar a la cola", () => queue.AddToQueueAsync(item)),
-                new MenuOption(likes.IsLiked(track.Id) ? "Quitar de Me gusta" : "Me gusta", () => ToggleLikeAsync(track)),
-                new MenuOption("Agregar a una lista", () => AddToPlaylistAsync(track)),
+                new MenuOption(L.T("Menu_PlayNext"), () => queue.PlayNextAsync(item)),
+                new MenuOption(L.T("Menu_AddToQueue"), () => queue.AddToQueueAsync(item)),
+                new MenuOption(L.T(likes.IsLiked(track.Id) ? "Menu_Unlike" : "Menu_Like"), () => ToggleLikeAsync(track)),
+                new MenuOption(L.T("Menu_AddToPlaylist"), () => AddToPlaylistAsync(track)),
                 .. contextual,
             ]);
     }
 
     public async Task ShowMenuAsync(string title, IReadOnlyList<MenuOption> options)
     {
-        var choice = await dialogs.ChooseAsync(title, "Cancelar", options.Select(o => o.Label).ToList());
+        var choice = await dialogs.ChooseAsync(title, L.T("Common_Cancel"), options.Select(o => o.Label).ToList());
         if (choice is { } index)
             await options[index].Run();
     }
@@ -43,9 +44,9 @@ public sealed class TrackCollectionActions(
     public async Task AddToPlaylistAsync(LocalTrack track)
     {
         var existing = await playlists.GetAllAsync();
-        var options = existing.Select(p => p.Name).Prepend("＋ Nueva lista…").ToList();
+        var options = existing.Select(p => p.Name).Prepend(L.T("Playlist_NewOption")).ToList();
 
-        var choice = await dialogs.ChooseAsync("Agregar a una lista", "Cancelar", options);
+        var choice = await dialogs.ChooseAsync(L.T("Menu_AddToPlaylist"), L.T("Common_Cancel"), options);
         if (choice is not { } index)
             return;
 
@@ -55,24 +56,24 @@ public sealed class TrackCollectionActions(
 
         if (target.Contains(track.Id))
         {
-            await dialogs.ShowToastAsync($"Ya está en \"{target.Name}\"");
+            await dialogs.ShowToastAsync(L.T("Playlist_AlreadyIn", target.Name));
             return;
         }
 
         await playlists.AddTrackAsync(target, track);
-        await dialogs.ShowToastAsync($"Agregada a \"{target.Name}\"");
+        await dialogs.ShowToastAsync(L.T("Playlist_AddedTo", target.Name));
     }
 
     /// <returns>The new playlist, or null when the user canceled.</returns>
     public async Task<Playlist?> CreatePlaylistAsync()
     {
-        var name = await PromptNameAsync("Nueva lista", "Ponle un nombre a tu lista", "Crear", initialValue: null);
+        var name = await PromptNameAsync(L.T("Playlist_NewTitle"), L.T("Playlist_NewMessage"), L.T("Common_Create"), initialValue: null);
         return name is null ? null : await playlists.CreateAsync(name);
     }
 
     public async Task RenamePlaylistAsync(Playlist playlist)
     {
-        var name = await PromptNameAsync("Renombrar lista", "Nuevo nombre", "Guardar", playlist.Name);
+        var name = await PromptNameAsync(L.T("Playlist_RenameTitle"), L.T("Playlist_RenameMessage"), L.T("Common_Save"), playlist.Name);
         if (name is not null && name != playlist.Name)
             await playlists.RenameAsync(playlist, name);
     }
@@ -82,7 +83,7 @@ public sealed class TrackCollectionActions(
     {
         while (true)
         {
-            var name = await dialogs.PromptAsync(title, message, accept, "Cancelar", initialValue, Playlist.MaxNameLength);
+            var name = await dialogs.PromptAsync(title, message, accept, L.T("Common_Cancel"), initialValue, Playlist.MaxNameLength);
             if (name is null)
                 return null;
 

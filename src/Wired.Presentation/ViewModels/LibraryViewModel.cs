@@ -5,6 +5,7 @@ using Wired.Core.Abstractions;
 using Wired.Core.Collections;
 using Wired.Core.Downloads;
 using Wired.Core.Enrichment;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 using Wired.Core.Playback;
 using Wired.Core.UseCases;
@@ -22,6 +23,7 @@ public sealed partial class LibraryViewModel : TrackListViewModel
     private readonly RecoverMusicUseCase _recoverMusic;
     private readonly RemoveDuplicateTracksUseCase? _removeDuplicates;
     private readonly IPreferenceStore? _preferences;
+    private readonly LanguageSettings? _language;
     private readonly CollectionsBackupService _collectionsBackup;
     private readonly IMusicFolderAccess _musicFolder;
     private readonly IDialogService _dialogs;
@@ -46,10 +48,12 @@ public sealed partial class LibraryViewModel : TrackListViewModel
         IMessenger messenger,
         LibraryEnrichmentService enrichment,
         RemoveDuplicateTracksUseCase? removeDuplicates = null,
-        IPreferenceStore? preferences = null)
+        IPreferenceStore? preferences = null,
+        LanguageSettings? language = null)
         : base(playback, likes, actions, dispatcher)
     {
         _preferences = preferences;
+        _language = language;
         SortOrder = Enum.TryParse<LibrarySortOrder>(preferences?.Get(SortPreferenceKey), out var saved) && Enum.IsDefined(saved)
             ? saved
             : LibrarySortOrder.Recent;
@@ -82,7 +86,7 @@ public sealed partial class LibraryViewModel : TrackListViewModel
 
     public bool HasTracks => _allTracks.Count > 0;
 
-    public string Summary => _allTracks.Count == 1 ? "1 canción" : $"{_allTracks.Count} canciones";
+    public string Summary => L.N("Songs", _allTracks.Count);
 
     public string MusicLocation => _musicFolder.DisplayLocation;
 
@@ -91,18 +95,18 @@ public sealed partial class LibraryViewModel : TrackListViewModel
     /// <summary>Lists shorter than this scroll fine without the letter index.</summary>
     private const int MinTracksForIndex = 20;
 
-    private static readonly (LibrarySortOrder Order, string Label)[] SortOptions =
+    private static readonly (LibrarySortOrder Order, string LabelKey)[] SortOptions =
     [
-        (LibrarySortOrder.Recent, "Recientes"),
-        (LibrarySortOrder.Title, "Título (A-Z)"),
-        (LibrarySortOrder.Artist, "Artista (A-Z)"),
+        (LibrarySortOrder.Recent, "Sort_Recent"),
+        (LibrarySortOrder.Title, "Sort_TitleAZ"),
+        (LibrarySortOrder.Artist, "Sort_ArtistAZ"),
     ];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SortLabel), nameof(IsAlphabetical))]
     public partial LibrarySortOrder SortOrder { get; private set; }
 
-    public string SortLabel => SortOptions.First(o => o.Order == SortOrder).Label;
+    public string SortLabel => L.T(SortOptions.First(o => o.Order == SortOrder).LabelKey);
 
     public bool IsAlphabetical => SortOrder != LibrarySortOrder.Recent;
 
@@ -116,7 +120,7 @@ public sealed partial class LibraryViewModel : TrackListViewModel
     [RelayCommand]
     private async Task ChangeSortAsync()
     {
-        var choice = await _dialogs.ChooseAsync("Ordenar por", "Cancelar", SortOptions.Select(o => o.Label).ToList());
+        var choice = await _dialogs.ChooseAsync(L.T("Sort_By"), L.T("Common_Cancel"), SortOptions.Select(o => L.T(o.LabelKey)).ToList());
         if (choice is not { } index || SortOptions[index].Order == SortOrder)
             return;
 
@@ -124,6 +128,10 @@ public sealed partial class LibraryViewModel : TrackListViewModel
         _preferences?.Set(SortPreferenceKey, SortOrder.ToString());
         ApplyFilter();
     }
+
+    /// <summary>Asks which language the interface uses.</summary>
+    [RelayCommand]
+    private Task ChangeLanguageAsync() => _language?.ChooseAsync() ?? Task.CompletedTask;
 
     /// <summary>Position of the first visible song under <paramref name="letter"/>, or -1.</summary>
     public int IndexOfLetter(string letter)
@@ -153,16 +161,15 @@ public sealed partial class LibraryViewModel : TrackListViewModel
         _enrichmentProblems = status.Problems;
         var progress = status.Phase switch
         {
-            EnrichmentPhase.Covers when status.Total == 0 => "Revisando la biblioteca…",
-            EnrichmentPhase.Covers => $"Completando carátulas: {status.Done} de {status.Total}",
-            EnrichmentPhase.Loudness => $"Midiendo volumen: {status.Done} de {status.Total}",
+            EnrichmentPhase.Covers when status.Total == 0 => L.T("Enrichment_Checking"),
+            EnrichmentPhase.Covers => L.T("Enrichment_Covers", status.Done, status.Total),
+            EnrichmentPhase.Loudness => L.T("Enrichment_Loudness", status.Done, status.Total),
             _ => string.Empty,
         };
         var problems = status.Problems.Count switch
         {
             0 => string.Empty,
-            1 => "1 problema · Ver",
-            var count => $"{count} problemas · Ver",
+            var count => L.N("Enrichment_Problems", count),
         };
 
         EnrichmentText = string.Join("  ·  ", new[] { progress, problems }.Where(text => text.Length > 0));
@@ -177,7 +184,7 @@ public sealed partial class LibraryViewModel : TrackListViewModel
 
         var report = string.Join("\n", _enrichmentProblems);
         var preview = string.Join("\n", _enrichmentProblems.TakeLast(10));
-        return _dialogs.ShowErrorAsync($"Problemas al completar la biblioteca ({_enrichmentProblems.Count})", preview, report);
+        return _dialogs.ShowErrorAsync(L.T("Enrichment_ProblemsTitle", _enrichmentProblems.Count), preview, report);
     }
 
     protected override IEnumerable<TrackItemViewModel> AllItems => _allTracks;
@@ -226,10 +233,10 @@ public sealed partial class LibraryViewModel : TrackListViewModel
             return;
 
         var recover = await _dialogs.ConfirmAsync(
-            "¿Recuperar tu música?",
-            $"Encontramos música guardada en {MusicLocation} de una instalación anterior. Wired puede volver a agregarla junto con tus listas y Me gusta.",
-            "Recuperar",
-            "Ahora no");
+            L.T("Recovery_Title"),
+            L.T("Recovery_Message", MusicLocation),
+            L.T("Common_Recover"),
+            L.T("Common_NotNow"));
 
         if (recover)
             await RecoverCommand.ExecuteAsync(null);
@@ -241,7 +248,7 @@ public sealed partial class LibraryViewModel : TrackListViewModel
     {
         if (!await _musicFolder.RequestReadAccessAsync())
         {
-            await _dialogs.ShowToastAsync("Sin permiso no podemos leer la música guardada");
+            await _dialogs.ShowToastAsync(L.T("Recovery_NoPermission"));
             return;
         }
 
@@ -267,16 +274,16 @@ public sealed partial class LibraryViewModel : TrackListViewModel
     {
         var parts = new List<string>();
         if (tracks > 0)
-            parts.Add(tracks == 1 ? "1 canción" : $"{tracks} canciones");
+            parts.Add(L.N("Songs", tracks));
         if (collections.Playlists > 0)
-            parts.Add(collections.Playlists == 1 ? "1 lista" : $"{collections.Playlists} listas");
+            parts.Add(L.N("Playlists", collections.Playlists));
         if (collections.Likes > 0)
-            parts.Add(collections.Likes == 1 ? "1 me gusta" : $"{collections.Likes} me gusta");
+            parts.Add(L.N("LikesCount", collections.Likes));
 
         if (parts.Count > 0)
-            return $"Recuperamos {string.Join(", ", parts)}";
+            return L.T("Recovery_Found", string.Join(", ", parts));
 
-        return _allTracks.Count == 0 ? $"No encontramos música en {MusicLocation}" : "Tu biblioteca ya estaba completa";
+        return _allTracks.Count == 0 ? L.T("Recovery_NothingFound", MusicLocation) : L.T("Recovery_Complete");
     }
 
     /// <summary>Keeps the row of every track that is still there, so a reload does not rebuild the list.</summary>
@@ -300,15 +307,15 @@ public sealed partial class LibraryViewModel : TrackListViewModel
         }
     }
 
-    public override string RemoveLabel => "Eliminar del dispositivo";
+    public override string RemoveLabel => L.T("Library_RemoveFromDevice");
 
     public override async Task RemoveAsync(TrackItemViewModel item)
     {
         var confirmed = await _dialogs.ConfirmAsync(
-            "Eliminar canción",
-            $"¿Eliminar \"{item.Title}\" de tu biblioteca y de tus listas? El archivo se borrará de {MusicLocation}.",
-            "Eliminar",
-            "Cancelar");
+            L.T("Library_DeleteTitle"),
+            L.T("Library_DeleteMessage", item.Title, MusicLocation),
+            L.T("Common_Delete"),
+            L.T("Common_Cancel"));
 
         if (!confirmed)
             return;

@@ -3,6 +3,7 @@
     x:Class="Wired.App.Views.ImportProblemsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:ImportProblemsViewModel"
@@ -17,7 +18,7 @@
             <Label Grid.Column="1" Text="{Binding Title}" Style="{StaticResource SectionTitle}" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" />
             <Button
                 Grid.Column="2"
-                Text="Copiar lista"
+                Text="{l:Translate ImportProblems_Copy}"
                 IsVisible="{Binding IsListing}"
                 Style="{StaticResource SecondaryPill}"
                 HeightRequest="36"
@@ -50,7 +51,7 @@
         <!-- Choosing the version of one track -->
         <Grid Grid.Row="1" IsVisible="{Binding IsChoosing}" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="8">
             <VerticalStackLayout Padding="20,0" Spacing="2">
-                <Label Text="ELIGE LA VERSIÓN DE" FontSize="11" CharacterSpacing="1.2" TextColor="{StaticResource Accent}" FontFamily="OpenSansSemibold" />
+                <Label Text="{l:Translate ImportProblems_ChooseHeader}" FontSize="11" CharacterSpacing="1.2" TextColor="{StaticResource Accent}" FontFamily="OpenSansSemibold" />
                 <Label Text="{Binding Selected.Title}" Style="{StaticResource TrackTitle}" />
                 <Label Text="{Binding Selected.Artist}" Style="{StaticResource Caption}" />
             </VerticalStackLayout>
@@ -72,7 +73,7 @@
 
             <CollectionView Grid.Row="3" ItemsSource="{Binding Results}">
                 <CollectionView.Header>
-                    <Label Text="Toca para escuchar · Usar esta para descargarla" Style="{StaticResource Caption}" Margin="20,0,20,6" Opacity="0.7" />
+                    <Label Text="{l:Translate ImportProblems_Hint}" Style="{StaticResource Caption}" Margin="20,0,20,6" Opacity="0.7" />
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="vm:VersionOptionViewModel">
@@ -93,7 +94,7 @@
                                 </VerticalStackLayout>
                                 <Button
                                     Grid.Column="2"
-                                    Text="Usar esta"
+                                    Text="{l:Translate ImportProblems_UseThis}"
                                     Style="{StaticResource SecondaryPill}"
                                     HeightRequest="36"
                                     Padding="12,0"

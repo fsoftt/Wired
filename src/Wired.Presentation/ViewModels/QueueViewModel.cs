@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 using Wired.Presentation.Collections;
 using Wired.Presentation.Services;
@@ -8,7 +9,7 @@ using Wired.Presentation.Services;
 namespace Wired.Presentation.ViewModels;
 
 /// <summary>"A continuación": what plays now and what comes next, reorderable.</summary>
-public sealed partial class QueueViewModel(IPlaybackService playback, IUiDispatcher dispatcher) : ObservableObject
+public sealed partial class QueueViewModel(IPlaybackService playback, IUiDispatcher dispatcher) : LocalizedObservableObject
 {
     private bool _isActive;
     private bool _isApplyingReorder;
@@ -25,9 +26,8 @@ public sealed partial class QueueViewModel(IPlaybackService playback, IUiDispatc
 
     public string Summary => Upcoming.Count switch
     {
-        0 => "No hay nada más en la cola",
-        1 => "1 canción a continuación",
-        var n => $"{n} canciones a continuación",
+        0 => L.T("Queue_Empty"),
+        var n => L.N("QueueUpcoming", n),
     };
 
     public void Activate()

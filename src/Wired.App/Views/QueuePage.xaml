@@ -3,6 +3,7 @@
     x:Class="Wired.App.Views.QueuePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:QueueViewModel"
@@ -14,10 +15,10 @@
         <!-- Top bar -->
         <Grid Padding="12,0,20,0" ColumnDefinitions="Auto,*,Auto">
             <ImageButton Source="ic_chevron_down.png" Clicked="OnCloseClicked" />
-            <Label Grid.Column="1" Text="A CONTINUACIÓN" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+            <Label Grid.Column="1" Text="{l:Translate Queue_Title}" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
             <Button
                 Grid.Column="2"
-                Text="Vaciar"
+                Text="{l:Translate Queue_Clear}"
                 IsVisible="{Binding HasUpcoming}"
                 Style="{StaticResource SecondaryPill}"
                 HeightRequest="36"
@@ -31,7 +32,7 @@
             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
                 <controls:Artwork Source="{Binding Current.ThumbnailUrl}" WidthRequest="56" HeightRequest="56" />
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
-                    <Label Text="SONANDO AHORA" FontSize="11" CharacterSpacing="1.2" TextColor="{StaticResource Accent}" FontFamily="OpenSansSemibold" />
+                    <Label Text="{l:Translate Queue_NowPlayingHeader}" FontSize="11" CharacterSpacing="1.2" TextColor="{StaticResource Accent}" FontFamily="OpenSansSemibold" />
                     <Label Text="{Binding Current.Title}" Style="{StaticResource TrackTitle}" />
                     <Label Text="{Binding Current.Artist}" Style="{StaticResource Caption}" />
                 </VerticalStackLayout>
@@ -55,7 +56,7 @@
                     <SwipeView BackgroundColor="Transparent">
                         <SwipeView.RightItems>
                             <SwipeItems Mode="Execute">
-                                <SwipeItem Text="Quitar" IconImageSource="ic_delete.png" BackgroundColor="{StaticResource Danger}" Command="{Binding RemoveCommand}" />
+                                <SwipeItem Text="{l:Translate Common_Remove}" IconImageSource="ic_delete.png" BackgroundColor="{StaticResource Danger}" Command="{Binding RemoveCommand}" />
                             </SwipeItems>
                         </SwipeView.RightItems>
                         <controls:Pressable Command="{Binding PlayCommand}" BackgroundColor="{StaticResource Background}">

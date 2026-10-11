@@ -12,7 +12,7 @@ namespace Wired.Presentation.ViewModels;
 /// Behavior shared by every screen listing downloaded tracks: play, shuffle,
 /// highlight the playing track and keep likes in sync.
 /// </summary>
-public abstract partial class TrackListViewModel : ObservableObject
+public abstract partial class TrackListViewModel : LocalizedObservableObject
 {
     private readonly IUiDispatcher _dispatcher;
     private bool _isActive;

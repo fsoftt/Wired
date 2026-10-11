@@ -3,10 +3,11 @@
     x:Class="Wired.App.Views.PlaylistsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:PlaylistsViewModel"
-    Title="Listas">
+    Title="{l:Translate Tab_Playlists}">
 
     <Grid RowDefinitions="*,Auto">
 
@@ -23,7 +24,7 @@
             <CollectionView.Header>
                 <VerticalStackLayout Padding="20,28,20,8" Spacing="18">
                     <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
-                        <Label Text="Tus listas" Style="{StaticResource DisplayTitle}" VerticalOptions="Center" />
+                        <Label Text="{l:Translate Playlists_Heading}" Style="{StaticResource DisplayTitle}" VerticalOptions="Center" />
                         <Button
                             Grid.Column="1"
                             Text="CSV"
@@ -35,7 +36,7 @@
                             Command="{Binding ImportCommand}" />
                         <Button
                             Grid.Column="2"
-                            Text="Nueva"
+                            Text="{l:Translate Playlists_New}"
                             ImageSource="ic_add_small.png"
                             Style="{StaticResource PrimaryPill}"
                             HeightRequest="40"
@@ -57,7 +58,7 @@
                                 <Image Source="ic_heart_white.png" WidthRequest="34" HeightRequest="34" />
                             </Border>
                             <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
-                                <Label Text="Me gusta" FontFamily="OpenSansSemibold" FontSize="20" TextColor="White" />
+                                <Label Text="{l:Translate Likes_Title}" FontFamily="OpenSansSemibold" FontSize="20" TextColor="White" />
                                 <Label Text="{Binding LikedSummary}" TextColor="#DDFFFFFF" />
                             </VerticalStackLayout>
                         </Grid>
@@ -71,7 +72,7 @@
                             <DataTemplate x:DataType="vm:ImportSessionViewModel">
                                 <Border Style="{StaticResource Card}" Padding="16,14">
                                     <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="6">
-                                        <Label Text="{Binding Name, StringFormat='Importando «{0}»'}" FontFamily="OpenSansSemibold" MaxLines="1" LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding ImportingText}" FontFamily="OpenSansSemibold" MaxLines="1" LineBreakMode="TailTruncation" />
                                         <ImageButton Grid.Column="1" Grid.RowSpan="2" Source="ic_close.png" Opacity="0.6" IsVisible="{Binding IsRunning}" Command="{Binding CancelCommand}" />
                                         <ImageButton Grid.Column="1" Grid.RowSpan="2" Source="ic_check.png" IsVisible="{Binding IsFinished}" Command="{Binding DismissCommand}" />
                                         <Label Grid.Row="1" Text="{Binding ProgressText}" Style="{StaticResource Caption}" />
@@ -88,14 +89,14 @@
                         </BindableLayout.ItemTemplate>
                     </VerticalStackLayout>
 
-                    <Label Text="Listas de reproducción" Style="{StaticResource SectionTitle}" IsVisible="{Binding HasPlaylists}" />
+                    <Label Text="{l:Translate Playlists_Section}" Style="{StaticResource SectionTitle}" IsVisible="{Binding HasPlaylists}" />
                 </VerticalStackLayout>
             </CollectionView.Header>
 
             <CollectionView.EmptyView>
                 <VerticalStackLayout Spacing="8" Padding="40,24">
-                    <Label Text="Aún no tienes listas" FontFamily="OpenSansSemibold" FontSize="17" HorizontalTextAlignment="Center" />
-                    <Label Text="Crea una con «Nueva», desde el botón de lista de cualquier canción, o importa tu música de Spotify con «CSV» (archivo de exportify.net)." Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
+                    <Label Text="{l:Translate Playlists_EmptyTitle}" FontFamily="OpenSansSemibold" FontSize="17" HorizontalTextAlignment="Center" />
+                    <Label Text="{l:Translate Playlists_EmptyMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
             </CollectionView.EmptyView>
 

@@ -89,6 +89,19 @@ Los ViewModels no conocen MAUI (navegación, diálogos y el hilo de UI se inyect
 como interfaces), por eso se pueden testear con un `dotnet test` normal.
 `Wired.App/ServiceCollectionExtensions.cs` es la raíz de composición.
 
+## Idiomas
+
+Wired está en **español** (idioma base y de respaldo), **English** y **Português** (Brasil). Por defecto sigue el idioma
+del teléfono (español, inglés o portugués; cualquier otro usa inglés) y se puede cambiar a mano con el botón del globo
+de la cabecera de **Biblioteca** (Automático / Español / English / Português). El cambio se aplica al instante y se recuerda.
+
+Los textos viven en `src/Wired.Core/Localization/Strings.resx` (español) y `Strings.en.resx` / `Strings.pt.resx`.
+En XAML se usan con `{l:Translate Clave}` y en C# con `L.T("Clave")` (o `L.N("Songs", n)` para plurales con
+`Songs_One` / `Songs_Other`). Para **agregar un idioma**: copia `Strings.resx` a `Strings.<cultura>.resx` (por ejemplo
+`Strings.fr.resx`), traduce los valores, agrega el código en `AppLanguage.Supported` y una opción en
+`LanguageSettings`. Los plugins pueden traducirse igual con sus propios `.resx` y `CultureInfo.CurrentUICulture`.
+Un test comprueba que todas las claves existan, sin vacíos, en todos los idiomas.
+
 ## Crear un plugin nuevo
 
 1. Crea un proyecto de librería `Wired.Plugins.MiFuente` que referencie `Wired.Core`.

@@ -4,6 +4,7 @@ using Android.Media.Audiofx;
 using Android.OS;
 using Wired.Core.Abstractions;
 using Wired.Core.Audio;
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 using Context = Android.Content.Context;
 
@@ -95,7 +96,7 @@ public sealed class AndroidAudioPlayer : IAudioPlayer
         void OnError(object? sender, MediaPlayer.ErrorEventArgs e)
         {
             e.Handled = true;
-            prepared.TrySetException(new IOException($"No se pudo abrir el audio ({e.What}, {e.Extra})."));
+            prepared.TrySetException(new IOException(L.T("Audio_OpenFailed", e.What, e.Extra)));
         }
 
         player.Prepared += OnPrepared;

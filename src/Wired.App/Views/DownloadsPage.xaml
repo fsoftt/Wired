@@ -3,10 +3,11 @@
     x:Class="Wired.App.Views.DownloadsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:DownloadsViewModel"
-    Title="Descargas">
+    Title="{l:Translate Tab_Downloads}">
 
     <Grid RowDefinitions="Auto,*,Auto">
 
@@ -22,12 +23,12 @@
         <!-- Header -->
         <Grid Padding="20,28,20,12" ColumnDefinitions="*,Auto">
             <VerticalStackLayout Spacing="4">
-                <Label Text="Descargas" Style="{StaticResource DisplayTitle}" />
+                <Label Text="{l:Translate Tab_Downloads}" Style="{StaticResource DisplayTitle}" />
                 <Label Text="{Binding Summary}" Style="{StaticResource Caption}" />
             </VerticalStackLayout>
             <Button
                 Grid.Column="1"
-                Text="Limpiar"
+                Text="{l:Translate Common_Clear}"
                 IsVisible="{Binding HasFinished}"
                 Style="{StaticResource SecondaryPill}"
                 HeightRequest="40"
@@ -42,8 +43,8 @@
                 <Border Style="{StaticResource Artwork}" StrokeShape="RoundRectangle 36" WidthRequest="96" HeightRequest="96">
                     <Image Source="ic_download.png" WidthRequest="44" HeightRequest="44" />
                 </Border>
-                <Label Text="Sin descargas" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
-                <Label Text="Las canciones que descargues aparecerán aquí mientras se procesan." Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Downloads_EmptyTitle}" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Downloads_EmptyMessage}" Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
 
             <CollectionView IsVisible="{Binding HasJobs}" ItemsSource="{Binding Jobs}">
@@ -55,12 +56,12 @@
                         <SwipeView BackgroundColor="Transparent">
                             <SwipeView.LeftItems>
                                 <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                    <SwipeItem Text="{l:Translate Swipe_AddToQueue}" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                    <SwipeItem Text="{l:Translate Swipe_AddToQueue}" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
                             <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" BackgroundColor="{StaticResource Background}">

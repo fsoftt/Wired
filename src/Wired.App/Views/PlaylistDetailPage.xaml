@@ -3,6 +3,7 @@
     x:Class="Wired.App.Views.PlaylistDetailPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:PlaylistDetailViewModel"
@@ -47,15 +48,15 @@
                     </Grid>
 
                     <HorizontalStackLayout IsVisible="{Binding HasTracks}" Padding="8,0,0,0" Spacing="12">
-                        <Button Text="Reproducir" ImageSource="ic_play_small.png" Style="{StaticResource PrimaryPill}" Command="{Binding PlayAllCommand}" />
-                        <Button Text="Aleatorio" ImageSource="ic_shuffle_small.png" Style="{StaticResource SecondaryPill}" Command="{Binding ShuffleCommand}" />
+                        <Button Text="{l:Translate Common_Play}" ImageSource="ic_play_small.png" Style="{StaticResource PrimaryPill}" Command="{Binding PlayAllCommand}" />
+                        <Button Text="{l:Translate Common_Shuffle}" ImageSource="ic_shuffle_small.png" Style="{StaticResource SecondaryPill}" Command="{Binding ShuffleCommand}" />
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </CollectionView.Header>
 
             <CollectionView.EmptyView>
                 <VerticalStackLayout Spacing="8" Padding="40,32">
-                    <Label Text="Nada por aquí todavía" FontFamily="OpenSansSemibold" FontSize="17" HorizontalTextAlignment="Center" />
+                    <Label Text="{l:Translate Common_NothingYet}" FontFamily="OpenSansSemibold" FontSize="17" HorizontalTextAlignment="Center" />
                     <Label Text="{Binding EmptyMessage}" Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
             </CollectionView.EmptyView>
@@ -69,12 +70,12 @@
                     <SwipeView BackgroundColor="Transparent">
                         <SwipeView.LeftItems>
                             <SwipeItems Mode="Execute">
-                                <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                <SwipeItem Text="{l:Translate Swipe_AddToQueue}" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
                             </SwipeItems>
                         </SwipeView.LeftItems>
                         <SwipeView.RightItems>
                             <SwipeItems Mode="Execute">
-                                <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                <SwipeItem Text="{l:Translate Swipe_AddToQueue}" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
                             </SwipeItems>
                         </SwipeView.RightItems>
                         <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" BackgroundColor="{StaticResource Background}">

@@ -1,4 +1,5 @@
 using Wired.Core.Abstractions;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 
 namespace Wired.Core.Collections;
@@ -97,9 +98,9 @@ public sealed class PlaylistService(IPlaylistRepository repository, ITrackLibrar
     {
         var trimmed = name.Trim();
         if (trimmed.Length == 0)
-            throw new ArgumentException("El nombre de la lista no puede estar vacío.", nameof(name));
+            throw new ArgumentException(L.T("Playlist_NameEmpty"), nameof(name));
         if (trimmed.Length > Playlist.MaxNameLength)
-            throw new ArgumentException($"El nombre no puede superar los {Playlist.MaxNameLength} caracteres.", nameof(name));
+            throw new ArgumentException(L.T("Playlist_NameTooLong", Playlist.MaxNameLength), nameof(name));
 
         return trimmed;
     }

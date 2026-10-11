@@ -3,10 +3,11 @@
     x:Class="Wired.App.Views.SearchPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:SearchViewModel"
-    Title="Buscar">
+    Title="{l:Translate Tab_Search}">
 
     <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
 
@@ -23,8 +24,8 @@
 
         <!-- Header -->
         <VerticalStackLayout Padding="20,28,20,16" Spacing="4">
-            <Label Text="Descubre" Style="{StaticResource DisplayTitle}" />
-            <Label Text="Busca música en tus fuentes y llévala contigo" Style="{StaticResource Caption}" />
+            <Label Text="{l:Translate Search_Heading}" Style="{StaticResource DisplayTitle}" />
+            <Label Text="{l:Translate Search_Subtitle}" Style="{StaticResource Caption}" />
         </VerticalStackLayout>
 
         <!-- Search box -->
@@ -56,7 +57,7 @@
 
         <!-- Source (plugin) selector -->
         <VerticalStackLayout Grid.Row="2" Padding="20,18,0,8" Spacing="10" IsVisible="{Binding HasSources}">
-            <Label Text="Fuente" Style="{StaticResource SectionTitle}" />
+            <Label Text="{l:Translate Search_Source}" Style="{StaticResource SectionTitle}" />
             <CollectionView
                 ItemsSource="{Binding Plugins}"
                 HeightRequest="44"
@@ -102,8 +103,8 @@
                 <Border Style="{StaticResource Artwork}" StrokeShape="RoundRectangle 36" WidthRequest="96" HeightRequest="96">
                     <Image Source="ic_music_note.png" WidthRequest="48" HeightRequest="48" />
                 </Border>
-                <Label Text="No hay fuentes de música instaladas" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
-                <Label Text="Instala un plugin de fuente para buscar música. Tu biblioteca local sigue disponible." Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Search_NoSources}" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Search_NoSourcesMessage}" Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
 
             <!-- Idle -->
@@ -111,27 +112,27 @@
                 <Border Style="{StaticResource Artwork}" StrokeShape="RoundRectangle 36" WidthRequest="96" HeightRequest="96">
                     <Image Source="ic_music_note.png" WidthRequest="48" HeightRequest="48" />
                 </Border>
-                <Label Text="¿Qué quieres escuchar hoy?" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
-                <Label Text="Toca una canción para escucharla al instante o descárgala para tenerla sin conexión." Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Search_IdleTitle}" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Search_IdleMessage}" Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
 
             <!-- Searching -->
             <VerticalStackLayout IsVisible="{Binding IsSearching}" Spacing="16" VerticalOptions="Center">
                 <ActivityIndicator IsRunning="{Binding IsSearching}" WidthRequest="48" HeightRequest="48" />
-                <Label Text="Buscando…" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Search_Searching}" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
 
             <!-- No results -->
             <VerticalStackLayout IsVisible="{Binding HasNoResults}" Spacing="8" VerticalOptions="Center" Padding="40">
-                <Label Text="Sin resultados" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
-                <Label Text="Prueba con otras palabras o con otra fuente." Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Search_NoResultsTitle}" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Search_NoResultsMessage}" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
 
             <!-- Error -->
             <VerticalStackLayout IsVisible="{Binding HasError}" Spacing="12" VerticalOptions="Center" Padding="40">
                 <Image Source="ic_error.png" WidthRequest="48" HeightRequest="48" Opacity="0.8" />
                 <Label Text="{Binding ErrorMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
-                <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding SearchCommand}" />
+                <Button Text="{l:Translate Common_Retry}" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding SearchCommand}" />
             </VerticalStackLayout>
 
             <!-- Results -->
@@ -147,12 +148,12 @@
                         <SwipeView BackgroundColor="Transparent">
                             <SwipeView.LeftItems>
                                 <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                    <SwipeItem Text="{l:Translate Swipe_AddToQueue}" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                    <SwipeItem Text="{l:Translate Swipe_AddToQueue}" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
                             <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" BackgroundColor="{StaticResource Background}">
@@ -178,7 +179,7 @@
                                             </Label.FormattedText>
                                         </Label>
                                         <ProgressBar IsVisible="{Binding IsDownloading}" Progress="{Binding Progress}" HeightRequest="3" Margin="0,4,0,0" />
-                                        <Label IsVisible="{Binding IsQueued}" Text="En cola…" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" />
+                                        <Label IsVisible="{Binding IsQueued}" Text="{l:Translate Search_Queued}" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" />
                                     </VerticalStackLayout>
 
                                     <!-- Action: download / cancel / downloaded -->

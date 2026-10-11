@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Wired.Core.Abstractions;
 using Wired.Core.Downloads;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 using Wired.Core.Playback;
 using Wired.Core.Throttling;
@@ -18,7 +19,7 @@ namespace Wired.Presentation.ViewModels;
 /// The Home tab: "Tendencias", "Top Colombia" and "Para ti". Each section loads (and fails) on its own and shows its
 /// cached copy first, so opening the app does not wait for, or repeat, requests to the sources.
 /// </summary>
-public sealed partial class HomeViewModel : ObservableObject, IRecipient<TrackRemovedMessage>
+public sealed partial class HomeViewModel : LocalizedObservableObject, IRecipient<TrackRemovedMessage>
 {
     private readonly GetHomeFeedUseCase _feed;
     private readonly IDownloadQueue _downloads;
@@ -55,22 +56,22 @@ public sealed partial class HomeViewModel : ObservableObject, IRecipient<TrackRe
     }
 
     /// <summary>"Top global · Source" under the section title; just "Top global" when no source can provide charts.</summary>
-    public string TrendingSubtitle => WithSources("Top global");
+    public string TrendingSubtitle => WithSources(L.T("Home_TrendingSubtitle"));
 
-    public string TrendingColombiaSubtitle => WithSources("Lo más escuchado en Colombia");
+    public string TrendingColombiaSubtitle => WithSources(L.T("Home_ColombiaSubtitle"));
 
     /// <summary>Shown when a chart section is empty: explains the cause when no installed source offers charts.</summary>
     public string TrendingEmptyText => HasDiscoverableSources
-        ? "No hay tendencias por ahora."
-        : "Ninguna fuente instalada ofrece tendencias.";
+        ? L.T("Home_TrendingEmpty")
+        : L.T("Home_NoTrendingSources");
 
     public string TrendingColombiaEmptyText => HasDiscoverableSources
-        ? "No hay canciones del Top Colombia por ahora."
-        : "Ninguna fuente instalada ofrece tendencias.";
+        ? L.T("Home_ColombiaEmpty")
+        : L.T("Home_NoTrendingSources");
 
     public string ForYouEmptyText => HasDiscoverableSources
-        ? "Descarga canciones o márcalas con Me gusta y aquí verás música parecida."
-        : "Instala una fuente de música que sugiera canciones para ver recomendaciones.";
+        ? L.T("Home_ForYouEmpty")
+        : L.T("Home_ForYouNoSources");
 
     private bool HasDiscoverableSources => _sourceNames.Count > 0;
 
@@ -218,8 +219,8 @@ public sealed partial class HomeViewModel : ObservableObject, IRecipient<TrackRe
 
             Notice = section.Issue switch
             {
-                HomeFeedIssue.RateLimited => "La fuente pidió esperar; se actualizará más tarde.",
-                HomeFeedIssue.Failed => "No pudimos actualizar; mostramos lo último que guardamos.",
+                HomeFeedIssue.RateLimited => L.T("Home_NoticeRateLimited"),
+                HomeFeedIssue.Failed => L.T("Home_NoticeFailed"),
                 _ => Notice,
             };
         }
@@ -230,8 +231,8 @@ public sealed partial class HomeViewModel : ObservableObject, IRecipient<TrackRe
         catch (Exception error)
         {
             var message = error is SourceRateLimitedException
-                ? "La fuente pidió esperar. Inténtalo de nuevo en unos minutos."
-                : "No pudimos conectar con la fuente. Revisa tu conexión e inténtalo de nuevo.";
+                ? L.T("Home_ErrorRateLimited")
+                : L.T("Home_ErrorConnect");
             switch (kind)
             {
                 case HomeSectionKind.Trending:

@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Import;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 using Wired.Core.Playback;
 using Wired.Core.UseCases;
@@ -31,7 +32,7 @@ public sealed partial class ImportProblemsViewModel(
     public ObservableCollection<VersionOptionViewModel> Results { get; } = [];
 
     [ObservableProperty]
-    public partial string Title { get; private set; } = "Sin importar";
+    public partial string Title { get; private set; } = L.T("ImportProblems_Title");
 
     [ObservableProperty]
     public partial string Summary { get; private set; } = string.Empty;
@@ -132,7 +133,7 @@ public sealed partial class ImportProblemsViewModel(
                 Results.Add(new VersionOptionViewModel(track, PreviewAsync, ChooseAsync));
 
             if (Results.Count == 0)
-                SearchMessage = "Sin resultados. Prueba con otras palabras.";
+                SearchMessage = L.T("ImportProblems_NoResults");
         }
         catch (OperationCanceledException)
         {
@@ -153,8 +154,8 @@ public sealed partial class ImportProblemsViewModel(
     private Task CopyListAsync()
     {
         var lines = Problems.Select(p => $"• {p.Title} ({p.Detail})").ToList();
-        var preview = string.Join("\n", lines.Take(15)) + (lines.Count > 15 ? $"\n… y {lines.Count - 15} más" : string.Empty);
-        return dialogs.ShowErrorAsync($"Sin importar ({lines.Count})", preview, string.Join("\n", lines));
+        var preview = string.Join("\n", lines.Take(15)) + (lines.Count > 15 ? "\n" + L.T("ImportProblems_CopyMore", lines.Count - 15) : string.Empty);
+        return dialogs.ShowErrorAsync(L.T("ImportProblems_CopyTitle", lines.Count), preview, string.Join("\n", lines));
     }
 
     private Task PreviewAsync(RemoteTrack track) => playback.PlayAsync([PlaybackItem.FromStream(track)]);
@@ -166,7 +167,7 @@ public sealed partial class ImportProblemsViewModel(
 
         await imports.ChooseMatchAsync(_session.Id, problem.Item.Index, track);
         CloseChooser();
-        await dialogs.ShowToastAsync($"Descargando \"{track.Title}\"");
+        await dialogs.ShowToastAsync(L.T("Download_Starting", track.Title));
     }
 
     private void OnSessionChanged(object? sender, PlaylistImportSession session)
@@ -183,7 +184,7 @@ public sealed partial class ImportProblemsViewModel(
 
     private void Fill()
     {
-        Title = _session is null ? "Sin importar" : $"Sin importar · {_session.Name}";
+        Title = _session is null ? L.T("ImportProblems_Title") : L.T("ImportProblems_TitleNamed", _session.Name);
 
         var existing = Problems.ToDictionary(p => p.Item.Index);
         var rows = new List<ImportProblemViewModel>();
@@ -199,9 +200,9 @@ public sealed partial class ImportProblemsViewModel(
         IsEmpty = rows.Count == 0;
         Summary = rows.Count switch
         {
-            0 => "No queda nada por resolver",
-            1 => "1 canción. Toca para elegir la versión correcta.",
-            _ => $"{rows.Count} canciones. Toca una para elegir la versión correcta.",
+            0 => L.T("ImportProblems_Done"),
+            1 => L.T("ImportProblems_SummaryOne"),
+            _ => L.T("ImportProblems_SummaryOther", rows.Count),
         };
     }
 }
@@ -214,7 +215,7 @@ public sealed partial class ImportProblemViewModel(ImportItem item, Func<ImportP
 
     public string Artist => string.Join(", ", Item.Track.Artists);
 
-    public string Detail => Item.Status == ImportItemStatus.NotFound ? "No encontrada" : $"Error: {Item.Error}";
+    public string Detail => Item.Status == ImportItemStatus.NotFound ? L.T("ImportProblems_NotFound") : L.T("Common_Error", Item.Error);
 
     [RelayCommand]
     private Task SelectAsync() => select(this);

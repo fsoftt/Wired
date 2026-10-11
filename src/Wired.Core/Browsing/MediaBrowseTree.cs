@@ -1,6 +1,7 @@
 using Wired.Core.Abstractions;
 using Wired.Core.Collections;
 using Wired.Core.Import;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 using Wired.Core.Playback;
 
@@ -37,9 +38,9 @@ public sealed class MediaBrowseTree(ITrackLibrary library, PlaylistService playl
                 var lists = await playlists.GetAllAsync(cancellationToken);
                 return
                 [
-                    new BrowseNode(LibraryId, "Biblioteca", Count(all.Count), null, IsPlayable: false),
-                    new BrowseNode(LikesId, "Me gusta", Count(likes.Count), null, IsPlayable: false),
-                    new BrowseNode(PlaylistsId, "Listas", lists.Count == 1 ? "1 lista" : $"{lists.Count} listas", null, IsPlayable: false),
+                    new BrowseNode(LibraryId, L.T("Tab_Library"), Count(all.Count), null, IsPlayable: false),
+                    new BrowseNode(LikesId, L.T("Likes_Title"), Count(likes.Count), null, IsPlayable: false),
+                    new BrowseNode(PlaylistsId, L.T("Tab_Playlists"), L.N("Playlists", lists.Count), null, IsPlayable: false),
                 ];
 
             case PlaylistsId:
@@ -121,7 +122,7 @@ public sealed class MediaBrowseTree(ITrackLibrary library, PlaylistService playl
     {
         var nodes = new List<BrowseNode>(tracks.Count + 1);
         if (tracks.Count > 1)
-            nodes.Add(new BrowseNode(ShufflePrefix + context, "Aleatorio", Count(tracks.Count), null, IsPlayable: true));
+            nodes.Add(new BrowseNode(ShufflePrefix + context, L.T("Common_Shuffle"), Count(tracks.Count), null, IsPlayable: true));
 
         nodes.AddRange(tracks.Select(t => new BrowseNode($"{TrackPrefix}{context}|{t.Id:N}", t.Title, t.Artist, t.Artwork, IsPlayable: true)));
         return nodes;
@@ -129,5 +130,5 @@ public sealed class MediaBrowseTree(ITrackLibrary library, PlaylistService playl
 
     private static List<PlaybackItem> ToItems(IEnumerable<LocalTrack> tracks) => tracks.Select(PlaybackItem.FromLocal).ToList();
 
-    private static string Count(int count) => count == 1 ? "1 canción" : $"{count} canciones";
+    private static string Count(int count) => L.N("Songs", count);
 }

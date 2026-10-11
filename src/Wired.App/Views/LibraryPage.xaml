@@ -3,10 +3,11 @@
     x:Class="Wired.App.Views.LibraryPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:LibraryViewModel"
-    Title="Biblioteca">
+    Title="{l:Translate Tab_Library}">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
@@ -22,12 +23,15 @@
 
         <!-- Header -->
         <VerticalStackLayout Padding="20,28,20,12" Spacing="4">
-            <Label Text="Tu biblioteca" Style="{StaticResource DisplayTitle}" />
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="{l:Translate Library_Heading}" Style="{StaticResource DisplayTitle}" />
+                <ImageButton Grid.Column="1" Source="ic_language.png" WidthRequest="40" HeightRequest="40" Padding="8" Opacity="0.7" VerticalOptions="Center" Command="{Binding ChangeLanguageCommand}" SemanticProperties.Description="{l:Translate Language_Title}" />
+            </Grid>
             <Label Style="{StaticResource Caption}">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{Binding Summary}" />
-                        <Span Text="  ·  guardada en " />
+                        <Span Text="{l:Translate Library_SavedIn}" />
                         <Span Text="{Binding MusicLocation}" />
                     </FormattedString>
                 </Label.FormattedText>
@@ -43,9 +47,9 @@
             </Label>
 
             <HorizontalStackLayout IsVisible="{Binding HasTracks}" Spacing="12" Margin="0,16,0,0">
-                <Button Text="Reproducir" ImageSource="ic_play_small.png" Style="{StaticResource PrimaryPill}" Command="{Binding PlayAllCommand}" />
-                <Button Text="Aleatorio" ImageSource="ic_shuffle_small.png" Style="{StaticResource SecondaryPill}" Command="{Binding ShuffleCommand}" />
-                <ImageButton Source="ic_retry.png" WidthRequest="40" HeightRequest="40" Padding="8" Opacity="0.7" VerticalOptions="Center" Command="{Binding RecoverCommand}" SemanticProperties.Description="Recuperar música de la carpeta" />
+                <Button Text="{l:Translate Common_Play}" ImageSource="ic_play_small.png" Style="{StaticResource PrimaryPill}" Command="{Binding PlayAllCommand}" />
+                <Button Text="{l:Translate Common_Shuffle}" ImageSource="ic_shuffle_small.png" Style="{StaticResource SecondaryPill}" Command="{Binding ShuffleCommand}" />
+                <ImageButton Source="ic_retry.png" WidthRequest="40" HeightRequest="40" Padding="8" Opacity="0.7" VerticalOptions="Center" Command="{Binding RecoverCommand}" SemanticProperties.Description="{l:Translate Library_RecoverDescription}" />
             </HorizontalStackLayout>
         </VerticalStackLayout>
 
@@ -54,7 +58,7 @@
             <Border Padding="14,0" Style="{StaticResource Card}">
                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                     <Image Source="ic_search.png" WidthRequest="20" HeightRequest="20" Opacity="0.6" />
-                    <Entry Grid.Column="1" Text="{Binding Filter}" Placeholder="Filtrar por título o artista" ClearButtonVisibility="WhileEditing" />
+                    <Entry Grid.Column="1" Text="{Binding Filter}" Placeholder="{l:Translate Library_FilterPlaceholder}" ClearButtonVisibility="WhileEditing" />
                 </Grid>
             </Border>
             <Button
@@ -66,7 +70,7 @@
                 FontSize="13"
                 VerticalOptions="Fill"
                 Command="{Binding ChangeSortCommand}"
-                SemanticProperties.Description="Ordenar" />
+                SemanticProperties.Description="{l:Translate Sort_Description}" />
         </Grid>
 
         <Grid Grid.Row="2">
@@ -77,9 +81,9 @@
                 <Border Style="{StaticResource Artwork}" StrokeShape="RoundRectangle 36" WidthRequest="96" HeightRequest="96">
                     <Image Source="ic_library.png" WidthRequest="44" HeightRequest="44" />
                 </Border>
-                <Label Text="Aún no tienes canciones" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
-                <Label Text="Ve a la pestaña Buscar, encuentra algo que te guste y descárgalo." Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
-                <Button Text="¿Reinstalaste Wired? Recupera tu música y listas" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Margin="0,12,0,0" Command="{Binding RecoverCommand}" />
+                <Label Text="{l:Translate Library_EmptyTitle}" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                <Label Text="{l:Translate Library_EmptyMessage}" Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
+                <Button Text="{l:Translate Library_RecoverButton}" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Margin="0,12,0,0" Command="{Binding RecoverCommand}" />
             </VerticalStackLayout>
 
             <CollectionView x:Name="TracksList" IsVisible="{Binding HasTracks}" ItemsSource="{Binding Tracks}">
@@ -90,7 +94,7 @@
                     </DataTrigger>
                 </CollectionView.Triggers>
                 <CollectionView.EmptyView>
-                    <Label Text="Nada coincide con el filtro" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" Margin="0,40" />
+                    <Label Text="{l:Translate Library_NoMatch}" Style="{StaticResource Caption}" HorizontalTextAlignment="Center" Margin="0,40" />
                 </CollectionView.EmptyView>
                 <CollectionView.Footer>
                     <BoxView HeightRequest="12" Color="Transparent" />
@@ -100,12 +104,12 @@
                         <SwipeView BackgroundColor="Transparent">
                             <SwipeView.LeftItems>
                                 <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                    <SwipeItem Text="{l:Translate Swipe_AddToQueue}" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Execute">
-                                    <SwipeItem Text="A la cola" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
+                                    <SwipeItem Text="{l:Translate Swipe_AddToQueue}" IconImageSource="ic_queue_add.png" BackgroundColor="{StaticResource Primary}" Command="{Binding AddToQueueCommand}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
                             <controls:Pressable Command="{Binding PlayCommand}" LongPressCommand="{Binding ShowMenuCommand}" BackgroundColor="{StaticResource Background}">

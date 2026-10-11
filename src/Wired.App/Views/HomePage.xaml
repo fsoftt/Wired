@@ -3,10 +3,11 @@
     x:Class="Wired.App.Views.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:Wired.App.Localization"
     xmlns:controls="clr-namespace:Wired.App.Controls"
     xmlns:vm="clr-namespace:Wired.Presentation.ViewModels;assembly=Wired.Presentation"
     x:DataType="vm:HomeViewModel"
-    Title="Inicio">
+    Title="{l:Translate Tab_Home}">
 
     <ContentPage.Resources>
         <!-- Sizes derived from the page width; HomePage.xaml.cs updates them when the window changes -->
@@ -94,7 +95,7 @@
                         </Label>
                         <Label Text="{Binding Artist}" Style="{StaticResource Caption}" />
                         <ProgressBar IsVisible="{Binding IsDownloading}" Progress="{Binding Progress}" HeightRequest="3" />
-                        <Label IsVisible="{Binding IsQueued}" Text="En cola…" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" />
+                        <Label IsVisible="{Binding IsQueued}" Text="{l:Translate Search_Queued}" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" />
                     </VerticalStackLayout>
 
                     <Grid Grid.Column="2" VerticalOptions="Center">
@@ -146,14 +147,14 @@
 
                     <!-- Header -->
                     <VerticalStackLayout Padding="20,28,20,8" Spacing="4">
-                        <Label Text="Inicio" Style="{StaticResource DisplayTitle}" />
-                        <Label Text="Lo que suena ahora y música para ti" Style="{StaticResource Caption}" />
+                        <Label Text="{l:Translate Tab_Home}" Style="{StaticResource DisplayTitle}" />
+                        <Label Text="{l:Translate Home_Subtitle}" Style="{StaticResource Caption}" />
                         <Label IsVisible="{Binding HasNotice}" Text="{Binding Notice}" Style="{StaticResource Caption}" TextColor="{StaticResource Highlight}" Margin="0,6,0,0" />
                     </VerticalStackLayout>
 
                     <!-- Tendencias -->
                     <VerticalStackLayout Padding="20,16,20,4" Spacing="2">
-                        <Label Text="Tendencias" Style="{StaticResource HomeSectionTitle}" />
+                        <Label Text="{l:Translate Home_Trending}" Style="{StaticResource HomeSectionTitle}" />
                         <Label Text="{Binding TrendingSubtitle}" Style="{StaticResource Caption}" />
                     </VerticalStackLayout>
 
@@ -183,7 +184,7 @@
                     <VerticalStackLayout IsVisible="{Binding HasTrendingError}" Spacing="12" Padding="40,24">
                         <Image Source="ic_error.png" WidthRequest="40" HeightRequest="40" Opacity="0.8" />
                         <Label Text="{Binding TrendingErrorMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
-                        <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryTrendingCommand}" />
+                        <Button Text="{l:Translate Common_Retry}" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryTrendingCommand}" />
                     </VerticalStackLayout>
 
                     <CollectionView
@@ -207,7 +208,7 @@
 
                     <!-- Top Colombia -->
                     <VerticalStackLayout Padding="20,16,20,4" Spacing="2">
-                        <Label Text="Top Colombia" Style="{StaticResource HomeSectionTitle}" />
+                        <Label Text="{l:Translate Home_TopColombia}" Style="{StaticResource HomeSectionTitle}" />
                         <Label Text="{Binding TrendingColombiaSubtitle}" Style="{StaticResource Caption}" />
                     </VerticalStackLayout>
 
@@ -237,7 +238,7 @@
                     <VerticalStackLayout IsVisible="{Binding HasTrendingColombiaError}" Spacing="12" Padding="40,24">
                         <Image Source="ic_error.png" WidthRequest="40" HeightRequest="40" Opacity="0.8" />
                         <Label Text="{Binding TrendingColombiaErrorMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
-                        <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryTrendingColombiaCommand}" />
+                        <Button Text="{l:Translate Common_Retry}" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryTrendingColombiaCommand}" />
                     </VerticalStackLayout>
 
                     <CollectionView
@@ -261,8 +262,8 @@
 
                     <!-- Para ti -->
                     <VerticalStackLayout Padding="20,20,20,4" Spacing="2">
-                        <Label Text="Para ti" Style="{StaticResource HomeSectionTitle}" />
-                        <Label Text="Según lo que te gusta" Style="{StaticResource Caption}" />
+                        <Label Text="{l:Translate Home_ForYou}" Style="{StaticResource HomeSectionTitle}" />
+                        <Label Text="{l:Translate Home_ForYouSubtitle}" Style="{StaticResource Caption}" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout x:Name="ForYouSkeleton" IsVisible="{Binding IsForYouLoading}" Spacing="0" Padding="20,4,0,0" HorizontalOptions="Start" WidthRequest="{DynamicResource ColumnWidth}">
@@ -285,14 +286,14 @@
                     </VerticalStackLayout>
 
                     <VerticalStackLayout IsVisible="{Binding HasNoForYou}" Spacing="8" Padding="40,24">
-                        <Label Text="Aún no hay recomendaciones" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
+                        <Label Text="{l:Translate Home_ForYouEmptyTitle}" FontFamily="OpenSansSemibold" FontSize="18" HorizontalTextAlignment="Center" />
                         <Label Text="{Binding ForYouEmptyText}" Style="{StaticResource Caption}" MaxLines="3" HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout IsVisible="{Binding HasForYouError}" Spacing="12" Padding="40,24">
                         <Image Source="ic_error.png" WidthRequest="40" HeightRequest="40" Opacity="0.8" />
                         <Label Text="{Binding ForYouErrorMessage}" Style="{StaticResource Caption}" MaxLines="4" HorizontalTextAlignment="Center" />
-                        <Button Text="Reintentar" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryForYouCommand}" />
+                        <Button Text="{l:Translate Common_Retry}" ImageSource="ic_retry_small.png" Style="{StaticResource SecondaryPill}" HorizontalOptions="Center" Command="{Binding RetryForYouCommand}" />
                     </VerticalStackLayout>
 
                     <CollectionView

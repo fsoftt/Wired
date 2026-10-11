@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using Wired.Core.Localization;
 using Wired.Presentation.Services;
 
 namespace Wired.App.Services;
@@ -24,12 +25,12 @@ public sealed class MauiDialogService : IDialogService
 
     public async Task ShowErrorAsync(string title, string message, string? report = null)
     {
-        var copy = await Shell.Current.DisplayAlertAsync(title, message, "Copiar", "Cerrar");
+        var copy = await Shell.Current.DisplayAlertAsync(title, message, L.T("Common_Copy"), L.T("Common_Close"));
         if (!copy)
             return;
 
         await Clipboard.Default.SetTextAsync($"{title}\n{report ?? message}");
-        await ShowToastAsync("Error copiado al portapapeles");
+        await ShowToastAsync(L.T("Error_Copied"));
     }
 
     public async Task ShowSnackbarAsync(string message, string actionText, Func<Task> action)

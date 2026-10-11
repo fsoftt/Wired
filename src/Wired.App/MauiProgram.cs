@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.Audio;
+using Wired.App.Localization;
 using Wired.App.Services;
 using Wired.Core.Collections;
 using Wired.Core.Enrichment;
@@ -15,6 +16,9 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
+		// Before any text is built: the screens read their labels in the language already chosen.
+		LocalizationManager.Initialize();
+
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()

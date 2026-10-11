@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Downloads;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 using Wired.Core.Playback;
 using Wired.Presentation.Formatting;
@@ -101,11 +102,11 @@ public sealed partial class SearchResultViewModel : ObservableObject
 
         List<MenuOption> options =
         [
-            new("Reproducir a continuación", () => _actions.Queue.PlayNextAsync(ToPlaybackItem())),
-            new("Agregar a la cola", () => _actions.Queue.AddToQueueAsync(ToPlaybackItem())),
+            new(L.T("Menu_PlayNext"), () => _actions.Queue.PlayNextAsync(ToPlaybackItem())),
+            new(L.T("Menu_AddToQueue"), () => _actions.Queue.AddToQueueAsync(ToPlaybackItem())),
         ];
         if (CanDownload)
-            options.Add(new("Descargar", () => { Download(); return Task.CompletedTask; }));
+            options.Add(new(L.T("Menu_Download"), () => { Download(); return Task.CompletedTask; }));
 
         return _actions.ShowMenuAsync(Title, options);
     }

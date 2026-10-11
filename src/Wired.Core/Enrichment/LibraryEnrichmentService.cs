@@ -1,6 +1,7 @@
 using Wired.Core.Abstractions;
 using Wired.Core.Downloads;
 using Wired.Core.Import;
+using Wired.Core.Localization;
 using Wired.Core.Models;
 using Wired.Core.Plugins;
 
@@ -222,13 +223,13 @@ public sealed class LibraryEnrichmentService(
     {
         if (ThumbnailFor(track) is not { } url)
         {
-            ReportProblem($"{track.Title}: la fuente \"{track.SourceId}\" no indica de dónde bajar la carátula");
+            ReportProblem(L.T("Enrichment_NoCoverUrl", track.Title, track.SourceId));
             return null;
         }
 
         var path = await artwork.SaveFromUrlAsync(key, url);
         if (path is null)
-            ReportProblem($"{track.Title}: no se pudo descargar la carátula ({url})");
+            ReportProblem(L.T("Enrichment_CoverFailed", track.Title, url));
         return path;
     }
 

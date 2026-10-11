@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Collections;
 using Wired.Core.Downloads;
+using Wired.Core.Localization;
 using Wired.Core.Playback;
 using Wired.Presentation.Formatting;
 using Wired.Presentation.Services;
@@ -11,7 +12,7 @@ namespace Wired.Presentation.ViewModels;
 /// <summary>
 /// Shared by the mini player bar and the "Now playing" screen.
 /// </summary>
-public sealed partial class PlayerViewModel : ObservableObject, IDisposable
+public sealed partial class PlayerViewModel : LocalizedObservableObject, IDisposable
 {
     private static readonly TimeSpan RefreshInterval = TimeSpan.FromMilliseconds(500);
 
@@ -175,7 +176,7 @@ public sealed partial class PlayerViewModel : ObservableObject, IDisposable
             return;
 
         _downloads.Enqueue(track);
-        await _dialogs.ShowToastAsync($"Descargando \"{track.Title}\"");
+        await _dialogs.ShowToastAsync(L.T("Download_Starting", track.Title));
     }
 
     [RelayCommand(CanExecute = nameof(HasTrack))]
@@ -187,16 +188,13 @@ public sealed partial class PlayerViewModel : ObservableObject, IDisposable
     [RelayCommand(CanExecute = nameof(HasTrack))]
     private Task OpenQueueAsync() => _navigation.OpenQueueAsync();
 
-    private static readonly (string Label, TimeSpan Duration)[] SleepOptions =
+    private static readonly (Func<string> Label, TimeSpan Duration)[] SleepOptions =
     [
-        ("15 minutos", TimeSpan.FromMinutes(15)),
-        ("30 minutos", TimeSpan.FromMinutes(30)),
-        ("45 minutos", TimeSpan.FromMinutes(45)),
-        ("1 hora", TimeSpan.FromHours(1)),
+        (() => L.T("Sleep_Minutes", 15), TimeSpan.FromMinutes(15)),
+        (() => L.T("Sleep_Minutes", 30), TimeSpan.FromMinutes(30)),
+        (() => L.T("Sleep_Minutes", 45), TimeSpan.FromMinutes(45)),
+        (() => L.T("Sleep_OneHour"), TimeSpan.FromHours(1)),
     ];
-
-    private const string EndOfTrackOption = "Al terminar la canción";
-    private const string TurnOffOption = "Desactivar";
 
     [ObservableProperty]
     public partial bool IsSleepTimerActive { get; private set; }
@@ -211,17 +209,18 @@ public sealed partial class PlayerViewModel : ObservableObject, IDisposable
         if (_sleepTimer is null)
             return;
 
-        var options = SleepOptions.Select(o => o.Label).Append(EndOfTrackOption).ToList();
+        var endOfTrackOption = L.T("Sleep_EndOfTrack");
+        var options = SleepOptions.Select(o => o.Label()).Append(endOfTrackOption).ToList();
         if (_sleepTimer.IsActive)
-            options.Add(TurnOffOption);
+            options.Add(L.T("Sleep_TurnOff"));
 
-        var title = _sleepTimer.IsActive ? SleepTimerText : "Pausar la música en…";
-        if (await _dialogs.ChooseAsync(title, "Cancelar", options) is not { } choice)
+        var title = _sleepTimer.IsActive ? SleepTimerText : L.T("Sleep_Title");
+        if (await _dialogs.ChooseAsync(title, L.T("Common_Cancel"), options) is not { } choice)
             return;
 
         if (choice < SleepOptions.Length)
             _sleepTimer.Start(SleepOptions[choice].Duration);
-        else if (options[choice] == EndOfTrackOption)
+        else if (options[choice] == endOfTrackOption)
             _sleepTimer.StartEndOfTrack();
         else
             _sleepTimer.Cancel();
@@ -237,8 +236,8 @@ public sealed partial class PlayerViewModel : ObservableObject, IDisposable
         IsSleepTimerActive = _sleepTimer.IsActive;
         SleepTimerText = _sleepTimer switch
         {
-            { IsEndOfTrack: true } => "Se pausa al terminar la canción",
-            { Remaining: { } left } => $"Se pausa en {(left.TotalHours >= 1 ? left.ToString(@"h\:mm\:ss") : left.ToString(@"m\:ss"))}",
+            { IsEndOfTrack: true } => L.T("Sleep_PausesAtEnd"),
+            { Remaining: { } left } => L.T("Sleep_PausesIn", left.TotalHours >= 1 ? left.ToString(@"h\:mm\:ss") : left.ToString(@"m\:ss")),
             _ => string.Empty,
         };
     }
@@ -258,7 +257,7 @@ public sealed partial class PlayerViewModel : ObservableObject, IDisposable
 
     private void OnPlaybackFailed(object? sender, PlaybackFailedEventArgs e) =>
         _dispatcher.Post(() => _ = _dialogs.ShowErrorAsync(
-            "No se pudo reproducir",
+            L.T("Playback_Failed"),
             $"{e.Item.Title}\n\n{ErrorFormatter.Describe(e.Error)}",
             $"{e.Item.Title}\n\n{ErrorFormatter.DescribeForReport(e.Error)}"));
 

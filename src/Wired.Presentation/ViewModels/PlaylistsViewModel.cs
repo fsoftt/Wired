@@ -1,8 +1,10 @@
 using System.Collections.ObjectModel;
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Collections;
 using Wired.Core.Import;
+using Wired.Core.Localization;
 using Wired.Core.Plugins;
 using Wired.Core.Throttling;
 using Wired.Presentation.Collections;
@@ -11,7 +13,7 @@ using Wired.Presentation.Services;
 namespace Wired.Presentation.ViewModels;
 
 /// <summary>The "Listas" tab: the "Me gusta" collection plus the user's playlists.</summary>
-public sealed partial class PlaylistsViewModel : ObservableObject
+public sealed partial class PlaylistsViewModel : LocalizedObservableObject
 {
     private readonly PlaylistService _playlists;
     private readonly LikesService _likes;
@@ -64,7 +66,7 @@ public sealed partial class PlaylistsViewModel : ObservableObject
 
     public ObservableCollection<PlaylistCardViewModel> Playlists { get; } = [];
 
-    public string LikedSummary => _likes.Count == 1 ? "1 canción" : $"{_likes.Count} canciones";
+    public string LikedSummary => L.N("Songs", _likes.Count);
 
     public bool HasPlaylists => Playlists.Count > 0;
 
@@ -113,7 +115,7 @@ public sealed partial class PlaylistsViewModel : ObservableObject
     {
         if (_plugins.Plugins.Count == 0)
         {
-            await _dialogs.ShowToastAsync("No hay ninguna fuente de música disponible para importar");
+            await _dialogs.ShowToastAsync(L.T("Import_NoSources"));
             return;
         }
 
@@ -129,12 +131,12 @@ public sealed partial class PlaylistsViewModel : ObservableObject
             {
                 using var reader = new StreamReader(file.Content);
                 var defaultName = Path.GetFileNameWithoutExtension(file.FileName).Replace('_', ' ').Trim();
-                imported = await Task.Run(() => ExportifyCsvParser.Parse(reader, defaultName.Length > 0 ? defaultName : "Importada"));
+                imported = await Task.Run(() => ExportifyCsvParser.Parse(reader, defaultName.Length > 0 ? defaultName : L.T("Import_DefaultName")));
             }
         }
         catch (FormatException error)
         {
-            await _dialogs.ShowErrorAsync("No se pudo importar", error.Message);
+            await _dialogs.ShowErrorAsync(L.T("Import_FailedTitle"), error.Message);
             return;
         }
         finally
@@ -144,7 +146,7 @@ public sealed partial class PlaylistsViewModel : ObservableObject
 
         if (imported.Tracks.Count == 0)
         {
-            await _dialogs.ShowToastAsync("El archivo no tiene canciones");
+            await _dialogs.ShowToastAsync(L.T("Import_EmptyFile"));
             return;
         }
 
@@ -154,9 +156,9 @@ public sealed partial class PlaylistsViewModel : ObservableObject
 
         var size = imported.EstimatedBytes / 1_000_000_000d;
         var choice = await _dialogs.ChooseAsync(
-            $"Importar {imported.Tracks.Count} canciones (~{(size >= 1 ? $"{size:0.#} GB" : $"{size * 1000:0} MB")})",
-            "Cancelar",
-            ["Crear una lista nueva", "Agregar a Me gusta", "Lista nueva y Me gusta"]);
+            L.T("Import_ChooseTitle", imported.Tracks.Count, size >= 1 ? $"{size:0.#} GB" : $"{size * 1000:0} MB"),
+            L.T("Common_Cancel"),
+            [L.T("Import_DestNew"), L.T("Import_DestLikes"), L.T("Import_DestBoth")]);
         if (choice is not { } destination)
             return;
 
@@ -164,7 +166,7 @@ public sealed partial class PlaylistsViewModel : ObservableObject
         var name = imported.Name;
         if (createPlaylist)
         {
-            var entered = await _dialogs.PromptAsync("Nombre de la lista", "Las canciones se agregarán en el mismo orden del archivo.", "Importar", "Cancelar", name, Playlist.MaxNameLength);
+            var entered = await _dialogs.PromptAsync(L.T("Import_NameTitle"), L.T("Import_NameMessage"), L.T("Common_Import"), L.T("Common_Cancel"), name, Playlist.MaxNameLength);
             if (string.IsNullOrWhiteSpace(entered))
                 return;
             name = entered.Trim();
@@ -172,7 +174,7 @@ public sealed partial class PlaylistsViewModel : ObservableObject
 
         await OfferUnrestrictedBackgroundAsync(imported.Tracks.Count);
         await _imports.StartAsync(imported with { Name = name }, new ImportOptions(source.Info.Id, createPlaylist, AddToLikes: destination is 1 or 2));
-        await _dialogs.ShowToastAsync("Importación iniciada: verás el progreso aquí y en Descargas");
+        await _dialogs.ShowToastAsync(L.T("Import_Started"));
     }
 
     /// <summary>Long imports keep downloading with the screen off only without battery restrictions.</summary>
@@ -183,10 +185,10 @@ public sealed partial class PlaylistsViewModel : ObservableObject
             return;
 
         var allow = await _dialogs.ConfirmAsync(
-            "Descargar con la pantalla apagada",
-            "Para que la importación siga mientras el teléfono está bloqueado, permite que Wired funcione sin restricciones de batería.",
-            "Permitir",
-            "Ahora no");
+            L.T("Import_BackgroundTitle"),
+            L.T("Import_BackgroundMessage"),
+            L.T("Common_Allow"),
+            L.T("Common_NotNow"));
 
         if (allow)
             await _backgroundExecution.RequestUnrestrictedAsync();
@@ -198,7 +200,7 @@ public sealed partial class PlaylistsViewModel : ObservableObject
         if (sources.Count <= 1)
             return sources.FirstOrDefault();
 
-        var choice = await _dialogs.ChooseAsync("¿Dónde buscar las canciones?", "Cancelar", sources.Select(p => p.Info.DisplayName).ToList());
+        var choice = await _dialogs.ChooseAsync(L.T("Import_ChooseSource"), L.T("Common_Cancel"), sources.Select(p => p.Info.DisplayName).ToList());
         return choice is { } index ? sources[index] : null;
     }
 
@@ -246,7 +248,7 @@ public sealed partial class PlaylistsViewModel : ObservableObject
             return null;
 
         var source = _plugins.Plugins.FirstOrDefault(p => p.Info.Id == sourceId)?.Info.DisplayName ?? sourceId;
-        return $"En pausa: {source} pidió ir más despacio · sigue a las {until.ToLocalTime():HH:mm}";
+        return L.T("Import_Paused", source, until.ToLocalTime().ToString("t", CultureInfo.CurrentCulture));
     }
 
     private Task OpenPlaylistAsync(Playlist playlist) => _navigation.OpenPlaylistAsync(playlist.Id);

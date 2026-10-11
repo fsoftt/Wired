@@ -6,6 +6,7 @@ using Android.Net.Wifi;
 using Android.OS;
 using Wired.Core.Downloads;
 using DownloadStatus = Wired.Core.Downloads.DownloadStatus;
+using Wired.Core.Localization;
 
 namespace Wired.App.Downloads;
 
@@ -112,8 +113,8 @@ public sealed class DownloadForegroundService : Service
 
         builder
             .SetSmallIcon(Resource.Drawable.ic_download)
-            .SetContentTitle(pending == 1 ? "Descargando 1 canción" : $"Descargando {pending} canciones")
-            .SetContentText(current?.Track.Title ?? "En cola…")
+            .SetContentTitle(L.N("Notif_Downloading", pending))
+            .SetContentText(current?.Track.Title ?? L.T("Search_Queued"))
             .SetOngoing(true)
             .SetOnlyAlertOnce(true)
             .SetShowWhen(false)
@@ -138,9 +139,9 @@ public sealed class DownloadForegroundService : Service
         if (!OperatingSystem.IsAndroidVersionAtLeast(26))
             return;
 
-        var channel = new NotificationChannel(ChannelId, "Descargas", NotificationImportance.Low)
+        var channel = new NotificationChannel(ChannelId, L.T("Tab_Downloads"), NotificationImportance.Low)
         {
-            Description = "Progreso de las descargas en segundo plano",
+            Description = L.T("Notif_DownloadsChannelDescription"),
         };
         channel.SetShowBadge(false);
         _notifications.CreateNotificationChannel(channel);

@@ -1,4 +1,5 @@
 using System.Globalization;
+using Wired.Core.Localization;
 
 namespace Wired.Core.Import;
 
@@ -18,11 +19,11 @@ public static class ExportifyCsvParser
     {
         using var rows = CsvReader.ReadRows(reader).GetEnumerator();
         if (!rows.MoveNext())
-            throw new FormatException("El archivo está vacío.");
+            throw new FormatException(L.T("Csv_Empty"));
 
         var header = rows.Current.Select(h => h.Trim().TrimStart('﻿')).ToList();
-        var title = Find(header, TitleHeaders) ?? throw new FormatException("No parece un CSV de Exportify: falta la columna \"Track Name\".");
-        var artists = Find(header, ArtistHeaders) ?? throw new FormatException("No parece un CSV de Exportify: falta la columna \"Artist Name(s)\".");
+        var title = Find(header, TitleHeaders) ?? throw new FormatException(L.T("Csv_MissingTitle"));
+        var artists = Find(header, ArtistHeaders) ?? throw new FormatException(L.T("Csv_MissingArtist"));
         var album = Find(header, AlbumHeaders);
         var duration = Find(header, DurationHeaders);
 

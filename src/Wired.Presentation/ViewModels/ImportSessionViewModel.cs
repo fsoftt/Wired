@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Wired.Core.Import;
+using Wired.Core.Localization;
 using Wired.Presentation.Services;
 
 namespace Wired.Presentation.ViewModels;
@@ -9,15 +10,18 @@ namespace Wired.Presentation.ViewModels;
 public sealed partial class ImportSessionViewModel(
     PlaylistImportSession session,
     PlaylistImportService imports,
-    INavigationService navigation) : ObservableObject
+    INavigationService navigation) : LocalizedObservableObject
 {
     public Guid Id => Session.Id;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(Name), nameof(Progress), nameof(ProgressText), nameof(IsRunning), nameof(IsFinished), nameof(HasProblems), nameof(ProblemsText))]
+    [NotifyPropertyChangedFor(nameof(Name), nameof(ImportingText), nameof(Progress), nameof(ProgressText), nameof(IsRunning), nameof(IsFinished), nameof(HasProblems), nameof(ProblemsText))]
     public partial PlaylistImportSession Session { get; private set; } = session;
 
     public string Name => Session.Name;
+
+    /// <summary>"Importando «Name»" heading of the card.</summary>
+    public string ImportingText => L.T("Playlists_Importing", Name);
 
     public double Progress => Session.Total == 0 ? 1 : Session.Finished / (double)Session.Total;
 
@@ -26,10 +30,10 @@ public sealed partial class ImportSessionViewModel(
         get
         {
             var text = IsRunning
-                ? $"{Session.Done} de {Session.Total} listas"
-                : $"Terminada: {Session.Done} de {Session.Total} canciones";
+                ? L.T("Import_ProgressRunning", Session.Done, Session.Total)
+                : L.T("Import_ProgressFinished", Session.Done, Session.Total);
 
-            return Session.AlreadyInLibrary > 0 ? $"{text} · {Session.AlreadyInLibrary} ya estaban" : text;
+            return Session.AlreadyInLibrary > 0 ? L.T("Import_AlreadyThere", text, Session.AlreadyInLibrary) : text;
         }
     }
 
@@ -48,9 +52,9 @@ public sealed partial class ImportSessionViewModel(
             return (notFound, failed) switch
             {
                 (0, 0) => string.Empty,
-                (_, 0) => $"{notFound} no encontradas · Elegir versión",
-                (0, _) => $"{failed} con error · Elegir versión",
-                _ => $"{notFound} no encontradas, {failed} con error · Elegir versión",
+                (_, 0) => L.T("Import_ProblemsNotFound", notFound),
+                (0, _) => L.T("Import_ProblemsFailed", failed),
+                _ => L.T("Import_ProblemsBoth", notFound, failed),
             };
         }
     }
