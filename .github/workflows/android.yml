@@ -8,6 +8,9 @@ on:
 jobs:
   apk:
     runs-on: ubuntu-latest
+    env:
+      # Only a flag here: the token itself reaches the one step that needs it.
+      HAS_DISPATCH: ${{ secrets.DISPATCH_TOKEN != '' && secrets.DISPATCH_REPO != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -54,3 +57,15 @@ jobs:
           name: wired-android-apk
           path: artifacts/android/*-Signed.apk
           if-no-files-found: error
+
+      # Lets a downstream repository (e.g. a build that adds external plugins) rebuild on every
+      # release. Configured with the DISPATCH_TOKEN and DISPATCH_REPO secrets; skipped without them.
+      - name: Notify downstream builds
+        if: env.HAS_DISPATCH == 'true'
+        env:
+          DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
+          DISPATCH_REPO: ${{ secrets.DISPATCH_REPO }}
+        run: >
+          curl -fsS -X POST "https://api.github.com/repos/$DISPATCH_REPO/dispatches"
+          -H "Authorization: Bearer $DISPATCH_TOKEN" -H "Accept: application/vnd.github+json"
+          -d "{\"event_type\":\"wired-release\",\"client_payload\":{\"sha\":\"$GITHUB_SHA\"}}"
